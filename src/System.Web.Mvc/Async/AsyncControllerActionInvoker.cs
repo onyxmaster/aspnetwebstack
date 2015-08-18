@@ -18,6 +18,7 @@ namespace System.Web.Mvc.Async
         private static readonly object _invokeActionMethodWithFiltersTag = new object();
 
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Refactoring to reduce coupling not currently justified.")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", Justification = "Coping with C# 6 compiler.")]
         public virtual IAsyncResult BeginInvokeAction(ControllerContext controllerContext, string actionName, AsyncCallback callback, object state)
         {
             if (controllerContext == null)
