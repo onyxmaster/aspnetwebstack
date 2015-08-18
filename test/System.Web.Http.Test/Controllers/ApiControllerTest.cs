@@ -64,6 +64,11 @@ namespace System.Web.Http
             Assert.Equal(responseText, message.Content.ReadAsStringAsync().Result);
         }
 
+        private static HttpResponseMessage CreateTestMessage()
+        {
+            return new HttpResponseMessage { Content = new StringContent("This is a test") };
+        }
+
         [Fact]
         public void Setting_CustomActionSelector()
         {
@@ -79,13 +84,11 @@ namespace System.Web.Http
                 .Setup(invoker => invoker.SelectAction(It.IsAny<HttpControllerContext>()))
                 .Returns(() =>
                 {
-                    Func<HttpResponseMessage> testDelegate =
-                        () => new HttpResponseMessage { Content = new StringContent("This is a test") };
                     return new ReflectedHttpActionDescriptor
                     {
                         Configuration = controllerContext.Configuration,
                         ControllerDescriptor = controllerDescriptor,
-                        MethodInfo = testDelegate.Method
+                        MethodInfo = ((Func<HttpResponseMessage>)CreateTestMessage).Method
                     };
                 });
             controllerDescriptor.Configuration.Services.Replace(typeof(IHttpActionSelector), mockSelector.Object);
