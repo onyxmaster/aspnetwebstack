@@ -34,7 +34,6 @@ namespace System.Web.Mvc.Async.Test
 
             // Act & assert
             IAsyncResult asyncResult = invoker.BeginInvokeAction(controllerContext, "ActionThrowsExceptionAndIsHandled", null, null);
-            Assert.Null(((TestController)controllerContext.Controller).Log); // Result filter shouldn't have executed yet
 
             bool retVal = invoker.EndInvokeAction(asyncResult);
             Assert.True(retVal);
@@ -50,7 +49,7 @@ namespace System.Web.Mvc.Async.Test
 
             // Act & assert
             Assert.Throws<Exception>(
-                delegate { invoker.BeginInvokeAction(controllerContext, "ActionThrowsExceptionAndIsNotHandled", null, null); },
+                delegate { invoker.EndInvokeAction(invoker.BeginInvokeAction(controllerContext, "ActionThrowsExceptionAndIsNotHandled", null, null)); },
                 @"Some exception text.");
         }
 
@@ -63,7 +62,7 @@ namespace System.Web.Mvc.Async.Test
 
             // Act & assert
             Assert.Throws<ThreadAbortException>(
-                delegate { invoker.BeginInvokeAction(controllerContext, "ActionCallsThreadAbort", null, null); });
+                delegate { invoker.EndInvokeAction(invoker.BeginInvokeAction(controllerContext, "ActionCallsThreadAbort", null, null)); });
         }
 
         [Fact]
@@ -187,7 +186,7 @@ namespace System.Web.Mvc.Async.Test
 
             // Act & assert
             Assert.Throws<HttpRequestValidationException>(
-                delegate { invoker.BeginInvokeAction(controllerContext, "NormalAction", null, null); });
+                delegate { invoker.EndInvokeAction(invoker.BeginInvokeAction(controllerContext, "NormalAction", null, null)); });
         }
 
         [Fact]
