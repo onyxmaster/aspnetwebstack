@@ -87,8 +87,14 @@
           Projects="@(SolutionsToBuild)"
           BuildInParallel="%(SolutionsToBuild.BuildInParallel)"
           Targets="Build"
-          Condition=" '%(SolutionsToBuild.Portable)' != 'true' or '$(BuildPortable)' == 'true' "
+          Condition=" '$(MSBuildToolsVersion)' != '14.0' or '%(SolutionsToBuild.Portable)' != 'true' "
           Properties="Configuration=$(Configuration);CodeAnalysis=$(CodeAnalysis);StyleCopEnabled=$(StyleCopEnabled);VisualStudioVersion=$(VisualStudioVersion)" />
+    <MSBuild
+          Projects="@(SolutionsToBuild)"
+          BuildInParallel="%(SolutionsToBuild.BuildInParallel)"
+          Targets="Build"
+          Condition=" '$(MSBuildToolsVersion)' == '14.0' and '%(SolutionsToBuild.Portable)' == 'true' and '$(BuildPortable)' == 'true' "
+          Properties="Configuration=$(Configuration);StyleCopEnabled=$(StyleCopEnabled);VisualStudioVersion=$(VisualStudioVersion)" />
   </Target>
 
   <Target Name="UnitTest" DependsOnTargets="CheckSkipStrongNames;Build">
