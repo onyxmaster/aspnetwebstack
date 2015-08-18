@@ -143,6 +143,7 @@
       <Reference Include="System.Xml.Linq" />
       <Using Namespace="System" />
       <Using Namespace="System.Collections.Generic" />
+      <Using Namespace="System.Globalization" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Linq" />
       <Using Namespace="System.Xml.Linq" />
@@ -169,17 +170,17 @@
                         var assemblies = xml.Elements(XName.Get("assembly"));
                         foreach (XElement assembly in assemblies)
                         {
-                            int failures = Int32.Parse(assembly.Attribute(XName.Get("failed")).Value);
+                            int failures = Int32.Parse(assembly.Attribute(XName.Get("failed")).Value, CultureInfo.InvariantCulture);
 
-                            testsPassed += Int32.Parse(assembly.Attribute(XName.Get("passed")).Value);
+                            testsPassed += Int32.Parse(assembly.Attribute(XName.Get("passed")).Value, CultureInfo.InvariantCulture);
                             testsFailed += failures;
-                            testsSkipped += Int32.Parse(assembly.Attribute(XName.Get("skipped")).Value);
-                            timeSpent += Decimal.Parse(assembly.Attribute(XName.Get("time")).Value);
+                            testsSkipped += Int32.Parse(assembly.Attribute(XName.Get("skipped")).Value, CultureInfo.InvariantCulture);
+                            timeSpent += Decimal.Parse(assembly.Attribute(XName.Get("time")).Value, CultureInfo.InvariantCulture);
 
                             if (failures > 0)
                             {
                                 foreach (XElement classWithFailure in assembly.Elements(XName.Get("class"))
-                                    .Where(c => Int32.Parse(c.Attribute(XName.Get("failed")).Value) > 0))
+                                    .Where(c => Int32.Parse(c.Attribute(XName.Get("failed")).Value, CultureInfo.InvariantCulture) > 0))
                                 {
                                     foreach (XElement failure in classWithFailure.Elements(XName.Get("test"))
                                         .Where(test => test.Attribute(XName.Get("result")).Value == "Fail"))
