@@ -160,7 +160,7 @@ namespace WebMatrix.WebData.Test
         {
             // Arrange
             var generator = new Mock<RandomNumberGenerator>(MockBehavior.Strict);
-            var generatedBytes = Encoding.Default.GetBytes("|aÿx§#½oÿ↨îA8Eµ");
+            var generatedBytes = Encoding.GetEncoding(1252).GetBytes("|aÿx§#½oÿ↨îA8Eµ");
             generator.Setup(g => g.GetBytes(It.IsAny<byte[]>())).Callback((byte[] array) => Array.Copy(generatedBytes, array, generatedBytes.Length));
 
             // Act
