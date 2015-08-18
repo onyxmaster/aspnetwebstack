@@ -187,7 +187,7 @@ namespace System.Web.Http.SelfHost.Channels
                 }
             }
 
-            private async Task WriteMessageCore(HttpResponseMessage response, Stream stream, HttpMessageEncodingRequestContext requestContext)
+            private static async Task WriteMessageCore(HttpResponseMessage response, Stream stream, HttpMessageEncodingRequestContext requestContext)
             {
                 try
                 {
