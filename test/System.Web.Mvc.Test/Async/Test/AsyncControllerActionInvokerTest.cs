@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc.Filters;
 using Microsoft.TestCommon;
 using Moq;
@@ -159,6 +160,38 @@ namespace System.Web.Mvc.Async.Test
             // Assert
             Assert.True(retVal);
             Assert.Equal("From action", ((TestController)controllerContext.Controller).Log);
+        }
+
+        [Fact]
+        public void InvokeAction_AsyncNormalAction()
+        {
+            // Arrange
+            ControllerContext controllerContext = GetControllerContext();
+            AsyncControllerActionInvoker invoker = new AsyncControllerActionInvoker();
+
+            // Act
+            IAsyncResult asyncResult = invoker.BeginInvokeAction(controllerContext, "AsyncNormalAction", null, null);
+            bool retVal = invoker.EndInvokeAction(asyncResult);
+
+            // Assert
+            Assert.True(retVal);
+            Assert.Equal("From async action", ((TestController)controllerContext.Controller).Log);
+        }
+
+        [Fact]
+        public void InvokeAction_AsyncResultAction()
+        {
+            // Arrange
+            ControllerContext controllerContext = GetControllerContext();
+            AsyncControllerActionInvoker invoker = new AsyncControllerActionInvoker();
+
+            // Act
+            IAsyncResult asyncResult = invoker.BeginInvokeAction(controllerContext, "AsyncResultAction", null, null);
+            bool retVal = invoker.EndInvokeAction(asyncResult);
+
+            // Assert
+            Assert.True(retVal);
+            Assert.Equal("Async result from action", ((TestController)controllerContext.Controller).Log);
         }
 
         [Fact]
@@ -1026,6 +1059,17 @@ namespace System.Web.Mvc.Async.Test
                 return new LoggingActionResult("From action");
             }
 
+            public async Task<ActionResult> AsyncNormalActionAsync()
+            {
+                await Task.Delay(1);
+                return new LoggingActionResult("From async action");
+            }
+
+            public ActionResult AsyncResultAction()
+            {
+                return new AsyncLoggingActionResult("Async result from action");
+            }
+
             [AuthenticationFilterReturnsResult]
             public void AuthenticationFilterShortCircuits()
             {
@@ -1188,6 +1232,22 @@ namespace System.Web.Mvc.Async.Test
 
             public override void ExecuteResult(ControllerContext context)
             {
+                ((TestController)context.Controller).Log = _logText;
+            }
+        }
+
+        private class AsyncLoggingActionResult : ActionResult
+        {
+            private readonly string _logText;
+
+            public AsyncLoggingActionResult(string logText)
+            {
+                _logText = logText;
+            }
+
+            public override async Task ExecuteResultAsync(ControllerContext context)
+            {
+                await Task.Delay(1);
                 ((TestController)context.Controller).Log = _logText;
             }
         }
