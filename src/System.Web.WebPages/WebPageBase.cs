@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.WebPages.Resources;
 using Microsoft.Internal.Web.Utils;
 
@@ -189,19 +190,18 @@ namespace System.Web.WebPages
             ExecutePageHierarchy(pageContext, writer, startPage: null);
         }
 
+        public Task ExecutePageHierarchyAsync(WebPageContext pageContext, TextWriter writer)
+        {
+            return ExecutePageHierarchyAsync(pageContext, writer, startPage: null);
+        }
+
         // This method is only used by WebPageBase to allow passing in the view context and writer.
         public void ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
         {
             PushContext(pageContext, writer);
 
-            if (startPage != null)
+            if (PrepareStartPage(pageContext, startPage))
             {
-                if (startPage != this)
-                {
-                    var startPageContext = WebPageContext.CreateNestedPageContext<object>(parentContext: pageContext, pageData: null, model: null, isLayoutPage: false);
-                    startPageContext.Page = startPage;
-                    startPage.PageContext = startPageContext;
-                }
                 startPage.ExecutePageHierarchy();
             }
             else
@@ -211,8 +211,75 @@ namespace System.Web.WebPages
             PopContext();
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "We really don't care if SourceHeader fails, and we don't want it to fail any real requests ever")]
+        public async Task ExecutePageHierarchyAsync(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+        {
+            PushContext(pageContext, writer);
+
+            if (PrepareStartPage(pageContext, startPage))
+            {
+                await startPage.ExecutePageHierarchyAsync().ConfigureAwait(false);
+            }
+            else
+            {
+                await ExecutePageHierarchyAsync().ConfigureAwait(false);
+            }
+            PopContext();
+        }
+
+        private bool PrepareStartPage(WebPageContext pageContext, WebPageRenderingBase startPage)
+        {
+            if (startPage != null && startPage != this)
+            {
+                var startPageContext = WebPageContext.CreateNestedPageContext<object>(parentContext: pageContext, pageData: null, model: null, isLayoutPage: false);
+                startPageContext.Page = startPage;
+                startPage.PageContext = startPageContext;
+                return true;
+            }
+            return false;
+        }
+
         public override void ExecutePageHierarchy()
+        {
+            PreparePageHierarchy();
+
+            TemplateStack.Push(Context, this);
+            try
+            {
+                // Execute the developer-written code of the WebPage
+                Execute();
+            }
+            finally
+            {
+                TemplateStack.Pop(Context);
+            }
+        }
+
+        public async override Task ExecutePageHierarchyAsync()
+        {
+            PreparePageHierarchy();
+
+            TemplateStack.Push(Context, this);
+            try
+            {
+                // Execute the developer-written code of the WebPage
+                var task = ExecuteAsync();
+                if (task != null)
+                {
+                    await task.ConfigureAwait(false);
+                }
+                else
+                {
+                    Execute();
+                }
+            }
+            finally
+            {
+                TemplateStack.Pop(Context);
+            }
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "We really don't care if SourceHeader fails, and we don't want it to fail any real requests ever")]
+        private void PreparePageHierarchy()
         {
             // Unlike InitPages, for a WebPage there is no hierarchy - it is always
             // the last file to execute in the chain. There can still be layout pages
@@ -239,17 +306,6 @@ namespace System.Web.WebPages
                 {
                     // we really don't care if this ever fails, so we swallow all exceptions
                 }
-            }
-
-            TemplateStack.Push(Context, this);
-            try
-            {
-                // Execute the developer-written code of the WebPage
-                Execute();
-            }
-            finally
-            {
-                TemplateStack.Pop(Context);
             }
         }
 
