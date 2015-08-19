@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using Microsoft.TestCommon;
 using Microsoft.Web.UnitTestUtil;
@@ -568,6 +569,11 @@ namespace System.Web.Mvc.Html.Test
         private class DummyView : IView
         {
             public void Render(ViewContext viewContext, TextWriter writer)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task RenderAsync(ViewContext viewContext, TextWriter writer)
             {
                 throw new NotImplementedException();
             }
