@@ -396,7 +396,6 @@ namespace System.Web.Razor.Parser
             }
         }
 
-
         private void Statement(Block block)
         {
             Span.EditHandler.AcceptedCharacters = AcceptedCharacters.Any;
