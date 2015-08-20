@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.WebPages.Html;
 using System.Web.WebPages.Scope;
 
@@ -67,7 +68,7 @@ namespace System.Web.WebPages
 
         public override void ExecutePageHierarchy()
         {
-            using (ScopeStorage.CreateTransientScope(new ScopeStorageDictionary(ScopeStorage.CurrentScope, PageData)))
+            using (CreateScope())
             {
                 ExecutePageHierarchy(_executors);
             }
@@ -83,6 +84,38 @@ namespace System.Web.WebPages
                 // No executor handled the request, so use normal processing
                 base.ExecutePageHierarchy();
             }
+        }
+
+        public override Task ExecutePageHierarchyAsync()
+        {
+            using (CreateScope())
+            {
+                return ExecutePageHierarchyAsync(_executors);
+            }
+        }
+
+        internal async Task ExecutePageHierarchyAsync(IEnumerable<IWebPageRequestExecutor> executors)
+        {
+            if (TopLevelPage)
+            {
+                // Call all the executors until we find one that wants to handle it. This is used to implement features
+                // such as AJAX Page methods without having to bake them into the framework.
+                // Note that we only do this for 'top level' pages, as these are request-level executors that should not run for each user control/master
+                foreach (var executor in executors)
+                {
+                    if (await executor.ExecuteAsync(this).ConfigureAwait(false))
+                    {
+                        return;
+                    }
+                }
+            }
+            // No executor handled the request, so use normal processing
+            await base.ExecutePageHierarchyAsync().ConfigureAwait(false);
+        }
+
+        private IDisposable CreateScope()
+        {
+            return ScopeStorage.CreateTransientScope(new ScopeStorageDictionary(ScopeStorage.CurrentScope, PageData));
         }
 
         public override HelperResult RenderPage(string path, params object[] data)
