@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Dnet.AspNet</id>
+    <version>3.2.6</version>
+    <title>DRIVE.NET build of Microsoft ASP.NET</title>
+    <authors>Microsoft, DRIVE.NET</authors>
+    <owners>DRIVE.NET, Inc.</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm</licenseUrl>
+    <projectUrl>https://github.com/drivenet/aspnetwebstack</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>This package contains the DRIVE.NET build of Microsoft.AspNet -- the runtime assemblies for ASP.NET.</description>
+    <summary>This package contains the runtime assemblies for ASP.NET with a DRIVE.NET flavor.</summary>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <language>en-US</language>
+    <tags>Microsoft AspNet WebPages AspNetWebPages Mvc AspNetMvc Razor</tags>
+    <dependencies>
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\bin\CodeAnalysis\System.Web.Razor.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Razor.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Razor.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Deployment.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Deployment.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Deployment.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Razor.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Razor.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Razor.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Mvc.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Mvc.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Mvc.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\Microsoft.Web.Mvc.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\Microsoft.Web.Mvc.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\Microsoft.Web.Mvc.xml" target="lib/net45" />
+  </files>
+</package>
