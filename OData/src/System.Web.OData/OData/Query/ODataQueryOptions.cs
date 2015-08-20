@@ -566,6 +566,7 @@ namespace System.Web.OData.Query
             return Request.GetETag(etagHeaderValue);
         }
 
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Factory code.")]
         private void BuildQueryOptions(IDictionary<string, string> queryParameters)
         {
             foreach (KeyValuePair<string, string> kvp in queryParameters)
