@@ -67,6 +67,32 @@ namespace System.Web.WebPages.Razor
 
         internal static WebPageRazorHost CreateHostFromConfigCore(RazorWebSectionGroup config, string virtualPath, string physicalPath)
         {
+            if (config == null)
+            {
+                try
+                {
+                    string physicalDirectory = physicalPath.Substring(0, physicalPath.Length - virtualPath.Length);
+                    string text = virtualPath.Replace('\\', '/');
+                    if (!text.StartsWith("/", StringComparison.Ordinal))
+                    {
+                        text = "/" + text;
+                    }
+                    int num = text.LastIndexOf('/');
+                    text = text.Substring(0, (num == 0) ? 1 : num);
+                    var arg_62_0 = new System.Web.Configuration.WebConfigurationFileMap();
+                    var mapping = new System.Web.Configuration.VirtualDirectoryMapping(physicalDirectory, true);
+                    arg_62_0.VirtualDirectories.Add("/", mapping);
+                    System.Configuration.Configuration configuration = System.Web.Configuration.WebConfigurationManager.OpenMappedWebConfiguration(arg_62_0, text);
+                    if (configuration != null)
+                    {
+                        config = (RazorWebSectionGroup)configuration.GetSectionGroup(RazorWebSectionGroup.GroupName);
+                    }
+                }
+                catch (Exception)
+                {
+                    throw new InvalidOperationException("OMG FAIL.");
+                }
+            }
             // Use the virtual path to select a host environment for the generated code
             // Do this check here because the App_Code host can't be overridden.
 

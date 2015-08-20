@@ -36,10 +36,8 @@
     <!-- Target 4.5 by default -->
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
 
-    <!-- Everything is delay signed by default -->
     <SignAssembly>true</SignAssembly>
-    <DelaySign>true</DelaySign>
-    <AssemblyOriginatorKeyFile>$(WebStackRootPath)\tools\35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(WebStackRootPath)\tools\xmAspNet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <!-- Per-configuration properties -->
