@@ -36,6 +36,7 @@ namespace System.Web.Http.OData.Query
         /// </summary>
         /// <param name="context">The <see cref="ODataQueryContext"/> which contains the <see cref="IEdmModel"/> and some type information.</param>
         /// <param name="request">The incoming request message.</param>
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Dispatch code.")]
         public ODataQueryOptions(ODataQueryContext context, HttpRequestMessage request)
         {
             if (context == null)
