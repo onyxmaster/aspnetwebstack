@@ -118,11 +118,6 @@ namespace System.Web.WebPages
             return ScopeStorage.CreateTransientScope(new ScopeStorageDictionary(ScopeStorage.CurrentScope, PageData));
         }
 
-        public override HelperResult RenderPage(string path, params object[] data)
-        {
-            return base.RenderPage(path, data);
-        }
-
         protected override void InitializePage()
         {
             base.InitializePage();
