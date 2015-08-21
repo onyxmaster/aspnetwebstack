@@ -210,5 +210,7 @@ namespace System.Web.WebPages
         public abstract Task ExecutePageHierarchyAsync();
 
         public abstract HelperResult RenderPage(string path, params object[] data);
+
+        public abstract Task<HelperResult> RenderPageAsync(string path, params object[] data);
     }
 }
