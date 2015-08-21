@@ -551,6 +551,7 @@ namespace System.Web.OData.Query.Expressions
             }
         }
 
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Dispatch code.")]
         private Expression BindSingleValueFunctionCallNode(SingleValueFunctionCallNode node)
         {
             switch (node.Name)
