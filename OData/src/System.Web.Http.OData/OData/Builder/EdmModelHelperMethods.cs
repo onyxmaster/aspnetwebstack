@@ -15,6 +15,7 @@ using Microsoft.Data.OData;
 
 namespace System.Web.Http.OData.Builder
 {
+    [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Utility class.")]
     internal static class EdmModelHelperMethods
     {
         public static IEdmModel BuildEdmModel(ODataModelBuilder builder)

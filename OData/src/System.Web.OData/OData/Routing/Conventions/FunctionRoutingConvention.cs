@@ -14,6 +14,7 @@ namespace System.Web.OData.Routing.Conventions
     public class FunctionRoutingConvention : NavigationSourceRoutingConvention
     {
         /// <inheritdoc/>
+        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Factory code.")]
         public override string SelectAction(ODataPath odataPath, HttpControllerContext controllerContext,
             ILookup<string, HttpActionDescriptor> actionMap)
         {
