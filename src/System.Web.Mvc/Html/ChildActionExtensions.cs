@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Web.Mvc.Properties;
 using System.Web.Mvc.Routing;
 using System.Web.Routing;
@@ -81,9 +83,38 @@ namespace System.Web.Mvc.Html
             ActionHelper(htmlHelper, actionName, controllerName, routeValues, htmlHelper.ViewContext.Writer);
         }
 
-        // Helpers
+        public static Task RenderActionAsync(this HtmlHelper htmlHelper, string actionName)
+        {
+            return RenderActionAsync(htmlHelper, actionName, null /* controllerName */, null /* routeValues */);
+        }
 
-        internal static void ActionHelper(HtmlHelper htmlHelper, string actionName, string controllerName, RouteValueDictionary routeValues, TextWriter textWriter)
+        public static Task RenderActionAsync(this HtmlHelper htmlHelper, string actionName, object routeValues)
+        {
+            return RenderActionAsync(htmlHelper, actionName, null /* controllerName */, TypeHelper.ObjectToDictionary(routeValues));
+        }
+
+        public static Task RenderActionAsync(this HtmlHelper htmlHelper, string actionName, RouteValueDictionary routeValues)
+        {
+            return RenderActionAsync(htmlHelper, actionName, null /* controllerName */, routeValues);
+        }
+
+        public static Task RenderActionAsync(this HtmlHelper htmlHelper, string actionName, string controllerName)
+        {
+            return RenderActionAsync(htmlHelper, actionName, controllerName, null /* routeValues */);
+        }
+
+        public static Task RenderActionAsync(this HtmlHelper htmlHelper, string actionName, string controllerName, object routeValues)
+        {
+            return RenderActionAsync(htmlHelper, actionName, controllerName, TypeHelper.ObjectToDictionary(routeValues));
+        }
+
+        public static async Task RenderActionAsync(this HtmlHelper htmlHelper, string actionName, string controllerName, RouteValueDictionary routeValues)
+        {
+            await ActionHelperAsync(htmlHelper, actionName, controllerName, routeValues, htmlHelper.ViewContext.Writer).ConfigureAwait(false);
+        }
+
+        // Helpers
+        private static IHttpHandler PrepareActionHelper(HtmlHelper htmlHelper, string actionName, string controllerName, RouteValueDictionary routeValues, out HttpContextBase httpContext)
         {
             if (htmlHelper == null)
             {
@@ -125,10 +156,69 @@ namespace System.Web.Mvc.Html
             }
 
             RouteData routeData = CreateRouteData(vpd.Route, routeValues, vpd.DataTokens, htmlHelper.ViewContext);
-            HttpContextBase httpContext = htmlHelper.ViewContext.HttpContext;
+            httpContext = htmlHelper.ViewContext.HttpContext;
             RequestContext requestContext = new RequestContext(httpContext, routeData);
-            ChildActionMvcHandler handler = new ChildActionMvcHandler(requestContext);
+            IHttpHandler handler = new ChildActionMvcHandler(requestContext);
+            return handler;
+        }
+
+        private static void ExecuteHandler(TextWriter textWriter, HttpContextBase httpContext, IHttpHandler handler)
+        {
             httpContext.Server.Execute(HttpHandlerUtil.WrapForServerExecute(handler), textWriter, true /* preserveForm */);
+        }
+
+        internal static void ActionHelper(HtmlHelper htmlHelper, string actionName, string controllerName, RouteValueDictionary routeValues, TextWriter textWriter)
+        {
+            HttpContextBase httpContext;
+            var handler = PrepareActionHelper(htmlHelper, actionName, controllerName, routeValues, out httpContext);
+            ExecuteHandler(textWriter, httpContext, handler);
+        }
+
+        internal static async Task ActionHelperAsync(HtmlHelper htmlHelper, string actionName, string controllerName, RouteValueDictionary routeValues, TextWriter textWriter)
+        {
+            HttpContextBase httpContext;
+            var handler = PrepareActionHelper(htmlHelper, actionName, controllerName, routeValues, out httpContext);
+            var asyncHandler = handler as IHttpAsyncHandler;
+            if (asyncHandler == null)
+            {
+                ExecuteHandler(textWriter, httpContext, handler);
+                return;
+            }
+            if (_HttpResponseSwitchWriter == null)
+            {
+                throw new TypeLoadException("Failed to access HttpResponse internals.");
+            }
+            var innerContext = httpContext.ApplicationInstance.Context;
+            var response = innerContext.Response;
+            TextWriter prevWriter = null;
+            bool handlerSet = false;
+            try
+            {
+                prevWriter = _HttpResponseSwitchWriter(response, textWriter);
+                if (_HttpContextSetCurrentHandler != null && _HttpContextRestoreCurrentHandler != null)
+                {
+                    try
+                    {
+                    }
+                    finally
+                    {
+                        _HttpContextSetCurrentHandler(innerContext, asyncHandler);
+                        handlerSet = true;
+                    }
+                }
+                await Task.Factory.FromAsync(asyncHandler.BeginProcessRequest, asyncHandler.EndProcessRequest, innerContext, null).ConfigureAwait(false);
+            }
+            finally
+            {
+                if (handlerSet)
+                {
+                    _HttpContextRestoreCurrentHandler(innerContext);
+                }
+                if (prevWriter != null)
+                {
+                    _HttpResponseSwitchWriter(response, prevWriter);
+                }
+            }
         }
 
         private static RouteData CreateRouteData(RouteBase route, RouteValueDictionary routeValues, RouteValueDictionary dataTokens, ViewContext parentViewContext)
@@ -202,5 +292,11 @@ namespace System.Web.Mvc.Html
                 // No version header for child actions
             }
         }
+
+        private static readonly Func<HttpResponse, TextWriter, TextWriter> _HttpResponseSwitchWriter = ReflectionHelpers.CreateMethodCallerWithResult<HttpResponse, TextWriter, TextWriter>("SwitchWriter");
+
+        private static readonly Action<HttpContext, IHttpHandler> _HttpContextSetCurrentHandler = ReflectionHelpers.CreateMethodCaller<HttpContext, IHttpHandler>("SetCurrentHandler");
+
+        private static readonly Action<HttpContext> _HttpContextRestoreCurrentHandler = ReflectionHelpers.CreateMethodCaller<HttpContext>("RestoreCurrentHandler");
     }
 }
