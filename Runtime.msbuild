@@ -97,7 +97,7 @@
           Properties="Configuration=$(Configuration);StyleCopEnabled=$(StyleCopEnabled);VisualStudioVersion=$(VisualStudioVersion)" />
   </Target>
 
-  <Target Name="UnitTest" DependsOnTargets="CheckSkipStrongNames;Build">
+  <Target Name="UnitTest" DependsOnTargets="Build">
     <CallTarget Targets="RunTests;PrintTestRunSummary" RunEachTargetSeparately="True" />
   </Target>
 
