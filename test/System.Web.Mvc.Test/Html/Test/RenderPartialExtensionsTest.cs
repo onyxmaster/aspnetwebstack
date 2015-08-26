@@ -108,6 +108,7 @@ namespace System.Web.Mvc.Html.Test
                 return new SpyHtmlHelper(mockViewContext.Object, container.Object);
             }
 
+            [Obsolete("Partials should be rendered asynchronously, use RenderPartialInternalAsync instead.")]
             internal override void RenderPartialInternal(string partialViewName, ViewDataDictionary viewData, object model,
                                                          TextWriter writer, ViewEngineCollection viewEngineCollection)
             {

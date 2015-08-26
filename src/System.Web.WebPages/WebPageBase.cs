@@ -223,7 +223,7 @@ namespace System.Web.WebPages
             {
                 await ExecutePageHierarchyAsync().ConfigureAwait(false);
             }
-            PopContext();
+            await PopContextAsync().ConfigureAwait(false);
         }
 
         private bool PrepareStartPage(WebPageContext pageContext, WebPageRenderingBase startPage)
@@ -246,7 +246,19 @@ namespace System.Web.WebPages
             try
             {
                 // Execute the developer-written code of the WebPage
-                Execute();
+                var task = ExecuteAsync();
+                if (task == null)
+                {
+                    Execute();
+                }
+                else
+                {
+                    Diagnostics.Trace.TraceError(
+                        String.Format(CultureInfo.InvariantCulture, 
+                            "Synchronously executing web page of type '{0}'.", 
+                            GetType().FullName));
+                    task.ConfigureAwait(false).GetAwaiter().GetResult();
+                }
             }
             finally
             {
@@ -334,6 +346,33 @@ namespace System.Web.WebPages
                 RenderSurrounding(
                     layoutPagePath,
                     _tempWriter.CopyTo);
+                OutputStack.Pop();
+            }
+            else
+            {
+                // Otherwise, just render the page.
+                _tempWriter.CopyTo(_currentWriter);
+            }
+
+            VerifyRenderedBodyOrSections();
+            SectionWritersStack.Pop();
+        }
+
+        public async Task PopContextAsync()
+        {
+            // Using the CopyTo extension method on the _tempWriter instead of .ToString()
+            // to avoid allocating large strings that then end up on the Large object heap.
+            OutputStack.Pop();
+
+            if (!String.IsNullOrEmpty(Layout))
+            {
+                string layoutPagePath = NormalizeLayoutPagePath(Layout);
+
+                // If a layout file was specified, render it passing our page content.
+                OutputStack.Push(_currentWriter);
+                await RenderSurroundingAsync(
+                    layoutPagePath,
+                    _tempWriter.CopyTo).ConfigureAwait(false);
                 OutputStack.Pop();
             }
             else
@@ -506,6 +545,21 @@ namespace System.Web.WebPages
 
             // Render the layout file
             Write(RenderPageCore(partialViewName, isLayoutPage: true, data: new object[0]));
+
+            // Restore the state
+            PageContext.BodyAction = priorValue;
+        }
+
+        private async Task RenderSurroundingAsync(string partialViewName, Action<TextWriter> body)
+        {
+            // Save the previous body action and set ours instead.
+            // This value will be retrieved by the sub-page being rendered when it runs
+            // Render(ViewData, TextWriter).
+            var priorValue = PageContext.BodyAction;
+            PageContext.BodyAction = body;
+
+            // Render the layout file
+            Write(await RenderPageCoreAsync(partialViewName, isLayoutPage: true, data: new object[0]).ConfigureAwait(false));
 
             // Restore the state
             PageContext.BodyAction = priorValue;
