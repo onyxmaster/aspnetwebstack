@@ -294,6 +294,7 @@ namespace Microsoft.Web.Mvc.Html
         // PartialExtensions
 
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        [Obsolete("Partials should be rendered asynchronously, use RenderPartialAsync instead.")]
         public static MvcHtmlString Partial(this HtmlHelper htmlHelper, string partialViewName, object model = null, ViewDataDictionary viewData = null)
         {
             return PartialExtensions.Partial(
@@ -306,9 +307,20 @@ namespace Microsoft.Web.Mvc.Html
         // RenderPartialExtensions
 
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        [Obsolete("Partials should be rendered asynchronously, use RenderPartialAsync instead.")]
         public static void RenderPartial(this HtmlHelper htmlHelper, string partialViewName, object model = null, ViewDataDictionary viewData = null)
         {
             RenderPartialExtensions.RenderPartial(
+                htmlHelper,
+                partialViewName,
+                model,
+                viewData ?? htmlHelper.ViewData);
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        public static Task RenderPartialAsync(this HtmlHelper htmlHelper, string partialViewName, object model = null, ViewDataDictionary viewData = null)
+        {
+            return RenderPartialExtensions.RenderPartialAsync(
                 htmlHelper,
                 partialViewName,
                 model,
