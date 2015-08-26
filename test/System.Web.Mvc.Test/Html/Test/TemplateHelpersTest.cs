@@ -1063,7 +1063,7 @@ namespace System.Web.Mvc.Html.Test
                                                                null /* additionalViewData */, ExecuteTemplateSpy);
 
                 // Assert
-                Assert.Equal("Model = 18/11/2009 04:12:08 p.m., ModelType = System.DateTime, RealModelType = System.DateTime, PropertyName = MyProperty, FormattedModelValue = miércoles, 18 de noviembre de 2009 04:12:08 p.m., HtmlFieldPrefix = FieldPrefix.htmlFieldName, TemplateName = templateName, Mode = ReadOnly", result);
+                Assert.Equal("Model = 11/18/2009 4:12:08 p. m., ModelType = System.DateTime, RealModelType = System.DateTime, PropertyName = MyProperty, FormattedModelValue = miércoles, 18 de noviembre de 2009 4:12:08 p. m., HtmlFieldPrefix = FieldPrefix.htmlFieldName, TemplateName = templateName, Mode = ReadOnly", result);
             }
             finally
             {
