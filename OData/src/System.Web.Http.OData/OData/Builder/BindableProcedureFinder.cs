@@ -42,7 +42,7 @@ namespace System.Web.Http.OData.Builder
             return GetTypeHierarchy(entityType).SelectMany(e => FindDeclaredProcedures(e));
         }
 
-        private IEnumerable<IEdmEntityType> GetTypeHierarchy(IEdmEntityType entityType)
+        private static IEnumerable<IEdmEntityType> GetTypeHierarchy(IEdmEntityType entityType)
         {
             IEdmEntityType current = entityType;
             while (current != null)
