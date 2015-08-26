@@ -8,7 +8,7 @@ using System.Web.WebPages.Resources;
 namespace System.Web.Mvc
 {
     [Serializable]
-    [TypeForwardedFrom("System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
+    [TypeForwardedFrom("System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2f9147bba06de483")]
     public sealed class HttpAntiForgeryException : HttpException
     {
         public HttpAntiForgeryException()
