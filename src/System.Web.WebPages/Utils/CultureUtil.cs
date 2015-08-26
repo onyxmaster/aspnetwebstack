@@ -67,6 +67,8 @@ namespace System.Web.WebPages
                     {
                         // There is no easy way to ask if a given culture is invalid so we have to handle exception.  
                     }
+                    if (culture != null && culture.CultureTypes.HasFlag(CultureTypes.UserCustomCulture))
+                        culture = null;
                 }
             }
             return culture;
