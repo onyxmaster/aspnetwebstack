@@ -8,7 +8,7 @@ namespace System.Web.Mvc
     {
         public virtual void ExecuteResult(ControllerContext context)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(Properties.MvcResources.ActionResult_NoSynchronousImplementationAvaliable);
         }
 
         public virtual Task ExecuteResultAsync(ControllerContext context)
