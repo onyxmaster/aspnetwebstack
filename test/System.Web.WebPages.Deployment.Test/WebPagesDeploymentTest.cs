@@ -23,7 +23,7 @@ namespace System.Web.WebPages.Deployment.Test
             { @"ConfigTestSites.NoCshtmlWithEnabledSetting.web.config", @"ConfigTestSites\NoCshtmlWithEnabledSetting\web.config" },
             { @"ConfigTestSites.NoCshtmlWithEnabledSettingFalse.Default.htm", @"ConfigTestSites\NoCshtmlWithEnabledSettingFalse\Default.htm" },
             { @"ConfigTestAssemblies.V2_Unsigned.System.Web.WebPages.Deployment.dll", @"ConfigTestAssemblies\V2_Unsigned\System.Web.WebPages.Deployment.dll" },
-            { @"ConfigTestAssemblies.V2_Signed.System.Web.WebPages.Deployment.dll", @"ConfigTestAssemblies\V2_Signed\System.Web.WebPages.Deployment.dll" },
+            { @"ConfigTestAssemblies.V3_Signed.System.Web.WebPages.Deployment.dll", @"ConfigTestAssemblies\V3_Signed\System.Web.WebPages.Deployment.dll" },
             { @"ConfigTestSites.NoCshtmlWithEnabledSettingFalse.web.config", @"ConfigTestSites\NoCshtmlWithEnabledSettingFalse\web.config" },
             { @"ConfigTestSites.CshtmlFileConfigV1.Default.cshtml", @"ConfigTestSites\CshtmlFileConfigV1\Default.cshtml" },
             { @"ConfigTestSites.NoCshtml.Default.htm", @"ConfigTestSites\NoCshtml\Default.htm" },
@@ -139,8 +139,8 @@ namespace System.Web.WebPages.Deployment.Test
             AppDomainUtils.RunInSeparateAppDomain(() =>
             {
                 // Arrange - Load v2 Config
-                Assembly asm = Assembly.LoadFrom(Path.Combine(_tempPath, @"ConfigTestAssemblies\V2_Signed\System.Web.WebPages.Deployment.dll"));
-                Assert.Equal(new Version(2, 0, 0, 0), asm.GetName().Version);
+                Assembly asm = Assembly.LoadFrom(Path.Combine(_tempPath, @"ConfigTestAssemblies\V3_Signed\System.Web.WebPages.Deployment.dll"));
+                Assert.Equal(new Version(3, 3, 0, 0), asm.GetName().Version);
                 Assert.Equal("System.Web.WebPages.Deployment", asm.GetName().Name);
 
                 using (WebUtils.CreateHttpRuntime(@"~\foo", "."))
@@ -164,8 +164,8 @@ namespace System.Web.WebPages.Deployment.Test
             AppDomainUtils.RunInSeparateAppDomain(() =>
             {
                 // Arrange - Load v2 Config
-                Assembly asm = Assembly.LoadFrom(Path.Combine(_tempPath, @"ConfigTestAssemblies\V2_Signed\System.Web.WebPages.Deployment.dll"));
-                Assert.Equal(new Version(2, 0, 0, 0), asm.GetName().Version);
+                Assembly asm = Assembly.LoadFrom(Path.Combine(_tempPath, @"ConfigTestAssemblies\V3_Signed\System.Web.WebPages.Deployment.dll"));
+                Assert.Equal(new Version(3, 3, 0, 0), asm.GetName().Version);
                 Assert.Equal("System.Web.WebPages.Deployment", asm.GetName().Name);
 
                 using (WebUtils.CreateHttpRuntime(@"~\foo", "."))
@@ -210,8 +210,8 @@ namespace System.Web.WebPages.Deployment.Test
             AppDomainUtils.RunInSeparateAppDomain(() =>
             {
                 // Arrange - Load v2 Config
-                Assembly asm = Assembly.LoadFrom(Path.Combine(_tempPath, @"ConfigTestAssemblies\V2_Signed\System.Web.WebPages.Deployment.dll"));
-                Assert.Equal(new Version(2, 0, 0, 0), asm.GetName().Version);
+                Assembly asm = Assembly.LoadFrom(Path.Combine(_tempPath, @"ConfigTestAssemblies\V3_Signed\System.Web.WebPages.Deployment.dll"));
+                Assert.Equal(new Version(3, 3, 0, 0), asm.GetName().Version);
                 Assert.Equal("System.Web.WebPages.Deployment", asm.GetName().Name);
 
                 using (WebUtils.CreateHttpRuntime(@"~\foo", "."))

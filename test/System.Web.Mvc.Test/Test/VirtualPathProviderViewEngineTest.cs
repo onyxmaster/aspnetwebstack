@@ -36,7 +36,7 @@ namespace System.Web.Mvc.Test
             var key = engine.CreateCacheKey("prefix", "viewName", "controllerName", "areaName");
 
             // Assert
-            Assert.Equal(":ViewCacheEntry:System.Web.Mvc.Test.VirtualPathProviderViewEngineTest+DerivedVirtualPathProviderViewEngine, System.Web.Mvc.Test, Version=0.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35:prefix:viewName:controllerName:areaName:", key);
+            Assert.Equal(":ViewCacheEntry:System.Web.Mvc.Test.VirtualPathProviderViewEngineTest+DerivedVirtualPathProviderViewEngine, System.Web.Mvc.Test, Version=0.0.0.0, Culture=neutral, PublicKeyToken=2f9147bba06de483:prefix:viewName:controllerName:areaName:", key);
         }
 
         [Fact]
