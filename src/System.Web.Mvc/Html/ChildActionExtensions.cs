@@ -17,31 +17,37 @@ namespace System.Web.Mvc.Html
     {
         // Action
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static MvcHtmlString Action(this HtmlHelper htmlHelper, string actionName)
         {
             return Action(htmlHelper, actionName, null /* controllerName */, null /* routeValues */);
         }
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static MvcHtmlString Action(this HtmlHelper htmlHelper, string actionName, object routeValues)
         {
             return Action(htmlHelper, actionName, null /* controllerName */, TypeHelper.ObjectToDictionary(routeValues));
         }
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static MvcHtmlString Action(this HtmlHelper htmlHelper, string actionName, RouteValueDictionary routeValues)
         {
             return Action(htmlHelper, actionName, null /* controllerName */, routeValues);
         }
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static MvcHtmlString Action(this HtmlHelper htmlHelper, string actionName, string controllerName)
         {
             return Action(htmlHelper, actionName, controllerName, null /* routeValues */);
         }
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static MvcHtmlString Action(this HtmlHelper htmlHelper, string actionName, string controllerName, object routeValues)
         {
             return Action(htmlHelper, actionName, controllerName, TypeHelper.ObjectToDictionary(routeValues));
         }
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static MvcHtmlString Action(this HtmlHelper htmlHelper, string actionName, string controllerName, RouteValueDictionary routeValues)
         {
             using (StringWriter writer = new StringWriter(CultureInfo.CurrentCulture))
@@ -52,32 +58,37 @@ namespace System.Web.Mvc.Html
         }
 
         // RenderAction
-
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static void RenderAction(this HtmlHelper htmlHelper, string actionName)
         {
             RenderAction(htmlHelper, actionName, null /* controllerName */, null /* routeValues */);
         }
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static void RenderAction(this HtmlHelper htmlHelper, string actionName, object routeValues)
         {
             RenderAction(htmlHelper, actionName, null /* controllerName */, TypeHelper.ObjectToDictionary(routeValues));
         }
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static void RenderAction(this HtmlHelper htmlHelper, string actionName, RouteValueDictionary routeValues)
         {
             RenderAction(htmlHelper, actionName, null /* controllerName */, routeValues);
         }
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static void RenderAction(this HtmlHelper htmlHelper, string actionName, string controllerName)
         {
             RenderAction(htmlHelper, actionName, controllerName, null /* routeValues */);
         }
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static void RenderAction(this HtmlHelper htmlHelper, string actionName, string controllerName, object routeValues)
         {
             RenderAction(htmlHelper, actionName, controllerName, TypeHelper.ObjectToDictionary(routeValues));
         }
 
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static void RenderAction(this HtmlHelper htmlHelper, string actionName, string controllerName, RouteValueDictionary routeValues)
         {
             ActionHelper(htmlHelper, actionName, controllerName, routeValues, htmlHelper.ViewContext.Writer);
