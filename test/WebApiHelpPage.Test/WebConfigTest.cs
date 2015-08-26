@@ -17,7 +17,7 @@ namespace WebApiHelpPageWebHost.UnitTest
             // Arrange
             Version mvcVersion = VersionTestHelper.GetVersionFromAssembly("System.Web.Mvc", typeof(Controller));
             string expectedFactoryType = "System.Web.Mvc.MvcWebRazorHostFactory, System.Web.Mvc, Version=" + mvcVersion
-                + ", Culture=neutral, PublicKeyToken=31BF3856AD364E35";
+                + ", Culture=neutral, PublicKeyToken=2f9147bba06de483";
             using (Stream webConfigStream = typeof(WebConfigTest).Assembly
                 .GetManifestResourceStream(@"WebApiHelpPage.TestFiles.Web.config"))
             {

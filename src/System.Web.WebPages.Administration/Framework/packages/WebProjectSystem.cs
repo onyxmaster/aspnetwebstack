@@ -22,7 +22,7 @@ namespace System.Web.WebPages.Administration.PackageManager
         /// <summary>
         /// Keys taken from the 4.0 RedistList. 
         /// </summary>
-        private static readonly string[] _knownPublicKeys = new[] { "b03f5f7f11d50a3a", "b77a5c561934e089", "31bf3856ad364e35" };
+        private static readonly string[] _knownPublicKeys = new[] { "b03f5f7f11d50a3a", "b77a5c561934e089", "31bf3856ad364e35", "2f9147bba06de483" };
 
         public WebProjectSystem(string root)
             : base(root)

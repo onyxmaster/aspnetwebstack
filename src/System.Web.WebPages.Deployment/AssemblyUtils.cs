@@ -14,7 +14,7 @@ namespace System.Web.WebPages.Deployment
     internal static class AssemblyUtils
     {
         // Copied from AssemblyRefs.cs
-        private const string SharedLibPublicKey = "31bf3856ad364e35";
+        private const string SharedLibPublicKey = "2f9147bba06de483";
 
         internal static readonly AssemblyName ThisAssemblyName = new AssemblyName(typeof(AssemblyUtils).Assembly.FullName);
         internal static readonly Version WebPagesV1Version = new Version(1, 0, 0, 0);
