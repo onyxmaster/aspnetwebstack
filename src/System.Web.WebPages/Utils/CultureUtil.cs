@@ -62,13 +62,15 @@ namespace System.Web.WebPages
                     try
                     {
                         culture = new CultureInfo(userLanguageEntry);
+                        if (culture != null && culture.CultureTypes.HasFlag(CultureTypes.UserCustomCulture))
+                        {
+                            culture = null;
+                        }
                     }
                     catch (CultureNotFoundException)
                     {
                         // There is no easy way to ask if a given culture is invalid so we have to handle exception.  
                     }
-                    if (culture != null && culture.CultureTypes.HasFlag(CultureTypes.UserCustomCulture))
-                        culture = null;
                 }
             }
             return culture;
