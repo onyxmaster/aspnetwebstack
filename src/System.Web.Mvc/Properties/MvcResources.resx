@@ -559,4 +559,7 @@ Duplicates:
   <data name="JQuerySyntaxMissingClosingBracket" xml:space="preserve">
     <value>The key is invalid JQuery syntax because it is missing a closing bracket.</value>
   </data>
+  <data name="ActionResult_NoSynchronousImplementationAvaliable" xml:space="preserve">
+    <value>No synchronous action result implementation is available.</value>
+  </data>
 </root>
