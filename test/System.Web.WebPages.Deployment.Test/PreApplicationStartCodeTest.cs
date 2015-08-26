@@ -133,7 +133,7 @@ namespace System.Web.WebPages.Deployment.Test
             var nameValueCollection = GetAppSettings(enabled: true, webPagesVersion: null);
             Action<Version> loadWebPages = (version) => { loadedVersion = version; };
             Action registerForChange = () => { registeredForChangeNotification = true; };
-            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2f9147bba06de483");
 
             // Act
             bool loaded = PreApplicationStartCode.StartCore(fileSystem, "", binDirectory, nameValueCollection, loadedAssemblies, buildManager, loadWebPages, registerForChange, getAssembyName);
@@ -163,7 +163,7 @@ namespace System.Web.WebPages.Deployment.Test
             var nameValueCollection = GetAppSettings(enabled: null, webPagesVersion: null);
             Action<Version> loadWebPages = (version) => { loadedVersion = version; };
             Action registerForChange = () => { registeredForChangeNotification = true; };
-            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2f9147bba06de483");
 
             // Act
             bool loaded = PreApplicationStartCode.StartCore(fileSystem, "", binDirectory, nameValueCollection, loadedAssemblies, buildManager, loadWebPages, registerForChange, getAssembyName);
@@ -193,7 +193,7 @@ namespace System.Web.WebPages.Deployment.Test
             var nameValueCollection = GetAppSettings(enabled: null, webPagesVersion: null);
             Action<Version> loadWebPages = (version) => { loadedVersion = version; };
             Action registerForChange = () => { registeredForChangeNotification = true; };
-            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=" + AssemblyUtils.ThisAssemblyName.Version.ToString() + ", Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=" + AssemblyUtils.ThisAssemblyName.Version.ToString() + ", Culture=neutral, PublicKeyToken=2f9147bba06de483");
 
             // Act
             bool loaded = PreApplicationStartCode.StartCore(fileSystem, "", binDirectory, nameValueCollection, loadedAssemblies, buildManager, loadWebPages, registerForChange, getAssembyName);
@@ -277,7 +277,7 @@ In order to use this site, specify a version in the site’s web.config file. Fo
             var nameValueCollection = GetAppSettings(enabled: null, webPagesVersion: null);
             Action<Version> loadWebPages = (version) => { loadedVersion = version; };
             Action registerForChange = () => { registeredForChangeNotification = true; };
-            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=8.0.0.0, Culture=neutral, PublicKeyToken=2f9147bba06de483");
 
             // Act
             bool loaded = PreApplicationStartCode.StartCore(fileSystem, "", binDirectory, nameValueCollection, loadedAssemblies, buildManager, loadWebPages, registerForChange, getAssembyName);
@@ -395,7 +395,7 @@ In order to use this site, specify a version in the site’s web.config file. Fo
             var nameValueCollection = GetAppSettings(enabled: null, webPagesVersion: new Version(LatestVersion));
             Action<Version> loadWebPages = (version) => { loadedVersion = version; };
             Action registerForChange = () => { registeredForChangeNotification = true; };
-            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2f9147bba06de483");
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() =>
@@ -426,7 +426,7 @@ In order to use this site, specify a version in the site’s web.config file. Fo
             var nameValueCollection = GetAppSettings(enabled: null, webPagesVersion: new Version("1.0.0"));
             Action<Version> loadWebPages = (version) => { loadedVersion = version; };
             Action registerForChange = () => { };
-            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=" + AssemblyUtils.ThisAssemblyName.Version + ", Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+            Func<string, AssemblyName> getAssembyName = _ => new AssemblyName("System.Web.WebPages.Deployment, Version=" + AssemblyUtils.ThisAssemblyName.Version + ", Culture=neutral, PublicKeyToken=2f9147bba06de483");
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() =>
@@ -533,7 +533,7 @@ In order to use this site, specify a version in the site’s web.config file. Fo
         private static IEnumerable<AssemblyName> GetAssemblies(params string[] versions)
         {
             return from version in versions
-                   select new AssemblyName("System.Web.WebPages.Deployment, Version=" + version + ", Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+                   select new AssemblyName("System.Web.WebPages.Deployment, Version=" + version + ", Culture=neutral, PublicKeyToken=2f9147bba06de483");
         }
     }
 }

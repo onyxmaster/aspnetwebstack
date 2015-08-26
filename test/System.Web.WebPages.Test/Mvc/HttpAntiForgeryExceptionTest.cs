@@ -43,7 +43,7 @@ namespace System.Web.Mvc.Test
         [Fact]
         public void TypeIsSerializable()
         {
-            // If this ever fails with SerializationException : Unable to find assembly 'System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'
+            // If this ever fails with SerializationException : Unable to find assembly 'System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2f9147bba06de483'
             // (usually when the assembly version is incremented) you need to modify the App.config file in this test project to reference the new version.
 
             // Arrange
