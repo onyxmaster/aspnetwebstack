@@ -9,7 +9,7 @@ using Microsoft.Internal.Web.Utils;
 
 namespace System.Web.Mvc
 {
-    [TypeForwardedFrom("System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
+    [TypeForwardedFrom("System.Web.Mvc, Version=5.5.0.0, Culture=neutral, PublicKeyToken=2f9147bba06de483")]
     public class TagBuilder
     {
         private string _idAttributeDotReplacement;
