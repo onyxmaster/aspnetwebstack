@@ -403,6 +403,15 @@ namespace System.Web.Mvc.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No synchronous view implementation is available..
+        /// </summary>
+        internal static string CshtmlView_NoSynchronousViewImplementationAvailable {
+            get {
+                return ResourceManager.GetString("CshtmlView_NoSynchronousViewImplementationAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The view found at &apos;{0}&apos; was not created..
         /// </summary>
         internal static string CshtmlView_ViewCouldNotBeCreated {

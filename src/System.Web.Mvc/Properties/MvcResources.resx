@@ -562,4 +562,7 @@ Duplicates:
   <data name="ActionResult_NoSynchronousImplementationAvaliable" xml:space="preserve">
     <value>No synchronous action result implementation is available.</value>
   </data>
+  <data name="CshtmlView_NoSynchronousViewImplementationAvailable" xml:space="preserve">
+    <value>No synchronous view implementation is available.</value>
+  </data>
 </root>
