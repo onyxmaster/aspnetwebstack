@@ -153,9 +153,9 @@ namespace System.Web.Mvc.Html
             return RenderActionAsync(htmlHelper, actionName, controllerName, TypeHelper.ObjectToDictionary(routeValues));
         }
 
-        public static async Task RenderActionAsync(this HtmlHelper htmlHelper, string actionName, string controllerName, RouteValueDictionary routeValues)
+        public static Task RenderActionAsync(this HtmlHelper htmlHelper, string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            await ActionHelperAsync(htmlHelper, actionName, controllerName, routeValues, htmlHelper.ViewContext.Writer).ConfigureAwait(false);
+            return ActionHelperAsync(htmlHelper, actionName, controllerName, routeValues, htmlHelper.ViewContext.Writer);
         }
 
         // Helpers
