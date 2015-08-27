@@ -11,10 +11,10 @@ namespace System.Threading.Tasks
     {
         internal static bool IsCompletedSynchronously(this Task task)
         {
-            if (!task.IsCompleted)
+            if (_Task_Options == null || !task.IsCompleted)
+            {
                 return false;
-            if (_Task_Options == null)
-                return false;
+            }
             const TaskCreationOptions InternalTaskOptions_DoNotDispose = (TaskCreationOptions)16384;
             var doNotDispose = _Task_Options(task) == InternalTaskOptions_DoNotDispose;
             return doNotDispose;
