@@ -59,19 +59,7 @@ namespace System.Web.WebPages
             try
             {
                 // Execute the developer-written code of the InitPage
-                var task = ExecuteAsync();
-                if (task == null)
-                {
-                    Execute();
-                }
-                else
-                {
-                    Diagnostics.Trace.TraceError(
-                        String.Format(CultureInfo.InvariantCulture, 
-                            "Synchronously executing start page of type '{0}'.",
-                            GetType().FullName));
-                    task.ConfigureAwait(false).GetAwaiter().GetResult();
-                }
+                ExecutePage();
 
                 // If the child page wasn't explicitly run by the developer of the InitPage, then run it now.
                 // The child page is either the next InitPage, or the final WebPage.

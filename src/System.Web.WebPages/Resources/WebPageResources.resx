@@ -279,4 +279,7 @@
   <data name="WebPage_SectionsNotRendered" xml:space="preserve">
     <value>The following sections have been defined but have not been rendered for the layout page "{0}": "{1}".</value>
   </data>
+  <data name="WebPage_SyncAsyncConflict" xml:space="preserve">
+    <value>Cannot render asynchronous page "{0}" synchronously.</value>
+  </data>
 </root>
