@@ -13,7 +13,7 @@
     <summary>This package contains the runtime assemblies for ASP.NET Web Pages with a "half-vNext" flavor.</summary>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <language>en-US</language>
-    <tags>Microsoft AspNet WebPages AspNetWebPages Razor</tags>
+    <tags>Microsoft AspNet WebPages AspNetWebPages Razor Async</tags>
   </metadata>
   <files>
     <file src="..\..\bin\CodeAnalysis\System.Web.Razor.dll" target="lib/net45" />
