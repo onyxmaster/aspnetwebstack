@@ -77,6 +77,5 @@ namespace System.Reflection
             var lambda = Expression.Lambda<Func<TTarget, TResult>>(invoke, new ParameterExpression[] { target });
             return lambda.Compile();
         }
-
     }
 }
