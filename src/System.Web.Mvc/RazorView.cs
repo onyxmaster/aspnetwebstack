@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc.Properties;
 using System.Web.Mvc.Razor;
 using System.Web.WebPages;
@@ -45,6 +46,25 @@ namespace System.Web.Mvc
                 throw new ArgumentNullException("writer");
             }
 
+            var webViewPage = GetWebViewPage(viewContext, instance);
+            var startPage = GetStartPage(webViewPage);
+            webViewPage.ExecutePageHierarchy(new WebPageContext(context: viewContext.HttpContext, page: null, model: null), writer, startPage);
+        }
+
+        protected override Task RenderViewAsync(ViewContext viewContext, TextWriter writer, object instance)
+        {
+            if (writer == null)
+            {
+                throw new ArgumentNullException("writer");
+            }
+
+            var webViewPage = GetWebViewPage(viewContext, instance);
+            var startPage = GetStartPage(webViewPage);
+            return webViewPage.ExecutePageHierarchyAsync(new WebPageContext(context: viewContext.HttpContext, page: null, model: null), writer, startPage);
+        }
+
+        private WebViewPage GetWebViewPage(ViewContext viewContext, object instance)
+        {
             WebViewPage webViewPage = instance as WebViewPage;
             if (webViewPage == null)
             {
@@ -73,12 +93,18 @@ namespace System.Web.Mvc
                 webViewPage.DisplayModeProvider = DisplayModeProvider;
             }
 
+            return webViewPage;
+        }
+
+        private WebPageRenderingBase GetStartPage(WebViewPage webViewPage)
+        {
             WebPageRenderingBase startPage = null;
             if (RunViewStartPages)
             {
                 startPage = StartPageLookup(webViewPage, RazorViewEngine.ViewStartFileName, ViewStartFileExtensions);
             }
-            webViewPage.ExecutePageHierarchy(new WebPageContext(context: viewContext.HttpContext, page: null, model: null), writer, startPage);
+
+            return startPage;
         }
     }
 }

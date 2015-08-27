@@ -73,6 +73,14 @@ namespace System.Web.Razor.Generator
                 },
                 CodeMappings = new Dictionary<int, GeneratedCodeMapping>()
             };
+            
+            var entryPoint = context.TargetMethod;
+            if (entryPoint.Name.EndsWith("Async", StringComparison.Ordinal)
+                && entryPoint.ReturnType.BaseType == "System.Void"
+                && host.NamespaceImports.Contains("System.Threading.Tasks"))
+            {
+                entryPoint.ReturnType = new CodeTypeReference("async global::System.Threading.Tasks.Task");
+            }
             context.CompileUnit.Namespaces.Add(context.Namespace);
             context.Namespace.Types.Add(context.GeneratedClass);
             context.GeneratedClass.Members.Add(context.TargetMethod);

@@ -34,7 +34,8 @@ namespace System.Web.Razor.Parser
             "namespace",
             "class",
             "layout",
-            "sessionstate"
+            "sessionstate",
+            "await",
         };
 
         private Dictionary<string, Action> _directiveParsers = new Dictionary<string, Action>();
@@ -308,13 +309,23 @@ namespace System.Web.Razor.Parser
 
         private void ImplicitExpression()
         {
+            ImplicitExpression(AcceptedCharacters.NonWhiteSpace);
+        }
+
+        private void AsyncImplicitExpression()
+        {
+            ImplicitExpression(AcceptedCharacters.AnyExceptNewline);
+        }
+
+        private void ImplicitExpression(AcceptedCharacters acceptedCharacters)
+        {
             Context.CurrentBlock.Type = BlockType.Expression;
             Context.CurrentBlock.CodeGenerator = new ExpressionCodeGenerator();
 
             using (PushSpanConfig(span =>
             {
                 span.EditHandler = new ImplicitExpressionEditHandler(Language.TokenizeString, Keywords, acceptTrailingDot: IsNested);
-                span.EditHandler.AcceptedCharacters = AcceptedCharacters.NonWhiteSpace;
+                span.EditHandler.AcceptedCharacters = acceptedCharacters;
                 span.CodeGenerator = new ExpressionCodeGenerator();
             }))
             {

@@ -79,6 +79,15 @@ namespace System.Web.Mvc.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No synchronous action result implementation is available..
+        /// </summary>
+        internal static string ActionResult_NoSynchronousImplementationAvaliable {
+            get {
+                return ResourceManager.GetString("ActionResult_NoSynchronousImplementationAvaliable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value must be greater than or equal to {0}..
         /// </summary>
         internal static string ArgumentMustBeGreaterThanOrEqualTo {
@@ -390,6 +399,15 @@ namespace System.Web.Mvc.Properties {
         internal static string ControllerBuilder_MissingIControllerFactory {
             get {
                 return ResourceManager.GetString("ControllerBuilder_MissingIControllerFactory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No synchronous view implementation is available..
+        /// </summary>
+        internal static string CshtmlView_NoSynchronousViewImplementationAvailable {
+            get {
+                return ResourceManager.GetString("CshtmlView_NoSynchronousViewImplementationAvailable", resourceCulture);
             }
         }
         

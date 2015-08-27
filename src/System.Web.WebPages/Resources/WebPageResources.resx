@@ -183,6 +183,9 @@
   <data name="HttpContextUnavailable" xml:space="preserve">
     <value>An HttpContext is required to perform this operation. Check that this operation is being performed during a web request.</value>
   </data>
+  <data name="NoSynchronousWebPageImplementationAvailable" xml:space="preserve">
+    <value>No synchronous web page implementation is available.</value>
+  </data>
   <data name="SessionState_InvalidValue" xml:space="preserve">
     <value>Value "{0}" specified in "{1}" is an invalid value for the SessionState directive. Possible values are: "{2}".</value>
   </data>
@@ -275,5 +278,8 @@
   </data>
   <data name="WebPage_SectionsNotRendered" xml:space="preserve">
     <value>The following sections have been defined but have not been rendered for the layout page "{0}": "{1}".</value>
+  </data>
+  <data name="WebPage_SyncAsyncConflict" xml:space="preserve">
+    <value>Cannot render asynchronous page "{0}" synchronously.</value>
   </data>
 </root>

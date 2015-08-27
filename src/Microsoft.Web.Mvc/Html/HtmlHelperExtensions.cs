@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
@@ -39,6 +40,7 @@ namespace Microsoft.Web.Mvc.Html
         // ChildActionExtensions
 
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        [Obsolete("Child actions should be obtained asynchronously, use ActionAsync instead.")]
         public static MvcHtmlString Action(this HtmlHelper htmlHelper, string actionName, string controllerName = null, object routeValues = null)
         {
             return ChildActionExtensions.Action(
@@ -49,9 +51,30 @@ namespace Microsoft.Web.Mvc.Html
         }
 
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        public static Task<MvcHtmlString> ActionAsync(this HtmlHelper htmlHelper, string actionName, string controllerName = null, object routeValues = null)
+        {
+            return ChildActionExtensions.ActionAsync(
+                htmlHelper,
+                actionName,
+                controllerName,
+                routeValues as IDictionary<string, object> ?? new RouteValueDictionary(routeValues));
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        [Obsolete("Child actions should be rendered asynchronously, use RenderActionAsync instead.")]
         public static void RenderAction(this HtmlHelper htmlHelper, string actionName, string controllerName = null, object routeValues = null)
         {
             ChildActionExtensions.RenderAction(
+                htmlHelper,
+                actionName,
+                controllerName,
+                routeValues as IDictionary<string, object> ?? new RouteValueDictionary(routeValues));
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        public static Task RenderActionAsync(this HtmlHelper htmlHelper, string actionName, string controllerName = null, object routeValues = null)
+        {
+            return ChildActionExtensions.RenderActionAsync(
                 htmlHelper,
                 actionName,
                 controllerName,
@@ -290,12 +313,33 @@ namespace Microsoft.Web.Mvc.Html
                 viewData ?? htmlHelper.ViewData);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        public static Task<MvcHtmlString> PartialAsync(this HtmlHelper htmlHelper, string partialViewName, object model = null, ViewDataDictionary viewData = null)
+        {
+            return PartialExtensions.PartialAsync(
+                htmlHelper,
+                partialViewName,
+                model,
+                viewData ?? htmlHelper.ViewData);
+        }
+
         // RenderPartialExtensions
 
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        [Obsolete("Partials should be rendered asynchronously, use RenderPartialAsync instead.")]
         public static void RenderPartial(this HtmlHelper htmlHelper, string partialViewName, object model = null, ViewDataDictionary viewData = null)
         {
             RenderPartialExtensions.RenderPartial(
+                htmlHelper,
+                partialViewName,
+                model,
+                viewData ?? htmlHelper.ViewData);
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        public static Task RenderPartialAsync(this HtmlHelper htmlHelper, string partialViewName, object model = null, ViewDataDictionary viewData = null)
+        {
+            return RenderPartialExtensions.RenderPartialAsync(
                 htmlHelper,
                 partialViewName,
                 model,
