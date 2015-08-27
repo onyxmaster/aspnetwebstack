@@ -16,8 +16,8 @@
     <tags>Microsoft AspNet WebPages AspNetWebPages Razor Async</tags>
   </metadata>
   <files>
-    <file src="..\..\bin\CodeAnalysis\System.Web.Razor.dll" target="lib/net45" />
-    <file src="..\..\bin\CodeAnalysis\System.Web.Razor.pdb" target="lib/net45" />
-    <file src="..\..\bin\CodeAnalysis\System.Web.Razor.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Razor.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Razor.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Razor.xml" target="lib/net45" />
   </files>
 </package>

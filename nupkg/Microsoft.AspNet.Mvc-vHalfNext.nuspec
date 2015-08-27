@@ -20,8 +20,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\bin\CodeAnalysis\System.Web.Mvc.dll" target="lib/net45" />
-    <file src="..\..\bin\CodeAnalysis\System.Web.Mvc.pdb" target="lib/net45" />
-    <file src="..\..\bin\CodeAnalysis\System.Web.Mvc.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Mvc.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Mvc.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Mvc.xml" target="lib/net45" />
   </files>
 </package>

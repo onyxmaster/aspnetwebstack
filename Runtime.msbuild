@@ -126,4 +126,12 @@
   <Target Name="PrintTestRunSummary">
     <PrintTestRunSummary TestResultsDirectory="$(TestResultsDirectory)" />
   </Target>
+
+  <ItemGroup>
+    <PackagesToCreate Include="nupkg\*.nuspec"/>
+  </ItemGroup>
+
+  <Target Name="Package" Outputs="%(PackagesToCreate.Identity)" DependsOnTargets="Build;UnitTest">
+	<Exec Command=".nuget\nuget.exe pack %(PackagesToCreate.Identity) -OutputDirectory nupkg" />
+  </Target>
 </Project>
