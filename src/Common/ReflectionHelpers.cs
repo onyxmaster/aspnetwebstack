@@ -64,7 +64,7 @@ namespace System.Reflection
             return lambda.Compile();
         }
 
-        internal static Func<TTarget, TResult> CreatePropertyGetterWithResult<TTarget, TResult>(string propertyName)
+        internal static Func<TTarget, TResult> CreatePropertyGetter<TTarget, TResult>(string propertyName)
         {
             var targetType = typeof(TTarget);
             var property = targetType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);

@@ -20,6 +20,6 @@ namespace System.Threading.Tasks
             return doNotDispose;
         }
 
-        private static readonly Func<Task, TaskCreationOptions> _Task_Options = ReflectionHelpers.CreatePropertyGetterWithResult<Task, TaskCreationOptions>("Options");
+        private static readonly Func<Task, TaskCreationOptions> _Task_Options = ReflectionHelpers.CreatePropertyGetter<Task, TaskCreationOptions>("Options");
     }
 }
