@@ -340,5 +340,23 @@ namespace System.Web.WebPages
         {
             return TextWriter.Null;
         }
+
+        protected internal void ExecutePage()
+        {
+            var task = ExecuteAsync();
+            if (task == null)
+            {
+                Execute();
+            }
+            else
+            {
+                if (!task.IsCompletedSynchronously())
+                    throw new NotSupportedException(
+                        String.Format(CultureInfo.InvariantCulture,
+                            WebPageResources.WebPage_SyncAsyncConflict,
+                            VirtualPath));
+                task.GetAwaiter().GetResult();
+            }
+        }
     }
 }

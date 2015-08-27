@@ -338,10 +338,12 @@ namespace System.Web.Mvc.Html
             }
         }
 
+#pragma warning disable 0436
         private static readonly Func<HttpResponse, TextWriter, TextWriter> _HttpResponseSwitchWriter = ReflectionHelpers.CreateMethodCallerWithResult<HttpResponse, TextWriter, TextWriter>("SwitchWriter");
 
         private static readonly Action<HttpContext, IHttpHandler> _HttpContextSetCurrentHandler = ReflectionHelpers.CreateMethodCaller<HttpContext, IHttpHandler>("SetCurrentHandler");
 
         private static readonly Action<HttpContext> _HttpContextRestoreCurrentHandler = ReflectionHelpers.CreateMethodCaller<HttpContext>("RestoreCurrentHandler");
+#pragma warning restore 0436
     }
 }
