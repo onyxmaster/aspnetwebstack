@@ -71,7 +71,8 @@ namespace System.Web.Mvc.Async
                                     return BeginInvokeActionMethodWithFilters(controllerContext, filterInfo.ActionFilters, actionDescriptor, parameters, asyncCallback, asyncState);
                                 },
                                 EndInvokeActionMethodWithFilters, 
-                                null);
+                                null)
+                                .ConfigureAwait(false);
                         // The action succeeded. Let all authentication filters contribute to an action
                         // result (to combine authentication challenges; some authentication filters need
                         // to do negotiation even on a successful result). Then, run this action result.
