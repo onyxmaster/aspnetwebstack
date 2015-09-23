@@ -52,6 +52,12 @@
     <Compile Include="..\Common\PathHelpers.cs">
       <Link>Common\PathHelpers.cs</Link>
     </Compile>
+    <Compile Include="..\Common\TaskHelpersExtensionsEx.cs">
+      <Link>Common\TaskHelpersExtensionsEx.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\ReflectionHelpers.cs">
+      <Link>Common\ReflectionHelpers.cs</Link>
+    </Compile>
     <Compile Include="..\GlobalSuppressions.cs">
       <Link>Common\GlobalSuppressions.cs</Link>
     </Compile>
@@ -259,8 +265,4 @@
     <CodeAnalysisDictionary Include="..\CodeAnalysisDictionary.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory),Runtime.sln))\tools\WebStack.nupkg.targets"/>
-  <Target Name="AfterBuild">
-	<CallTarget Targets="CreateNuPkg" Condition=" '$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU' " />
-  </Target>
 </Project>

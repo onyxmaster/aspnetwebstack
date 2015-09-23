@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Microsoft.AspNet.Razor-vHalfNext</id>
-    <version>3.3.0</version>
+    <version>3.3.2</version>
     <title>Microsoft ASP.NET Razor vHalfNext</title>
     <authors>Microsoft, onyxmaster</authors>
     <owners>onyxmaster</owners>
@@ -13,11 +13,11 @@
     <summary>This package contains the runtime assemblies for ASP.NET Web Pages with a "half-vNext" flavor.</summary>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <language>en-US</language>
-    <tags>Microsoft AspNet WebPages AspNetWebPages Razor</tags>
+    <tags>Microsoft AspNet WebPages AspNetWebPages Razor Async</tags>
   </metadata>
   <files>
-    <file src="..\..\bin\CodeAnalysis\System.Web.Razor.dll" target="lib/net45" />
-    <file src="..\..\bin\CodeAnalysis\System.Web.Razor.pdb" target="lib/net45" />
-    <file src="..\..\bin\CodeAnalysis\System.Web.Razor.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Razor.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Razor.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Razor.xml" target="lib/net45" />
   </files>
 </package>
