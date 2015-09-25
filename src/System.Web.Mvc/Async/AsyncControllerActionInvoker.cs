@@ -221,7 +221,7 @@ namespace System.Web.Mvc.Async
                         {
                             asyncCallback(tcs.Task);
                         }
-                    }, TaskScheduler.Default);
+                    }, TaskContinuationOptions.ExecuteSynchronously);
                     return tcs.Task;
                 };
                 EndInvokeDelegate<bool> endDelegate = delegate(IAsyncResult asyncResult)
