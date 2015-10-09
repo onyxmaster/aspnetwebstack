@@ -7,7 +7,7 @@
     <authors>Microsoft, onyxmaster</authors>
     <owners>onyxmaster</owners>
     <licenseUrl>http://www.microsoft.com/web/webpi/eula/net_library_eula_ENU.htm</licenseUrl>
-    <projectUrl>https://github.com/onyxmaster/aspnetwebstack</projectUrl>
+    <projectUrl>https://github.com/drivenet/aspnetwebstack</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>This package contains the "half-vNext" version of Microsoft.AspNet.Mvc -- the runtime assemblies for ASP.NET MVC. ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that enables a clean separation of concerns and that gives you full control over markup.</description>
     <summary>This package contains the runtime assemblies for ASP.NET MVC with a "half-vNext" flavor.</summary>
