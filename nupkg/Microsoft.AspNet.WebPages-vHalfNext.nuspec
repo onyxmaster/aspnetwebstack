@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Microsoft.AspNet.WebPages-vHalfNext</id>
-    <version>3.3.5</version>
+    <version>3.3.6</version>
     <title>Microsoft ASP.NET WebPages vHalfNext</title>
     <authors>Microsoft, onyxmaster</authors>
     <owners>onyxmaster</owners>
