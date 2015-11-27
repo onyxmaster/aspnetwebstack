@@ -8,7 +8,7 @@ namespace System.Web.WebPages
 {
     internal static class StringWriterExtensions
     {
-        public const int BufferSize = 1024;
+        public const int BufferSize = 8000;
 
         private static readonly ThreadLocal<char[]> _bufferCache = new ThreadLocal<char[]>(() => new char[BufferSize]);
 
@@ -22,12 +22,6 @@ namespace System.Web.WebPages
             if (remainingChars == 0)
             {
                 return;
-            }
-            var outputWriter = output as StringWriter;
-            if (outputWriter != null)
-            {
-                var outputBuilder = outputWriter.GetStringBuilder();
-                outputBuilder.EnsureCapacity(outputBuilder.Length + remainingChars);
             }
             int bufferSize = Math.Min(builder.Length, BufferSize);
 
