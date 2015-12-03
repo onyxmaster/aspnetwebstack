@@ -21,7 +21,7 @@ namespace System.Web.WebPages
         // Action for rendering the body within a layout page
         private Action<TextWriter> _body;
 
-        private StringWriter _tempWriter;
+        private StringBlockWriter _tempWriter;
         private TextWriter _currentWriter;
 
         private DynamicPageDataDictionary<dynamic> _dynamicPageData;
@@ -382,7 +382,7 @@ namespace System.Web.WebPages
             InitializePage();
 
             // Create a temporary writer
-            _tempWriter = new StringWriter(CultureInfo.InvariantCulture);
+            _tempWriter = new StringBlockWriter(CultureInfo.InvariantCulture);
 
             // Render the page into it
             OutputStack.Push(_tempWriter);
@@ -461,7 +461,7 @@ namespace System.Web.WebPages
             }
             WebPageContext pageContext;
             var subPage = PrepareRenderPage(path, isLayoutPage, data, out pageContext);
-            var writer = new StringWriter(_currentWriter.FormatProvider);
+            var writer = new StringBlockWriter(_currentWriter.FormatProvider);
             await subPage.ExecutePageHierarchyAsync(pageContext, writer).ConfigureAwait(false);
             return new HelperResult(writer.CopyTo);
         }
