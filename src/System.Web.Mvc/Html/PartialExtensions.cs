@@ -3,6 +3,8 @@
 
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
+using System.Web.WebPages;
 
 namespace System.Web.Mvc.Html
 {
@@ -25,7 +27,7 @@ namespace System.Web.Mvc.Html
 
         public static MvcHtmlString Partial(this HtmlHelper htmlHelper, string partialViewName, object model, ViewDataDictionary viewData)
         {
-            using (StringWriter writer = new StringWriter(CultureInfo.CurrentCulture))
+            using (var writer = new StringBlockWriter(CultureInfo.CurrentCulture))
             {
                 htmlHelper.RenderPartialInternal(partialViewName, viewData, model, writer, ViewEngines.Engines);
                 return MvcHtmlString.Create(writer.ToString());

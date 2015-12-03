@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.IO;
+using System.Web.WebPages;
 using Microsoft.TestCommon;
 
 namespace System.Web.Mvc.Html.Test
@@ -22,7 +23,7 @@ namespace System.Web.Mvc.Html.Test
             Assert.Equal("partial-view", helper.RenderPartialInternal_PartialViewName);
             Assert.Same(helper.ViewData, helper.RenderPartialInternal_ViewData);
             Assert.Null(helper.RenderPartialInternal_Model);
-            Assert.IsType<StringWriter>(helper.RenderPartialInternal_Writer);
+            Assert.IsType<StringBlockWriter>(helper.RenderPartialInternal_Writer);
             Assert.Same(ViewEngines.Engines, helper.RenderPartialInternal_ViewEngineCollection);
             Assert.Equal("This is the result of the view", result.ToHtmlString());
         }
@@ -41,7 +42,7 @@ namespace System.Web.Mvc.Html.Test
             Assert.Equal("partial-view", helper.RenderPartialInternal_PartialViewName);
             Assert.Same(viewData, helper.RenderPartialInternal_ViewData);
             Assert.Null(helper.RenderPartialInternal_Model);
-            Assert.IsType<StringWriter>(helper.RenderPartialInternal_Writer);
+            Assert.IsType<StringBlockWriter>(helper.RenderPartialInternal_Writer);
             Assert.Same(ViewEngines.Engines, helper.RenderPartialInternal_ViewEngineCollection);
             Assert.Equal("This is the result of the view", result.ToHtmlString());
         }
@@ -60,7 +61,7 @@ namespace System.Web.Mvc.Html.Test
             Assert.Equal("partial-view", helper.RenderPartialInternal_PartialViewName);
             Assert.Same(helper.ViewData, helper.RenderPartialInternal_ViewData);
             Assert.Same(model, helper.RenderPartialInternal_Model);
-            Assert.IsType<StringWriter>(helper.RenderPartialInternal_Writer);
+            Assert.IsType<StringBlockWriter>(helper.RenderPartialInternal_Writer);
             Assert.Same(ViewEngines.Engines, helper.RenderPartialInternal_ViewEngineCollection);
             Assert.Equal("This is the result of the view", result.ToHtmlString());
         }
@@ -80,7 +81,7 @@ namespace System.Web.Mvc.Html.Test
             Assert.Equal("partial-view", helper.RenderPartialInternal_PartialViewName);
             Assert.Same(viewData, helper.RenderPartialInternal_ViewData);
             Assert.Same(model, helper.RenderPartialInternal_Model);
-            Assert.IsType<StringWriter>(helper.RenderPartialInternal_Writer);
+            Assert.IsType<StringBlockWriter>(helper.RenderPartialInternal_Writer);
             Assert.Same(ViewEngines.Engines, helper.RenderPartialInternal_ViewEngineCollection);
             Assert.Equal("This is the result of the view", result.ToHtmlString());
         }

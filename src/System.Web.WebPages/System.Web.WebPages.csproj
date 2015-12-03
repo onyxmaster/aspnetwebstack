@@ -136,6 +136,7 @@
     <Compile Include="Utils\HtmlAttributePropertyHelper.cs" />
     <Compile Include="..\Common\PropertyHelper.cs" />
     <Compile Include="Utils\SessionStateUtil.cs" />
+    <Compile Include="Utils\StringBlockWriter.cs" />
     <Compile Include="Utils\TypeHelper.cs" />
     <Compile Include="Utils\UrlRewriterHelper.cs" />
     <Compile Include="Utils\UrlUtil.cs" />
