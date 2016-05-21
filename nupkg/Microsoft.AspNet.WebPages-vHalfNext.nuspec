@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Microsoft.AspNet.WebPages-vHalfNext</id>
-    <version>3.3.7</version>
+    <version>3.3.8</version>
     <title>Microsoft ASP.NET WebPages vHalfNext</title>
     <authors>Microsoft, onyxmaster</authors>
     <owners>onyxmaster</owners>
@@ -16,7 +16,7 @@
     <tags>Microsoft AspNet WebPages AspNetWebPages</tags>
     <dependencies>
       <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
-      <dependency id="Microsoft.AspNet.Razor-vHalfNext" version="[3.3.2, 3.4.0)" />
+      <dependency id="Microsoft.AspNet.Razor-vHalfNext" version="[3.3.3, 3.4.0)" />
     </dependencies>
   </metadata>
   <files>
