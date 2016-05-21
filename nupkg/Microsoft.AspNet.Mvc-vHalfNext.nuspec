@@ -2,26 +2,26 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Microsoft.AspNet.Mvc-vHalfNext</id>
-    <version>5.5.0</version>
+    <version>5.5.7</version>
     <title>Microsoft ASP.NET MVC vHalfNext</title>
     <authors>Microsoft, onyxmaster</authors>
     <owners>onyxmaster</owners>
     <licenseUrl>http://www.microsoft.com/web/webpi/eula/net_library_eula_ENU.htm</licenseUrl>
-    <projectUrl>https://github.com/onyxmaster/aspnetwebstack</projectUrl>
+    <projectUrl>https://github.com/drivenet/aspnetwebstack</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>This package contains the "half-vNext" version of Microsoft.AspNet.Mvc -- the runtime assemblies for ASP.NET MVC. ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that enables a clean separation of concerns and that gives you full control over markup.</description>
     <summary>This package contains the runtime assemblies for ASP.NET MVC with a "half-vNext" flavor.</summary>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <language>en-US</language>
-    <tags>Microsoft AspNet Mvc AspNetMvc</tags>
+    <tags>Microsoft AspNet Mvc AspNetMvc Async</tags>
     <dependencies>
-      <dependency id="Microsoft.AspNet.WebPages-vHalfNext" version="[3.3.0, 3.4.0)" />
-      <dependency id="Microsoft.AspNet.Razor-vHalfNext" version="[3.3.0, 3.4.0)" />
+      <dependency id="Microsoft.AspNet.WebPages-vHalfNext" version="[3.3.4, 3.4.0)" />
+      <dependency id="Microsoft.AspNet.Razor-vHalfNext" version="[3.3.2, 3.4.0)" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\bin\CodeAnalysis\System.Web.Mvc.dll" target="lib/net45" />
-    <file src="..\..\bin\CodeAnalysis\System.Web.Mvc.pdb" target="lib/net45" />
-    <file src="..\..\bin\CodeAnalysis\System.Web.Mvc.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Mvc.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Mvc.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Mvc.xml" target="lib/net45" />
   </files>
 </package>

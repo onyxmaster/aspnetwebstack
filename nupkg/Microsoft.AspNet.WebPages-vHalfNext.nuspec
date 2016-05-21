@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.WebPages-vHalfNext</id>
+    <version>3.3.7</version>
+    <title>Microsoft ASP.NET WebPages vHalfNext</title>
+    <authors>Microsoft, onyxmaster</authors>
+    <owners>onyxmaster</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm</licenseUrl>
+    <projectUrl>https://github.com/drivenet/aspnetwebstack</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>This package contains the "half-vNext" version of Microsoft.AspNet.WebPages -- the runtime assemblies for ASP.NET Web Pages. ASP.NET Web Pages and the new Razor syntax provide a fast, terse, clean and lightweight way to combine server code with HTML to create dynamic web content.</description>
+    <summary>This package contains the runtime assemblies for ASP.NET Web Pages with a "half-vNext" flavor.</summary>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <language>en-US</language>
+    <tags>Microsoft AspNet WebPages AspNetWebPages Async</tags>
+    <dependencies>
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="Microsoft.AspNet.Razor-vHalfNext" version="[3.3.2, 3.4.0)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Deployment.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Deployment.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Deployment.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Razor.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Razor.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.WebPages.Razor.xml" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Helpers.dll" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Helpers.pdb" target="lib/net45" />
+    <file src="..\bin\CodeAnalysis\System.Web.Helpers.xml" target="lib/net45" />
+  </files>
+</package>

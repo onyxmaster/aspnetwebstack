@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.TestCommon;
 using Microsoft.Web.UnitTestUtil;
 using Moq;
@@ -334,6 +335,11 @@ namespace System.Web.Mvc.Html.Test
         private class DummyView : IView
         {
             public void Render(ViewContext viewContext, TextWriter writer)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task RenderAsync(ViewContext viewContext, TextWriter writer)
             {
                 throw new NotImplementedException();
             }

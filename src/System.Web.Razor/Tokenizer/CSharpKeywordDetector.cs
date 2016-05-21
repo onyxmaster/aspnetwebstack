@@ -85,7 +85,8 @@ namespace System.Web.Razor.Tokenizer
             { "interface", CSharpKeyword.Interface },
             { "break", CSharpKeyword.Break },
             { "checked", CSharpKeyword.Checked },
-            { "namespace", CSharpKeyword.Namespace }
+            { "namespace", CSharpKeyword.Namespace },
+            { "await", CSharpKeyword.Await },
         };
 
         public static CSharpKeyword? SymbolTypeForIdentifier(string id)

@@ -101,7 +101,7 @@
     <CallTarget Targets="RunTests;PrintTestRunSummary" RunEachTargetSeparately="True" />
   </Target>
 
-  <Target Name="RunTests" DependsOnTargets="CheckSkipStrongNames">
+  <Target Name="RunTests">
     <ItemGroup>
       <TestDLLsXunit Include="bin\$(Configuration)\test\*.Test.dll;bin\$(Configuration)\test\*.Test.*.dll;bin\$(Configuration)\Test\NetCore\*.Test.dll" />
       <XunitProject Include="tools\WebStack.xunit.targets">
@@ -125,5 +125,13 @@
 
   <Target Name="PrintTestRunSummary">
     <PrintTestRunSummary TestResultsDirectory="$(TestResultsDirectory)" />
+  </Target>
+
+  <ItemGroup>
+    <PackagesToCreate Include="nupkg\*.nuspec"/>
+  </ItemGroup>
+
+  <Target Name="Package" Outputs="%(PackagesToCreate.Identity)" DependsOnTargets="Build;UnitTest">
+	<Exec Command=".nuget\nuget.exe pack %(PackagesToCreate.Identity) -OutputDirectory nupkg" />
   </Target>
 </Project>

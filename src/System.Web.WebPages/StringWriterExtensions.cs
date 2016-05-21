@@ -2,12 +2,15 @@
 
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace System.Web.WebPages
 {
     internal static class StringWriterExtensions
     {
-        public const int BufferSize = 1024;
+        public const int BufferSize = 8000;
+
+        private static readonly ThreadLocal<char[]> _bufferCache = new ThreadLocal<char[]>(() => new char[BufferSize]);
 
         // Used to copy data from a string writer to avoid allocating the full string
         // which can end up on LOH (and cause memory fragmentation).
@@ -16,9 +19,13 @@ namespace System.Web.WebPages
             StringBuilder builder = input.GetStringBuilder();
 
             int remainingChars = builder.Length;
+            if (remainingChars == 0)
+            {
+                return;
+            }
             int bufferSize = Math.Min(builder.Length, BufferSize);
 
-            char[] buffer = new char[bufferSize];
+            var buffer = _bufferCache.Value;
             int currentPosition = 0;
 
             while (remainingChars > 0)
