@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Microsoft.AspNet.Mvc-vHalfNext</id>
-    <version>5.5.8</version>
+    <version>5.5.9</version>
     <title>Microsoft ASP.NET MVC vHalfNext</title>
     <authors>Microsoft, onyxmaster</authors>
     <owners>onyxmaster</owners>
