@@ -615,12 +615,10 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory),Runtime.sln))\tools\WebStack.nupkg.targets"/>
   <Target Name="AfterBuild">
     <ItemGroup>
       <ScriptFiles Include="JavaScript\*.js" />
     </ItemGroup>
     <Copy SourceFiles="@(ScriptFiles)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
-	<CallTarget Targets="CreateNuPkg" Condition=" '$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU' " />
   </Target>
 </Project>
