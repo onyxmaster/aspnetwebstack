@@ -82,7 +82,7 @@ namespace System.Web.WebPages
         [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual void Execute()
         {
-            throw new NotImplementedException(WebPageResources.NoSynchronousWebPageImplementationAvailable);
+            throw new NotImplementedException();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

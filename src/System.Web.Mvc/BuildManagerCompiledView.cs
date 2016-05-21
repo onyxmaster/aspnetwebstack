@@ -97,7 +97,7 @@ namespace System.Web.Mvc
 
         protected virtual void RenderView(ViewContext viewContext, TextWriter writer, object instance)
         {
-            throw new NotImplementedException(MvcResources.CshtmlView_NoSynchronousViewImplementationAvailable);
+            throw new NotImplementedException();
         }
 
         protected virtual Task RenderViewAsync(ViewContext viewContext, TextWriter writer, object instance)
