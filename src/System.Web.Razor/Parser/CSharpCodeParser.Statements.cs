@@ -23,7 +23,6 @@ namespace System.Web.Razor.Parser
             MapKeywords(UsingKeyword, CSharpKeyword.Using);
             MapKeywords(DoStatement, CSharpKeyword.Do);
             MapKeywords(ReservedDirective, CSharpKeyword.Namespace, CSharpKeyword.Class);
-            MapKeywords(AwaitKeyword, CSharpKeyword.Await);
         }
 
         protected virtual void ReservedDirective(bool topLevel)
@@ -383,17 +382,6 @@ namespace System.Web.Razor.Parser
         private void Statement()
         {
             Statement(null);
-        }
-
-        private void AwaitKeyword(bool topLevel)
-        {
-            Assert(CSharpKeyword.Await);
-            AcceptAndMoveNext();
-            AcceptWhile(IsSpacingToken(includeNewLines: false, includeComments: true));
-            if (topLevel)
-            {
-                AsyncImplicitExpression();
-            }
         }
 
         private void Statement(Block block)

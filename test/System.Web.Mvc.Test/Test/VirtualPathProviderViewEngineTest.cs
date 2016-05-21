@@ -3,7 +3,6 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Routing;
 using System.Web.WebPages;
@@ -1054,12 +1053,6 @@ namespace System.Web.Mvc.Test
 
             void IView.Render(ViewContext viewContext, TextWriter writer)
             {
-            }
-
-            Task IView.RenderAsync(ViewContext viewContext, TextWriter writer)
-            {
-                ((IView)this).Render(viewContext, writer);
-                return TaskHelpers.Completed();
             }
         }
 

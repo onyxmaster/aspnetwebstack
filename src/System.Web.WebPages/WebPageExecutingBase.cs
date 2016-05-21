@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
 using System.Web.WebPages.Instrumentation;
 using System.Web.WebPages.Resources;
 
@@ -80,16 +79,7 @@ namespace System.Web.WebPages
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual void Execute()
-        {
-            throw new NotImplementedException();
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual Task ExecuteAsync()
-        {
-            return null;
-        }
+        public abstract void Execute();
 
         public virtual string Href(string path, params object[] pathParts)
         {

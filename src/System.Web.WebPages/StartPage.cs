@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.Internal.Web.Utils;
 
 namespace System.Web.WebPages
@@ -66,36 +65,6 @@ namespace System.Web.WebPages
                 if (!RunPageCalled)
                 {
                     RunPage();
-                }
-            }
-            finally
-            {
-                TemplateStack.Pop(Context);
-            }
-        }
-
-        public async override Task ExecutePageHierarchyAsync()
-        {
-            // Push the current pagestart on the stack. 
-            TemplateStack.Push(Context, this);
-            try
-            {
-                // Execute the developer-written code of the InitPage
-                var task = ExecuteAsync();
-                if (task != null)
-                {
-                    await task.ConfigureAwait(false);
-                }
-                else
-                {
-                    Execute();
-                }
-
-                // If the child page wasn't explicitly run by the developer of the InitPage, then run it now.
-                // The child page is either the next InitPage, or the final WebPage.
-                if (!RunPageCalled)
-                {
-                    await RunPageAsync().ConfigureAwait(false);
                 }
             }
             finally
@@ -180,13 +149,6 @@ namespace System.Web.WebPages
             RunPageCalled = true;
             //ChildPage.PageContext = PageContext;
             ChildPage.ExecutePageHierarchy();
-        }
-
-        public Task RunPageAsync()
-        {
-            RunPageCalled = true;
-            //ChildPage.PageContext = PageContext;
-            return ChildPage.ExecutePageHierarchyAsync();
         }
 
         public override void Write(HelperResult result)

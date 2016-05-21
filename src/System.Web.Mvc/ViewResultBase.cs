@@ -2,7 +2,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace System.Web.Mvc
 {
@@ -76,22 +75,6 @@ namespace System.Web.Mvc
 
         public override void ExecuteResult(ControllerContext context)
         {
-            ViewEngineResult result;
-            var viewContext = InitializeView(context, out result);
-            viewContext.View.Render(viewContext, viewContext.Writer);
-            ReleaseView(context, result);
-        }
-
-        public async override Task ExecuteResultAsync(ControllerContext context)
-        {
-            ViewEngineResult result;
-            var viewContext = InitializeView(context, out result);
-            await viewContext.View.RenderAsync(viewContext, viewContext.Writer).ConfigureAwait(false);
-            ReleaseView(context, result);
-        }
-
-        private ViewContext InitializeView(ControllerContext context, out ViewEngineResult result)
-        {
             if (context == null)
             {
                 throw new ArgumentNullException("context");
@@ -100,22 +83,19 @@ namespace System.Web.Mvc
             {
                 ViewName = context.RouteData.GetRequiredString("action");
             }
+
+            ViewEngineResult result = null;
+
             if (View == null)
             {
                 result = FindView(context);
                 View = result.View;
             }
-            else
-            {
-                result = null;
-            }
+
             TextWriter writer = context.HttpContext.Response.Output;
             ViewContext viewContext = new ViewContext(context, View, ViewData, TempData, writer);
-            return viewContext;
-        }
+            View.Render(viewContext, writer);
 
-        private void ReleaseView(ControllerContext context, ViewEngineResult result)
-        {
             if (result != null)
             {
                 result.ViewEngine.ReleaseView(context, View);
