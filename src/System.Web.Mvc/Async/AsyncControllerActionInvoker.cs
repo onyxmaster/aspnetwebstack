@@ -225,7 +225,7 @@ namespace System.Web.Mvc.Async
                 };
                 EndInvokeDelegate<bool> endDelegate = delegate(IAsyncResult asyncResult)
                 {
-                    return ((Task<bool>)asyncResult).GetAwaiter().GetResult();
+                    return ((Task<bool>)asyncResult).Result;
                 };
                 return AsyncResultWrapper.Begin(callback, state, beginDelegate, endDelegate, _invokeActionTag);
             }

@@ -397,20 +397,6 @@ namespace System.Web.WebPages
             return RenderPageCore(path, isLayoutPage: false, data: data);
         }
 
-        public override Task<HelperResult> RenderPageAsync(string path, params object[] data)
-        {
-            return RenderPageCoreAsync(path, isLayoutPage: false, data: data);
-        }
-
-        private WebPageBase PrepareRenderPage(string path, bool isLayoutPage, object[] data, out WebPageContext pageContext)
-        {
-            path = NormalizePath(path);
-            var subPage = CreatePageFromVirtualPath(path, Context, VirtualPathFactory.Exists, DisplayModeProvider, DisplayMode);
-            pageContext = CreatePageContextFromParameters(isLayoutPage, data);
-            subPage.ConfigurePage(this);
-            return subPage;
-        }
-
         private HelperResult RenderPageCore(string path, bool isLayoutPage, object[] data)
         {
             if (String.IsNullOrEmpty(path))
@@ -420,23 +406,13 @@ namespace System.Web.WebPages
 
             return new HelperResult(writer =>
             {
-                WebPageContext pageContext;
-                var subPage = PrepareRenderPage(path, isLayoutPage, data, out pageContext);
+                path = NormalizePath(path);
+                WebPageBase subPage = CreatePageFromVirtualPath(path, Context, VirtualPathFactory.Exists, DisplayModeProvider, DisplayMode);
+                var pageContext = CreatePageContextFromParameters(isLayoutPage, data);
+
+                subPage.ConfigurePage(this);
                 subPage.ExecutePageHierarchy(pageContext, writer);
             });
-        }
-
-        private async Task<HelperResult> RenderPageCoreAsync(string path, bool isLayoutPage, object[] data)
-        {
-            if (String.IsNullOrEmpty(path))
-            {
-                throw new ArgumentException(CommonResources.Argument_Cannot_Be_Null_Or_Empty, "path");
-            }
-            WebPageContext pageContext;
-            var subPage = PrepareRenderPage(path, isLayoutPage, data, out pageContext);
-            var writer = new StringWriter(_currentWriter.FormatProvider);
-            await subPage.ExecutePageHierarchyAsync(pageContext, writer).ConfigureAwait(false);
-            return new HelperResult(writer.CopyTo);
         }
 
         public HelperResult RenderSection(string name)

@@ -175,11 +175,6 @@ namespace System.Web.WebPages
             return ChildPage.RenderPage(NormalizePath(path), data);
         }
 
-        public override Task<HelperResult> RenderPageAsync(string path, params object[] data)
-        {
-            return ChildPage.RenderPageAsync(NormalizePath(path), data);
-        }
-
         public void RunPage()
         {
             RunPageCalled = true;
