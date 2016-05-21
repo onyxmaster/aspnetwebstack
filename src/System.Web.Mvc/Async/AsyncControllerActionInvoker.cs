@@ -6,7 +6,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Mvc.Filters;
 using System.Web.Mvc.Routing;
 
@@ -18,169 +17,8 @@ namespace System.Web.Mvc.Async
         private static readonly object _invokeActionMethodTag = new object();
         private static readonly object _invokeActionMethodWithFiltersTag = new object();
 
-        protected async Task<bool> InvokeActionAsync(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
-        {
-            if (controllerContext == null)
-            {
-                throw new ArgumentNullException("controllerContext");
-            }
-
-            FilterInfo filterInfo = GetFilters(controllerContext, actionDescriptor);
-            ExceptionContext exceptionContext = null;
-            try
-            {
-                AuthenticationContext authenticationContext = InvokeAuthenticationFilters(controllerContext,
-                    filterInfo.AuthenticationFilters, actionDescriptor);
-                if (authenticationContext.Result != null)
-                {
-                    // An authentication filter signaled that we should short-circuit the request. Let all
-                    // authentication filters contribute to an action result (to combine authentication
-                    // challenges). Then, run this action result.
-                    AuthenticationChallengeContext challengeContext =
-                        InvokeAuthenticationFiltersChallenge(controllerContext,
-                        filterInfo.AuthenticationFilters, actionDescriptor, authenticationContext.Result);
-                    await InvokeActionResultAsync(controllerContext,
-                        challengeContext.Result ?? authenticationContext.Result).ConfigureAwait(false);
-                }
-                else
-                {
-                    AuthorizationContext authorizationContext = InvokeAuthorizationFilters(controllerContext, filterInfo.AuthorizationFilters, actionDescriptor);
-                    if (authorizationContext.Result != null)
-                    {
-                        // An authorization filter signaled that we should short-circuit the request. Let all
-                        // authentication filters contribute to an action result (to combine authentication
-                        // challenges). Then, run this action result.
-                        AuthenticationChallengeContext challengeContext =
-                            InvokeAuthenticationFiltersChallenge(controllerContext,
-                            filterInfo.AuthenticationFilters, actionDescriptor, authorizationContext.Result);
-                        await InvokeActionResultAsync(controllerContext,
-                            challengeContext.Result ?? authorizationContext.Result).ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        if (controllerContext.Controller.ValidateRequest)
-                        {
-                            ValidateRequest(controllerContext);
-                        }
-
-                        IDictionary<string, object> parameters = GetParameterValues(controllerContext, actionDescriptor);
-                        ActionExecutedContext postActionContext = 
-                            await Task<ActionExecutedContext>.Factory.FromAsync(
-                                delegate(AsyncCallback asyncCallback, object asyncState)
-                                {
-                                    return BeginInvokeActionMethodWithFilters(controllerContext, filterInfo.ActionFilters, actionDescriptor, parameters, asyncCallback, asyncState);
-                                },
-                                EndInvokeActionMethodWithFilters, 
-                                null);
-                        // The action succeeded. Let all authentication filters contribute to an action
-                        // result (to combine authentication challenges; some authentication filters need
-                        // to do negotiation even on a successful result). Then, run this action result.
-                        AuthenticationChallengeContext challengeContext =
-                            InvokeAuthenticationFiltersChallenge(controllerContext,
-                            filterInfo.AuthenticationFilters, actionDescriptor,
-                            postActionContext.Result);
-                        await InvokeActionResultWithFiltersAsync(controllerContext, filterInfo.ResultFilters,
-                            challengeContext.Result ?? postActionContext.Result).ConfigureAwait(false);
-                    }
-                }
-            }
-            catch (ThreadAbortException)
-            {
-                // This type of exception occurs as a result of Response.Redirect(), but we special-case so that
-                // the filters don't see this as an error.
-                throw;
-            }
-            catch (Exception ex)
-            {
-                // something blew up, so execute the exception filters
-                exceptionContext = InvokeExceptionFilters(controllerContext, filterInfo.ExceptionFilters, ex);
-                if (!exceptionContext.ExceptionHandled)
-                {
-                    throw;
-                }
-            }
-            if (exceptionContext != null)
-            {
-                await InvokeActionResultAsync(controllerContext, exceptionContext.Result).ConfigureAwait(false);
-            }
-            return true;
-        }
-
-        protected virtual Task InvokeActionResultAsync(ControllerContext controllerContext, ActionResult actionResult)
-        {
-            return actionResult.ExecuteResultAsync(controllerContext);
-        }
-
-        protected virtual Task<ResultExecutedContext> InvokeActionResultWithFiltersAsync(ControllerContext controllerContext, IList<IResultFilter> filters, ActionResult actionResult)
-        {
-            ResultExecutingContext preContext = new ResultExecutingContext(controllerContext, actionResult);
-
-            int startingFilterIndex = 0;
-            return InvokeActionResultFilterRecursiveAsync(filters, startingFilterIndex, preContext, controllerContext, actionResult);
-        }
-
-        private async Task<ResultExecutedContext> InvokeActionResultFilterRecursiveAsync(IList<IResultFilter> filters, int filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
-        {
-            // Performance-sensitive
-
-            // For compatbility, the following behavior must be maintained
-            //   The OnResultExecuting events must fire in forward order
-            //   The InvokeActionResultAsync must then fire
-            //   The OnResultExecuted events must fire in reverse order
-            //   Earlier filters can process the results and exceptions from the handling of later filters
-            // This is achieved by calling recursively and moving through the filter list forwards
-
-            // If there are no more filters to recurse over, create the main result
-            if (filterIndex > filters.Count - 1)
-            {
-                await InvokeActionResultAsync(controllerContext, actionResult).ConfigureAwait(false);
-                return new ResultExecutedContext(controllerContext, actionResult, canceled: false, exception: null);
-            }
-
-            // Otherwise process the filters recursively
-            IResultFilter filter = filters[filterIndex];
-            filter.OnResultExecuting(preContext);
-            if (preContext.Cancel)
-            {
-                return new ResultExecutedContext(preContext, preContext.Result, canceled: true, exception: null);
-            }
-
-            bool wasError = false;
-            ResultExecutedContext postContext = null;
-            try
-            {
-                // Use the filters in forward direction
-                int nextFilterIndex = filterIndex + 1;
-                postContext = await InvokeActionResultFilterRecursiveAsync(filters, nextFilterIndex, preContext, controllerContext, actionResult).ConfigureAwait(false);
-            }
-            catch (ThreadAbortException)
-            {
-                // This type of exception occurs as a result of Response.Redirect(), but we special-case so that
-                // the filters don't see this as an error.
-                postContext = new ResultExecutedContext(preContext, preContext.Result, canceled: false, exception: null);
-                filter.OnResultExecuted(postContext);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                wasError = true;
-                postContext = new ResultExecutedContext(preContext, preContext.Result, canceled: false, exception: ex);
-                filter.OnResultExecuted(postContext);
-                if (!postContext.ExceptionHandled)
-                {
-                    throw;
-                }
-            }
-            if (!wasError)
-            {
-                filter.OnResultExecuted(postContext);
-            }
-            return postContext;
-        }
-
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Refactoring to reduce coupling not currently justified.")]
-        [SuppressMessage("Microsoft.Web.FxCop", "MW1201:DoNotCallProblematicMethodsOnTask", Justification = "Task-based async wrapper.")]
-        [SuppressMessage("Microsoft.Web.FxCop", "MW1202:DoNotUseProblematicTaskTypes", Justification = "Task-based async wrapper.")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", Justification = "Coping with C# 6 compiler.")]
         public virtual IAsyncResult BeginInvokeAction(ControllerContext controllerContext, string actionName, AsyncCallback callback, object state)
         {
             if (controllerContext == null)
@@ -198,35 +36,113 @@ namespace System.Web.Mvc.Async
             ActionDescriptor actionDescriptor = FindAction(controllerContext, controllerDescriptor, actionName);
             if (actionDescriptor != null)
             {
+                FilterInfo filterInfo = GetFilters(controllerContext, actionDescriptor);
+                Action continuation = null;
+
                 BeginInvokeDelegate beginDelegate = delegate(AsyncCallback asyncCallback, object asyncState)
                 {
-                    var task = InvokeActionAsync(controllerContext, actionDescriptor);
-                    var tcs = new TaskCompletionSource<bool>(asyncState);
-                    task.ContinueWith(t =>
+                    try
                     {
-                        if (t.IsFaulted)
+                        AuthenticationContext authenticationContext = InvokeAuthenticationFilters(controllerContext,
+                            filterInfo.AuthenticationFilters, actionDescriptor);
+                        if (authenticationContext.Result != null)
                         {
-                            tcs.TrySetException(t.Exception.InnerExceptions);
-                        }
-                        else if (t.IsCanceled)
-                        {
-                            tcs.TrySetCanceled();
+                            // An authentication filter signaled that we should short-circuit the request. Let all
+                            // authentication filters contribute to an action result (to combine authentication
+                            // challenges). Then, run this action result.
+                            AuthenticationChallengeContext challengeContext =
+                                InvokeAuthenticationFiltersChallenge(controllerContext,
+                                filterInfo.AuthenticationFilters, actionDescriptor, authenticationContext.Result);
+                            continuation = () => InvokeActionResult(controllerContext,
+                                challengeContext.Result ?? authenticationContext.Result);
                         }
                         else
                         {
-                            tcs.TrySetResult(t.Result);
+                            AuthorizationContext authorizationContext = InvokeAuthorizationFilters(controllerContext, filterInfo.AuthorizationFilters, actionDescriptor);
+                            if (authorizationContext.Result != null)
+                            {
+                                // An authorization filter signaled that we should short-circuit the request. Let all
+                                // authentication filters contribute to an action result (to combine authentication
+                                // challenges). Then, run this action result.
+                                AuthenticationChallengeContext challengeContext =
+                                    InvokeAuthenticationFiltersChallenge(controllerContext,
+                                    filterInfo.AuthenticationFilters, actionDescriptor, authorizationContext.Result);
+                                continuation = () => InvokeActionResult(controllerContext,
+                                    challengeContext.Result ?? authorizationContext.Result);
+                            }
+                            else
+                            {
+                                if (controllerContext.Controller.ValidateRequest)
+                                {
+                                    ValidateRequest(controllerContext);
+                                }
+
+                                IDictionary<string, object> parameters = GetParameterValues(controllerContext, actionDescriptor);
+                                IAsyncResult asyncResult = BeginInvokeActionMethodWithFilters(controllerContext, filterInfo.ActionFilters, actionDescriptor, parameters, asyncCallback, asyncState);
+                                continuation = () =>
+                                {
+                                    ActionExecutedContext postActionContext = EndInvokeActionMethodWithFilters(asyncResult);
+                                    // The action succeeded. Let all authentication filters contribute to an action
+                                    // result (to combine authentication challenges; some authentication filters need
+                                    // to do negotiation even on a successful result). Then, run this action result.
+                                    AuthenticationChallengeContext challengeContext =
+                                        InvokeAuthenticationFiltersChallenge(controllerContext,
+                                        filterInfo.AuthenticationFilters, actionDescriptor,
+                                        postActionContext.Result);
+                                    InvokeActionResultWithFilters(controllerContext, filterInfo.ResultFilters,
+                                        challengeContext.Result ?? postActionContext.Result);
+                                };
+                                return asyncResult;
+                            }
                         }
-                        if (asyncCallback != null)
+                    }
+                    catch (ThreadAbortException)
+                    {
+                        // This type of exception occurs as a result of Response.Redirect(), but we special-case so that
+                        // the filters don't see this as an error.
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        // something blew up, so execute the exception filters
+                        ExceptionContext exceptionContext = InvokeExceptionFilters(controllerContext, filterInfo.ExceptionFilters, ex);
+                        if (!exceptionContext.ExceptionHandled)
                         {
-                            asyncCallback(tcs.Task);
+                            throw;
                         }
-                    }, TaskContinuationOptions.ExecuteSynchronously);
-                    return tcs.Task;
+
+                        continuation = () => InvokeActionResult(controllerContext, exceptionContext.Result);
+                    }
+
+                    return BeginInvokeAction_MakeSynchronousAsyncResult(asyncCallback, asyncState);
                 };
+
                 EndInvokeDelegate<bool> endDelegate = delegate(IAsyncResult asyncResult)
                 {
-                    return ((Task<bool>)asyncResult).GetAwaiter().GetResult();
+                    try
+                    {
+                        continuation();
+                    }
+                    catch (ThreadAbortException)
+                    {
+                        // This type of exception occurs as a result of Response.Redirect(), but we special-case so that
+                        // the filters don't see this as an error.
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        // something blew up, so execute the exception filters
+                        ExceptionContext exceptionContext = InvokeExceptionFilters(controllerContext, filterInfo.ExceptionFilters, ex);
+                        if (!exceptionContext.ExceptionHandled)
+                        {
+                            throw;
+                        }
+                        InvokeActionResult(controllerContext, exceptionContext.Result);
+                    }
+
+                    return true;
                 };
+
                 return AsyncResultWrapper.Begin(callback, state, beginDelegate, endDelegate, _invokeActionTag);
             }
             else

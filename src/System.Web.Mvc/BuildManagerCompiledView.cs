@@ -2,7 +2,6 @@
 
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
 using System.Web.Mvc.Properties;
 
 namespace System.Web.Mvc
@@ -58,18 +57,6 @@ namespace System.Web.Mvc
 
         public virtual void Render(ViewContext viewContext, TextWriter writer)
         {
-            object instance = GetInstance(viewContext);
-            RenderView(viewContext, writer, instance);
-        }
-
-        public Task RenderAsync(ViewContext viewContext, TextWriter writer)
-        {
-            object instance = GetInstance(viewContext);
-            return RenderViewAsync(viewContext, writer, instance);
-        }
-
-        private object GetInstance(ViewContext viewContext)
-        {
             if (viewContext == null)
             {
                 throw new ArgumentNullException("viewContext");
@@ -92,18 +79,9 @@ namespace System.Web.Mvc
                         ViewPath));
             }
 
-            return instance;
-        }
-
-        protected virtual void RenderView(ViewContext viewContext, TextWriter writer, object instance)
-        {
-            throw new NotImplementedException(MvcResources.CshtmlView_NoSynchronousViewImplementationAvailable);
-        }
-
-        protected virtual Task RenderViewAsync(ViewContext viewContext, TextWriter writer, object instance)
-        {
             RenderView(viewContext, writer, instance);
-            return TaskHelpers.Completed();
         }
+
+        protected abstract void RenderView(ViewContext viewContext, TextWriter writer, object instance);
     }
 }

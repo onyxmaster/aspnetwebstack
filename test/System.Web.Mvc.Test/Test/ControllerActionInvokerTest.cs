@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Mvc.Filters;
 using System.Web.Routing;
 using System.Web.Routing.Test;
@@ -1393,20 +1392,6 @@ namespace System.Web.Mvc.Test
         }
 
         [Fact]
-        public void InvokeActionWithAsyncResultThrows()
-        {
-            // Arrange
-            var controller = new AsyncResultController();
-            ControllerContext context = GetControllerContext(controller);
-            ControllerActionInvoker invoker = new ControllerActionInvoker();
-
-            // Act & Assert
-            Assert.Throws<NotImplementedException>(
-                delegate { invoker.InvokeAction(context, "ReturnsAsyncActionResult"); });
-        }
-
-
-        [Fact]
         public void InvokeActionWithResultExceptionInvokesExceptionFiltersAndExecutesResultIfExceptionHandled()
         {
             // Arrange
@@ -2534,22 +2519,6 @@ namespace System.Web.Mvc.Test
             public ActionResult ReturnsRenderView(object viewItem)
             {
                 return View("ReturnsRenderView", viewItem);
-            }
-        }
-
-        private class AsyncResultController : Controller
-        {
-            private sealed class AsyncActionResult : ActionResult
-            {
-                public override Task ExecuteResultAsync(ControllerContext context)
-                {
-                    return TaskHelpers.Completed();
-                }
-            }
-
-            public ActionResult ReturnsAsyncActionResult()
-            {
-                return new AsyncActionResult();
             }
         }
 

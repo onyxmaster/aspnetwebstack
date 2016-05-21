@@ -13,7 +13,7 @@
     <summary>This package contains the runtime assemblies for ASP.NET MVC with a "half-vNext" flavor.</summary>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <language>en-US</language>
-    <tags>Microsoft AspNet Mvc AspNetMvc Async</tags>
+    <tags>Microsoft AspNet Mvc AspNetMvc</tags>
     <dependencies>
       <dependency id="Microsoft.AspNet.WebPages-vHalfNext" version="[3.3.4, 3.4.0)" />
       <dependency id="Microsoft.AspNet.Razor-vHalfNext" version="[3.3.2, 3.4.0)" />

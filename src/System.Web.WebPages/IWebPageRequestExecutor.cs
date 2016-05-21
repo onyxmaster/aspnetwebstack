@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
-using System.Threading.Tasks;
-
 namespace System.Web.WebPages
 {
     // An executor is a class that can take over the execution of a WebPage. This can be used to
@@ -9,7 +7,5 @@ namespace System.Web.WebPages
     public interface IWebPageRequestExecutor
     {
         bool Execute(WebPage page);
-
-        Task<bool> ExecuteAsync(WebPage page);
     }
 }

@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Caching;
 using System.Web.Profile;
 using Microsoft.Internal.Web.Utils;
@@ -205,12 +204,6 @@ namespace System.Web.WebPages
         // did not call RunPage().
         public abstract void ExecutePageHierarchy();
 
-        // Calls the ExecuteAsync()/Execute() method, and calls RunPage() if the page is an InitPage but
-        // did not call RunPage().
-        public abstract Task ExecutePageHierarchyAsync();
-
         public abstract HelperResult RenderPage(string path, params object[] data);
-
-        public abstract Task<HelperResult> RenderPageAsync(string path, params object[] data);
     }
 }

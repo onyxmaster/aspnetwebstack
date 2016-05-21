@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
 using System.Web.WebPages.Instrumentation;
 using System.Web.WebPages.Resources;
 
@@ -80,16 +79,7 @@ namespace System.Web.WebPages
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual void Execute()
-        {
-            throw new NotImplementedException(WebPageResources.NoSynchronousWebPageImplementationAvailable);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual Task ExecuteAsync()
-        {
-            return null;
-        }
+        public abstract void Execute();
 
         public virtual string Href(string path, params object[] pathParts)
         {
@@ -339,26 +329,6 @@ namespace System.Web.WebPages
         protected internal virtual TextWriter GetOutputWriter()
         {
             return TextWriter.Null;
-        }
-
-        protected internal void ExecutePage()
-        {
-            var task = ExecuteAsync();
-            if (task == null)
-            {
-                Execute();
-            }
-            else
-            {
-                if (!task.IsCompletedSynchronously())
-                {
-                    throw new NotSupportedException(
-                        String.Format(CultureInfo.InvariantCulture,
-                            WebPageResources.WebPage_SyncAsyncConflict,
-                            VirtualPath));
-                }
-                task.GetAwaiter().GetResult();
-            }
         }
     }
 }

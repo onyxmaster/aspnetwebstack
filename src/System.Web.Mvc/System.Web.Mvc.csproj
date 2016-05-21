@@ -86,9 +86,6 @@
     <Compile Include="..\Common\TaskHelpersExtensions.cs">
       <Link>Common\TaskHelpersExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Common\ReflectionHelpers.cs">
-      <Link>Common\ReflectionHelpers.cs</Link>
-    </Compile>
     <Compile Include="..\Common\Routing\Constraints\AlphaRouteConstraint.cs">
       <Link>Routing\Constraints\AlphaRouteConstraint.cs</Link>
     </Compile>

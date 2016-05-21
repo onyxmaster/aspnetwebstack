@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Routing;
 using System.Web.UI.WebControls;
 using Microsoft.TestCommon;
@@ -1199,11 +1198,6 @@ namespace System.Web.Mvc.Html.Test
         private class DummyView : IView
         {
             public void Render(ViewContext viewContext, TextWriter writer)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task RenderAsync(ViewContext viewContext, TextWriter writer)
             {
                 throw new NotImplementedException();
             }

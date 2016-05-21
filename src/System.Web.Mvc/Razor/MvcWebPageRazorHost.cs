@@ -19,23 +19,6 @@ namespace System.Web.Mvc.Razor
 
             DefaultPageBaseClass = typeof(WebViewPage).FullName;
 
-            NamespaceImports.Add("System.Threading.Tasks");
-            var context = GeneratedClassContext;
-            if (!String.IsNullOrEmpty(context.ExecuteMethodName))
-            {
-                GeneratedClassContext = new GeneratedClassContext(context.ExecuteMethodName + "Async",
-                                                                  context.WriteMethodName,
-                                                                  context.WriteLiteralMethodName,
-                                                                  context.WriteToMethodName,
-                                                                  context.WriteLiteralToMethodName,
-                                                                  context.TemplateTypeName,
-                                                                  context.DefineSectionMethodName,
-                                                                  context.BeginContextMethodName,
-                                                                  context.EndContextMethodName)
-                {
-                    ResolveUrlMethodName = context.ResolveUrlMethodName
-                };
-            }
             // REVIEW get rid of the namespace import to not force additional references in default MVC projects
             GetRidOfNamespace("System.Web.WebPages.Html");
         }

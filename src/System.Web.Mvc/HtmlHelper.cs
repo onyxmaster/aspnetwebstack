@@ -7,7 +7,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.Web.Mvc.Html;
 using System.Web.Mvc.Properties;
@@ -514,20 +513,6 @@ namespace System.Web.Mvc
 
         internal virtual void RenderPartialInternal(string partialViewName, ViewDataDictionary viewData, object model, TextWriter writer, ViewEngineCollection viewEngineCollection)
         {
-            ViewContext newViewContext;
-            var view = GetView(partialViewName, viewData, model, writer, viewEngineCollection, out newViewContext);
-            view.Render(newViewContext, writer);
-        }
-
-        internal virtual Task RenderPartialInternalAsync(string partialViewName, ViewDataDictionary viewData, object model, TextWriter writer, ViewEngineCollection viewEngineCollection)
-        {
-            ViewContext newViewContext;
-            var view = GetView(partialViewName, viewData, model, writer, viewEngineCollection, out newViewContext);
-            return view.RenderAsync(newViewContext, writer);
-        }
-
-        private IView GetView(string partialViewName, ViewDataDictionary viewData, object model, TextWriter writer, ViewEngineCollection viewEngineCollection, out ViewContext newViewContext)
-        {
             if (String.IsNullOrEmpty(partialViewName))
             {
                 throw new ArgumentException(MvcResources.Common_NullOrEmpty, "partialViewName");
@@ -558,9 +543,9 @@ namespace System.Web.Mvc
                 }
             }
 
-            newViewContext = new ViewContext(ViewContext, ViewContext.View, newViewData, ViewContext.TempData, writer);
-            var view = FindPartialView(newViewContext, partialViewName, viewEngineCollection);
-            return view;
+            ViewContext newViewContext = new ViewContext(ViewContext, ViewContext.View, newViewData, ViewContext.TempData, writer);
+            IView view = FindPartialView(newViewContext, partialViewName, viewEngineCollection);
+            view.Render(newViewContext, writer);
         }
 
         /// <summary>
