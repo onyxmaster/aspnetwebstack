@@ -512,6 +512,7 @@ namespace System.Web.Mvc
             return new HtmlString(value == null ? null : value.ToString());
         }
 
+        [Obsolete("Partials should be rendered asynchronously, use RenderPartialInternalAsync instead.")]
         internal virtual void RenderPartialInternal(string partialViewName, ViewDataDictionary viewData, object model, TextWriter writer, ViewEngineCollection viewEngineCollection)
         {
             ViewContext newViewContext;

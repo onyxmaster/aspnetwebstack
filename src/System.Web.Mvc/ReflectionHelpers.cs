@@ -63,19 +63,5 @@ namespace System.Reflection
             var lambda = Expression.Lambda<Func<TTarget, TArg1, TResult>>(invoke, new ParameterExpression[] { target, arg1 });
             return lambda.Compile();
         }
-
-        internal static Func<TTarget, TResult> CreatePropertyGetterWithResult<TTarget, TResult>(string propertyName)
-        {
-            var targetType = typeof(TTarget);
-            var property = targetType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
-            if (property == null)
-            {
-                return null;
-            }
-            var target = Expression.Parameter(targetType, "target");
-            var invoke = Expression.Property(target, property);
-            var lambda = Expression.Lambda<Func<TTarget, TResult>>(invoke, new ParameterExpression[] { target });
-            return lambda.Compile();
-        }
     }
 }

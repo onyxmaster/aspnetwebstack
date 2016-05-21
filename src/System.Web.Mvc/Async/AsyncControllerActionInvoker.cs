@@ -220,7 +220,7 @@ namespace System.Web.Mvc.Async
                         {
                             asyncCallback(tcs.Task);
                         }
-                    }, TaskContinuationOptions.ExecuteSynchronously);
+                    }, TaskScheduler.Default);
                     return tcs.Task;
                 };
                 EndInvokeDelegate<bool> endDelegate = delegate(IAsyncResult asyncResult)
