@@ -137,7 +137,7 @@ namespace System.Web.Mvc.Test
               + "  </assembly>" + Environment.NewLine
               + "</typeCache>";
 
-            string expected = String.Format(expectedFormat,
+            string expected = String.Format(System.Globalization.CultureInfo.InvariantCulture, expectedFormat,
                                             expectedDate /* lastModified */,
                                             GetMvidForType(typeof(TypeCacheSerializer)) /* mvcVersionId */,
                                             _mscorlibAsmFullName /* assembly.name */,

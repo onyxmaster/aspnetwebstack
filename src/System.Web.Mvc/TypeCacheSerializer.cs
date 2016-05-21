@@ -94,7 +94,7 @@ namespace System.Web.Mvc
 
             XmlElement typeCacheElement = doc.CreateElement("typeCache");
             doc.AppendChild(typeCacheElement);
-            typeCacheElement.SetAttribute("lastModified", CurrentDate.ToString());
+            typeCacheElement.SetAttribute("lastModified", CurrentDate.ToString(System.Globalization.CultureInfo.InvariantCulture));
             typeCacheElement.SetAttribute("mvcVersionId", _mvcVersionId.ToString());
 
             foreach (var assemblyGroup in groupedByAssembly)
