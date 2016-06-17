@@ -27,8 +27,8 @@ namespace Microsoft.Web.Mvc
                 throw new ArgumentNullException("controller");
             }
 
-            RouteValueDictionary routeValues = ExpressionHelper.GetRouteValuesFromExpression(action);
-            return new RedirectToRouteResult(routeValues);
+            var routeInfo = ExpressionHelper.GetRouteInfoFromExpression(RouteTable.Routes, action);
+            return new RedirectToRouteResult(routeInfo.Key, routeInfo.Value);
         }
     }
 }
