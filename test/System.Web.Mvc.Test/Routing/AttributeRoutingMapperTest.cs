@@ -17,7 +17,7 @@ namespace System.Web.Mvc.Routing
             var routeEntries = AttributeRoutingMapper.GetAttributeRoutes(controllerType);
 
             var routeEntry = Assert.Single(routeEntries);
-            Assert.Null(routeEntry.Name);
+            Assert.True(routeEntry.Name == null || routeEntry.Name.StartsWith("MethodInfo!", StringComparison.Ordinal));
         }
 
         [Fact]

@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Web.Mvc.Routing;
 
 namespace System.Web.Mvc
@@ -50,7 +51,17 @@ namespace System.Web.Mvc
             IDirectRouteBuilder builder = context.CreateBuilder(Template);
             Contract.Assert(builder != null);
 
-            builder.Name = Name;
+            var name = Name;
+            if (context.TargetIsAction && String.IsNullOrEmpty(name))
+            {
+                var actionDescriptor = context.Actions.SingleOrDefault() as IMethodInfoActionDescriptor;
+                if (actionDescriptor != null)
+                {
+                    name = "MethodInfo!" + actionDescriptor.MethodInfo.MethodHandle.Value + "_" + Template;
+                }
+            }
+
+            builder.Name = name;
             builder.Order = Order;
             return builder.Build();
         }
