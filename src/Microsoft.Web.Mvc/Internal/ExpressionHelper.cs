@@ -2,12 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Mvc;
+using System.Web.Mvc.Routing;
 using System.Web.Routing;
 using Microsoft.Web.Mvc.Properties;
 
@@ -19,46 +21,47 @@ namespace Microsoft.Web.Mvc.Internal
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Users cannot use anonymous methods with the LambdaExpression type")]
         public static RouteValueDictionary GetRouteValuesFromExpression<TController>(Expression<Action<TController>> action) where TController : Controller
         {
-            if (action == null)
-            {
-                throw new ArgumentNullException("action");
-            }
+            var call = GetMethodCall(action);
 
-            MethodCallExpression call = action.Body as MethodCallExpression;
-            if (call == null)
-            {
-                throw new ArgumentException(MvcResources.ExpressionHelper_MustBeMethodCall, "action");
-            }
-
-            string controllerName = typeof(TController).Name;
-            if (!controllerName.EndsWith("Controller", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new ArgumentException(MvcResources.ExpressionHelper_TargetMustEndInController, "action");
-            }
-            controllerName = controllerName.Substring(0, controllerName.Length - "Controller".Length);
-            if (controllerName.Length == 0)
-            {
-                throw new ArgumentException(MvcResources.ExpressionHelper_CannotRouteToController, "action");
-            }
-
-            // TODO: How do we know that this method is even web callable?
-            //      For now, we just let the call itself throw an exception.
-
-            string actionName = GetTargetActionName(call.Method);
+            var controllerType = typeof(TController);
+            var controllerName = ValidateControllerName(controllerType);
 
             var rvd = new RouteValueDictionary();
-            rvd.Add("Controller", controllerName);
-            rvd.Add("Action", actionName);
-
-            ActionLinkAreaAttribute areaAttr = typeof(TController).GetCustomAttributes(typeof(ActionLinkAreaAttribute), true /* inherit */).FirstOrDefault() as ActionLinkAreaAttribute;
-            if (areaAttr != null)
-            {
-                string areaName = areaAttr.Area;
-                rvd.Add("Area", areaName);
-            }
-
+            AddControllerInfoToDictionary(rvd, call, controllerName, controllerType);
             AddParameterValuesFromExpressionToDictionary(rvd, call);
             return rvd;
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is an appropriate nesting of generic types")]
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Users cannot use anonymous methods with the LambdaExpression type")]
+        public static KeyValuePair<string, RouteValueDictionary> GetRouteInfoFromExpression<TController>(RouteCollection routeCollection, Expression<Action<TController>> action) where TController : Controller
+        {
+            var call = GetMethodCall(action);
+
+            var controllerType = typeof(TController);
+            var controllerName = ValidateControllerName(controllerType);
+
+            string routeName;
+            if (call.Method.DeclaringType == controllerType)
+            {
+                routeName = _routeNameCache.GetName(call.Method);
+                if (routeName != null && routeCollection[routeName] == null)
+                {
+                    routeName = null;
+                }
+            }
+            else
+            {
+                routeName = null;
+            }
+
+            var rvd = new RouteValueDictionary();
+            if (routeName == null)
+            {
+                AddControllerInfoToDictionary(rvd, call, controllerName, controllerType);
+            }
+            AddParameterValuesFromExpressionToDictionary(rvd, call);
+            return new KeyValuePair<string, RouteValueDictionary>(routeName, rvd);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is an appropriate nesting of generic types")]
@@ -148,6 +151,100 @@ namespace Microsoft.Web.Mvc.Internal
                     rvd.Add(parameters[i].Name, value);
                 }
             }
+        }
+
+        private sealed class RouteNameCache : ReaderWriterCache<MethodInfo, string>
+        {
+            public string GetName(MethodInfo method)
+            {
+                return FetchOrCreateItem(method, () => NameCreator(method));
+            }
+
+            private static string NameCreator(MethodInfo method)
+            {
+                string template = null;
+                foreach (IRouteInfoProvider attr in method.GetCustomAttributes(typeof(IRouteInfoProvider), false))
+                {
+                    if (template == null)
+                    {
+                        template = attr.Template;
+                    }
+                    var name = attr.Name;
+                    if (!String.IsNullOrEmpty(name))
+                    {
+                        return name;
+                    }
+                }
+                if (template == null)
+                {
+                    foreach (IRouteInfoProvider attr in method.DeclaringType.GetCustomAttributes(typeof(IRouteInfoProvider), false))
+                    {
+                        if (template == null)
+                        {
+                            template = attr.Template;
+                        }
+                        var name = attr.Name;
+                        if (!String.IsNullOrEmpty(name))
+                        {
+                            return name;
+                        }
+                    }
+                }
+                return "MethodInfo!" + method.MethodHandle.Value + "_" + template;
+            }
+        }
+
+        private static readonly RouteNameCache _routeNameCache = new RouteNameCache();
+
+        [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "Validation method.")]
+        private static string ValidateControllerName(Type controllerType)
+        {
+            var controllerName = controllerType.Name;
+            if (!controllerName.EndsWith("Controller", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException(MvcResources.ExpressionHelper_TargetMustEndInController, "action");
+            }
+            controllerName = controllerName.Substring(0, controllerName.Length - "Controller".Length);
+            if (controllerName.Length == 0)
+            {
+                throw new ArgumentException(MvcResources.ExpressionHelper_CannotRouteToController, "action");
+            }
+
+            return controllerName;
+        }
+
+        private static void AddControllerInfoToDictionary(RouteValueDictionary rvd, MethodCallExpression call, string controllerName, Type controllerType)
+        {
+            // TODO: How do we know that this method is even web callable?
+            //      For now, we just let the call itself throw an exception.
+
+            string actionName = GetTargetActionName(call.Method);
+
+            rvd.Add("Controller", controllerName);
+            rvd.Add("Action", actionName);
+
+            ActionLinkAreaAttribute areaAttr = controllerType.GetCustomAttributes(typeof(ActionLinkAreaAttribute), true /* inherit */).FirstOrDefault() as ActionLinkAreaAttribute;
+            if (areaAttr != null)
+            {
+                string areaName = areaAttr.Area;
+                rvd.Add("Area", areaName);
+            }
+        }
+
+        private static MethodCallExpression GetMethodCall<TController>(Expression<Action<TController>> action) where TController : Controller
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            MethodCallExpression call = action.Body as MethodCallExpression;
+            if (call == null)
+            {
+                throw new ArgumentException(MvcResources.ExpressionHelper_MustBeMethodCall, "action");
+            }
+
+            return call;
         }
     }
 }
