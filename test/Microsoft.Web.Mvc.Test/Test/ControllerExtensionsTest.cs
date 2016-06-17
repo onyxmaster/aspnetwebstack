@@ -19,7 +19,7 @@ namespace Microsoft.Web.Mvc.Test
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("", result.RouteName);
+            Assert.True("" == result.RouteName || result.RouteName.StartsWith("MethodInfo!", StringComparison.Ordinal));
             Assert.Equal(3, result.RouteValues.Count);
             Assert.Equal("Different", result.RouteValues["controller"]);
             Assert.Equal("SomeOtherMethod", result.RouteValues["action"]);
@@ -34,7 +34,7 @@ namespace Microsoft.Web.Mvc.Test
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("", result.RouteName);
+            Assert.True("" == result.RouteName || result.RouteName.StartsWith("MethodInfo!", StringComparison.Ordinal));
             Assert.Equal(3, result.RouteValues.Count);
             Assert.Equal("Sample", result.RouteValues["controller"]);
             Assert.Equal("SomeMethod", result.RouteValues["action"]);
