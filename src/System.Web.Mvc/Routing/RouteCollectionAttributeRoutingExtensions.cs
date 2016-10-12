@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Web.Mvc.Routing;
 using System.Web.Routing;
 
@@ -100,6 +101,28 @@ namespace System.Web.Mvc
             }
 
             AttributeRoutingMapper.MapAttributeRoutes(routes, constraintResolver, directRouteProvider);
+        }
+
+        /// <summary>
+        /// Maps the attribute-defined routes for the application.
+        /// </summary>
+        /// <param name="routes"></param>
+        /// <param name="controllerTypes">The controller types to scan.</param>
+        public static void MapMvcAttributeRoutes(
+            this RouteCollection routes,
+            IEnumerable<Type> controllerTypes)
+        {
+            if (routes == null)
+            {
+                throw new ArgumentNullException("routes");
+            }
+
+            if (controllerTypes == null)
+            {
+                throw new ArgumentNullException("controllerTypes");
+            }
+
+            AttributeRoutingMapper.MapAttributeRoutes(routes, controllerTypes);
         }
     }
 }
