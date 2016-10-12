@@ -176,6 +176,13 @@ namespace System.Web.Helpers
                 // These APIs don't check if path is set before setting security demands, which causes exception.
                 // So far this happens only when running from unit tests.
             }
+            catch (NullReferenceException)
+            {
+                // do nothing
+                // These APIs don't check if path is set before setting security demands, which causes exception.
+                // So far this happens only when running from unit tests.
+                // Handling NRE is needed because of bug in .NET 4.6.2
+            }
 
             info.Add("Asp Install Directory", HttpRuntime.AspInstallDirectory);
             info.Add("Machine Configuration Directory", HttpRuntime.MachineConfigurationDirectory);
