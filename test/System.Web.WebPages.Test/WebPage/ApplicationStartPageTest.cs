@@ -100,7 +100,7 @@ namespace System.Web.WebPages.Test
                 ApplicationStartPage.ExecuteStartPage(new WebPageHttpApplication(),
                                                       p => { },
                                                       objectFactory,
-                                                      new string[] { "cshtml", "vbhtml" });
+                                                      new string[] { "cshtml" });
                 Assert.Equal("y", startPage.ApplicationState["x"]);
             });
         }
@@ -115,7 +115,7 @@ namespace System.Web.WebPages.Test
                 ApplicationStartPage.ExecuteStartPage(new WebPageHttpApplication(),
                                                       p => { },
                                                       objectFactory,
-                                                      new string[] { "cshtml", "vbhtml" });
+                                                      new string[] { "cshtml" });
                 Assert.Equal("y", startPage.ApplicationState["x"]);
                 Assert.Equal("y", startPage.App.x);
                 Assert.Equal("y", startPage.App["x"]);
@@ -142,7 +142,7 @@ namespace System.Web.WebPages.Test
                 ExecuteStartPage(new WebPageHttpApplication(),
                                  p => { },
                                  GetMockVirtualPathFactory(this),
-                                 new string[] { "cshtml", "vbhtml" });
+                                 new string[] { "cshtml" });
             }
         }
 

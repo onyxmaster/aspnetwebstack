@@ -64,7 +64,6 @@
   <assembly name="System.Web.WebPages.Razor.Test"/>
   <assembly name="System.Web.WebPages.Test"/>
   <assembly name="WebApiHelpPage.Test"/>
-  <assembly name="WebApiHelpPage.VB.Test" />
   <assembly name="WebMatrix.Data.Test"/>
   <assembly name="WebMatrix.WebData.Test"/>
 </assemblies>

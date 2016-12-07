@@ -151,7 +151,6 @@
     <Compile Include="Test\HttpPatchAttributeTest.cs" />
     <Compile Include="Test\MockableUnvalidatedRequestValues.cs" />
     <Compile Include="Test\DescriptorUtilTest.cs" />
-    <Compile Include="Razor\Test\MvcVBRazorCodeParserTest.cs" />
     <Compile Include="Test\ModelBinderProviderCollectionTest.cs" />
     <Compile Include="Test\ModelBinderProvidersTest.cs" />
     <Compile Include="Razor\Test\MvcWebPageRazorHostTest.cs" />

@@ -35,13 +35,13 @@ namespace Microsoft.Web.Helpers.Test
         public void UrlBuilderUsesQueryComponentsIfPathIsAValidUri()
         {
             // Arrange
-            var pagePath = "http://www.test.com/page-path.vbhtml?param=value&baz=biz";
+            var pagePath = "http://www.test.com/page-path.cshtml?param=value&baz=biz";
 
             // Act
             var builder = new UrlBuilder(GetContext(), _virtualPathUtility, pagePath, null);
 
             // Assert
-            Assert.Equal("http://www.test.com/page-path.vbhtml", builder.Path);
+            Assert.Equal("http://www.test.com/page-path.cshtml", builder.Path);
             Assert.Equal("?param=value&baz=biz", builder.QueryString);
         }
 

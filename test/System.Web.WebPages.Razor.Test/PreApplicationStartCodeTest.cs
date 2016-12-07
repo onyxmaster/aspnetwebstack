@@ -18,7 +18,7 @@ namespace System.Web.WebPages.Razor.Test
                 AppDomainUtils.SetPreAppStartStage();
                 PreApplicationStartCode.Start();
                 var buildProviders = typeof(BuildProvider).GetField("s_dynamicallyRegisteredProviders", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
-                Assert.Equal(2, buildProviders.GetType().GetProperty("Count", BindingFlags.Public | BindingFlags.Instance).GetValue(buildProviders, new object[] { }));
+                Assert.Equal(1, buildProviders.GetType().GetProperty("Count", BindingFlags.Public | BindingFlags.Instance).GetValue(buildProviders, new object[] { }));
             });
         }
 

@@ -466,12 +466,12 @@ namespace System.Web.WebPages.Test
         public void GetStartPageReturnsStartPageFromCurrentDirectoryIfExists()
         {
             // Arrange
-            var initPage = Utils.CreateStartPage(p => p.Write("<init>"), "~/subdir/_pagestart.vbhtml");
+            var initPage = Utils.CreateStartPage(p => p.Write("<init>"), "~/subdir/_pagestart.cshtml");
             var page = Utils.CreatePage(p => p.Write("test"), "~/subdir/_index.cshtml");
             var objectFactory = Utils.AssignObjectFactoriesAndDisplayModeProvider(page, initPage);
 
             // Act
-            var result = StartPage.GetStartPage(page, objectFactory, null, WebPageHttpHandler.StartPageFileName, new string[] { "cshtml", "vbhtml" });
+            var result = StartPage.GetStartPage(page, objectFactory, null, WebPageHttpHandler.StartPageFileName, new string[] { "cshtml" });
 
             // Assert
             Assert.Equal(initPage, result);
@@ -481,12 +481,12 @@ namespace System.Web.WebPages.Test
         public void GetStartPageReturnsStartPageFromParentDirectoryIfStartPageDoesNotExistInCurrentDirectory()
         {
             // Arrange
-            var initPage = Utils.CreateStartPage(null, "~/subdir/_pagestart.vbhtml");
+            var initPage = Utils.CreateStartPage(null, "~/subdir/_pagestart.cshtml");
             var page = Utils.CreatePage(null, "~/subdir/subsubdir/test.cshtml");
             var objectFactory = Utils.AssignObjectFactoriesAndDisplayModeProvider(page, initPage);
 
             // Act
-            var result = StartPage.GetStartPage(page, objectFactory, null, WebPageHttpHandler.StartPageFileName, new string[] { "cshtml", "vbhtml" });
+            var result = StartPage.GetStartPage(page, objectFactory, null, WebPageHttpHandler.StartPageFileName, new string[] { "cshtml" });
 
             // Assert
             Assert.Equal(initPage, result);
@@ -496,13 +496,13 @@ namespace System.Web.WebPages.Test
         public void GetStartPageCreatesChainOfStartPages()
         {
             // Arrange
-            var subInitPage = Utils.CreateStartPage(null, "~/subdir/_pagestart.vbhtml");
-            var initPage = Utils.CreateStartPage(null, "~/_pagestart.vbhtml");
+            var subInitPage = Utils.CreateStartPage(null, "~/subdir/_pagestart.cshtml");
+            var initPage = Utils.CreateStartPage(null, "~/_pagestart.cshtml");
             var page = Utils.CreatePage(null, "~/subdir/subsubdir/subsubsubdir/test.cshtml");
             var objectFactory = Utils.AssignObjectFactoriesAndDisplayModeProvider(page, initPage, subInitPage);
 
             // Act
-            var result = StartPage.GetStartPage(page, objectFactory, null, WebPageHttpHandler.StartPageFileName, new string[] { "cshtml", "vbhtml" });
+            var result = StartPage.GetStartPage(page, objectFactory, null, WebPageHttpHandler.StartPageFileName, new string[] { "cshtml" });
 
             // Assert
             Assert.Equal(initPage, result);
@@ -513,12 +513,12 @@ namespace System.Web.WebPages.Test
         public void GetStartPageReturnsStartPageFromRoot()
         {
             // Arrange
-            var initPage = Utils.CreateStartPage(null, "~/_pagestart.vbhtml");
+            var initPage = Utils.CreateStartPage(null, "~/_pagestart.cshtml");
             var page = Utils.CreatePage(null, "~/subdir/subsubdir/subsubsubdir/subsubsubsubdir/why-does-this-remind-me-of-a-movie-title.cshtml");
             var objectFactory = Utils.AssignObjectFactoriesAndDisplayModeProvider(page, initPage);
 
             // Act
-            var result = StartPage.GetStartPage(page, objectFactory, null, WebPageHttpHandler.StartPageFileName, new string[] { "cshtml", "vbhtml" });
+            var result = StartPage.GetStartPage(page, objectFactory, null, WebPageHttpHandler.StartPageFileName, new string[] { "cshtml" });
 
             // Assert
             Assert.Equal(initPage, result);
@@ -529,12 +529,12 @@ namespace System.Web.WebPages.Test
         {
             // Arrange
             var subInitPage = Utils.CreateStartPage(null, "~/subdir/_pagestart.jshtml");
-            var initPage = Utils.CreateStartPage(null, "~/_pagestart.vbhtml");
+            var initPage = Utils.CreateStartPage(null, "~/_pagestart.cshtml");
             var page = Utils.CreatePage(null, "~/subdir/test.cshtml");
             var objectFactory = Utils.AssignObjectFactoriesAndDisplayModeProvider(page, initPage, subInitPage);
 
             // Act
-            var result = StartPage.GetStartPage(page, objectFactory, null, WebPageHttpHandler.StartPageFileName, new string[] { "cshtml", "vbhtml" });
+            var result = StartPage.GetStartPage(page, objectFactory, null, WebPageHttpHandler.StartPageFileName, new string[] { "cshtml" });
 
             // Assert
             Assert.Equal(initPage, result);

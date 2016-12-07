@@ -58,7 +58,7 @@ namespace System.Web.Razor
 
                 using (var writer = new StringWriter())
                 {
-                    // Trim the html part of cshtml or vbhtml
+                    // Trim the html part of cshtml
                     string outputExtension = extension.Substring(0, 3);
                     string outputFileName = Normalize(sourceFile) + "_generated" + outputExtension;
                     string outputPath = Path.Combine(Path.GetDirectoryName(sourceFile), outputFileName);
