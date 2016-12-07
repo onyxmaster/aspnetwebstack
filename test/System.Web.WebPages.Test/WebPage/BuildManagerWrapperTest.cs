@@ -80,19 +80,6 @@ namespace System.Web.WebPages.Test
         }
 
         [Fact]
-        public void CanCreateObjectFactoryWorksForAllRegisteredExtensions()
-        {
-            // Arrange
-            var buildManagerWrapper = CreateWrapperInstance();
-
-            // Act
-            bool supported = buildManagerWrapper.IsPathExtensionSupported("~/default.vbHtml");
-
-            // Assert
-            Assert.True(supported);
-        }
-
-        [Fact]
         public void IsNonPrecompiledAppReturnsFalseIfPrecompiledConfigFileDoesNotExist()
         {
             // Arrange
@@ -280,7 +267,7 @@ namespace System.Web.WebPages.Test
 
         private static BuildManagerWrapper CreateWrapperInstance(IEnumerable<string> supportedExtensions = null)
         {
-            return new BuildManagerWrapper(new Mock<VirtualPathProvider>().Object, GetVirtualPathUtility()) { SupportedExtensions = supportedExtensions ?? new[] { "cshtml", "vbhtml" } };
+            return new BuildManagerWrapper(new Mock<VirtualPathProvider>().Object, GetVirtualPathUtility()) { SupportedExtensions = supportedExtensions ?? new[] { "cshtml" } };
         }
 
         private static VirtualFile GetFile(string content)

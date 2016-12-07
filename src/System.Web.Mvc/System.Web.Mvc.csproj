@@ -299,7 +299,6 @@
     <Compile Include="MultiServiceResolver.cs" />
     <Compile Include="Razor\MvcCSharpRazorCodeParser.cs" />
     <Compile Include="MvcFilter.cs" />
-    <Compile Include="Razor\MvcVBRazorCodeParser.cs" />
     <Compile Include="Razor\MvcWebPageRazorHost.cs" />
     <Compile Include="MvcWebRazorHostFactory.cs" />
     <Compile Include="PreApplicationStartCode.cs" />

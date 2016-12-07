@@ -30,7 +30,6 @@ namespace System.Web.WebPages.Razor
             _startWasCalled = true;
 
             BuildProvider.RegisterBuildProvider(".cshtml", typeof(RazorBuildProvider));
-            BuildProvider.RegisterBuildProvider(".vbhtml", typeof(RazorBuildProvider));
         }
     }
 }
