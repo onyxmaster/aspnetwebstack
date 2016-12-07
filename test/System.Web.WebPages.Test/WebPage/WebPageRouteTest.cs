@@ -101,12 +101,12 @@ namespace System.Web.WebPages.Test
         }
 
         [Theory]
-        [InlineData(new object[] { "_foo", "_foo/default.cshtml" })]
+        [InlineData(new object[] { "_foo", "_foo/index.cshtml" })]
         [InlineData(new object[] { "_bar/_baz", "_bar/_baz/index.cshtml" })]
         public void DirectoriesWithLeadingUnderscoresAreServed(string requestPath, string expectedPath)
         {
             // Arramge
-            var files = new[] { "~/_foo/default.cshtml", "~/_bar/_baz/index.cshtml" };
+            var files = new[] { "~/_foo/index.cshtml", "~/_bar/_baz/index.cshtml" };
             var extensions = new[] { "cshtml" };
 
             // Act
@@ -155,20 +155,6 @@ namespace System.Web.WebPages.Test
         }
 
         [Fact]
-        public void DefaultPrecedenceTests()
-        {
-            string[] files = new[] { "~/one/two/default.aspx", "~/one/default.aspx", "~/default.aspx" };
-            string[] extensions = new[] { "aspx" };
-
-            // Default only tries to look at the full path level
-            ConstraintTest(files, extensions, "one/two/three", null, null);
-            ConstraintTest(files, extensions, "one/two", "one/two/default.aspx", "");
-            ConstraintTest(files, extensions, "one", "one/default.aspx", "");
-            ConstraintTest(files, extensions, "", "default.aspx", "");
-            ConstraintTest(files, extensions, "one/two/three/four/five/six/7/8", null, null);
-        }
-
-        [Fact]
         public void IndexTests()
         {
             string[] files = new[] { "~/one/two/index.aspx", "~/one/index.aspx", "~/index.aspq" };
@@ -180,44 +166,6 @@ namespace System.Web.WebPages.Test
             ConstraintTest(files, extensions, "one", "one/index.aspx", "");
             ConstraintTest(files, extensions, "", "index.aspq", "");
             ConstraintTest(files, extensions, "one/two/three/four/five/six/7/8", null, null);
-        }
-
-        [Fact]
-        public void DefaultVsIndexNestedTest()
-        {
-            string[] files = new[] { "~/one/two/index.aspx", "~/one/index.aspx", "~/one/default.aspx", "~/index.aspq", "~/default.aspx" };
-            string[] extensions = new[] { "aspx", "aspq" };
-
-            ConstraintTest(files, extensions, "one/two", "one/two/index.aspx", "");
-            ConstraintTest(files, extensions, "one", "one/default.aspx", "");
-            ConstraintTest(files, extensions, "", "default.aspx", "");
-        }
-
-        [Fact]
-        public void DefaultVsIndexSameExtensionTest()
-        {
-            string[] files = new[] { "~/one/two/index.aspx", "~/one/index.aspx", "~/one/default.aspx", "~/index.aspq", "~/default.aspx" };
-            string[] extensions = new[] { "aspx" };
-
-            ConstraintTest(files, extensions, "one", "one/default.aspx", "");
-        }
-
-        [Fact]
-        public void DefaultVsIndexDifferentExtensionTest()
-        {
-            string[] files = new[] { "~/index.aspq", "~/default.aspx" };
-            string[] extensions = new[] { "aspx", "aspq" };
-
-            ConstraintTest(files, extensions, "", "default.aspx", "");
-        }
-
-        [Fact]
-        public void DefaultVsIndexOnlyOneExtensionTest()
-        {
-            string[] files = new[] { "~/index.aspq", "~/default.aspx" };
-            string[] extensions = new[] { "aspq" };
-
-            ConstraintTest(files, extensions, "", "index.aspq", "");
         }
 
         [Fact]
