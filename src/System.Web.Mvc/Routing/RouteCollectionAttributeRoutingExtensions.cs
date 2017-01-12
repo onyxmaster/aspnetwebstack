@@ -124,5 +124,36 @@ namespace System.Web.Mvc
 
             AttributeRoutingMapper.MapAttributeRoutes(routes, controllerTypes);
         }
+
+        /// <summary>
+        /// Maps the attribute-defined routes for the application.
+        /// </summary>
+        /// <param name="routes"></param>
+        /// <param name="controllerTypes">The controller types to scan.</param>
+        /// <param name="constraintResolver">
+        /// The <see cref="IInlineConstraintResolver"/> to use for resolving inline constraints in route templates.
+        /// </param>
+        public static void MapMvcAttributeRoutes(
+            this RouteCollection routes,
+            IEnumerable<Type> controllerTypes,
+            IInlineConstraintResolver constraintResolver)
+        {
+            if (routes == null)
+            {
+                throw new ArgumentNullException("routes");
+            }
+
+            if (controllerTypes == null)
+            {
+                throw new ArgumentNullException("controllerTypes");
+            }
+
+            if (constraintResolver == null)
+            {
+                throw new ArgumentNullException("constraintResolver");
+            }
+
+            AttributeRoutingMapper.MapAttributeRoutes(routes, controllerTypes, constraintResolver);
+        }
     }
 }
