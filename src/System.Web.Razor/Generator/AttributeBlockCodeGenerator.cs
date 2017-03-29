@@ -41,9 +41,9 @@ namespace System.Web.Razor.Generator
                 }
                 cw.WriteStringLiteral(Name);
                 cw.WriteParameterSeparator();
-                cw.WriteLocationTaggedString(Prefix);
+                cw.WriteStringLiteral(Prefix.Value);
                 cw.WriteParameterSeparator();
-                cw.WriteLocationTaggedString(Suffix);
+                cw.WriteStringLiteral(Suffix.Value);
 
                 // In VB, we need a line continuation
                 cw.WriteLineContinuation();

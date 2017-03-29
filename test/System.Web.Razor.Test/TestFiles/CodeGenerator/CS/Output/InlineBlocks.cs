@@ -27,8 +27,8 @@ return new Template(__razor_helper_writer => {
 #line hidden
 WriteLiteralTo(__razor_helper_writer, "    <a");
 
-WriteAttributeTo(__razor_helper_writer, "href", Tuple.Create(" href=\"", 35), Tuple.Create("\"", 93)
-, Tuple.Create(Tuple.Create("", 42), Tuple.Create<System.Object, System.Int32>(new Template(__razor_attribute_value_writer => {
+WriteAttributeTo(__razor_helper_writer, "href", " href=\"", "\""
+, Tuple.Create<System.String, System.Object, System.Boolean>("", new Template(__razor_attribute_value_writer => {
 
 
 #line 2 "InlineBlocks.cshtml"
@@ -61,7 +61,7 @@ WriteLiteralTo(__razor_attribute_value_writer, " ");
 
 #line default
 #line hidden
-}), 42), false)
+}), false)
 );
 
 WriteLiteralTo(__razor_helper_writer, " />\r\n");

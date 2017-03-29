@@ -12,7 +12,6 @@ using System.Web.Hosting;
 using System.Web.Razor;
 using System.Web.Razor.Generator;
 using System.Web.Razor.Parser;
-using System.Web.WebPages.Instrumentation;
 using System.Web.WebPages.Razor.Resources;
 using Microsoft.Internal.Web.Utils;
 
@@ -28,8 +27,6 @@ namespace System.Web.WebPages.Razor
         internal const string WebDefaultNamespace = "ASP";
         internal const string WriteToMethodName = "WriteTo";
         internal const string WriteLiteralToMethodName = "WriteLiteralTo";
-        internal const string BeginContextMethodName = "BeginContext";
-        internal const string EndContextMethodName = "EndContext";
         internal const string ResolveUrlMethodName = "Href";
 
         private const string ApplicationStartFileName = "_AppStart";
@@ -73,15 +70,12 @@ namespace System.Web.WebPages.Razor
                                                               WriteToMethodName,
                                                               WriteLiteralToMethodName,
                                                               TemplateTypeName,
-                                                              DefineSectionMethodName,
-                                                              BeginContextMethodName,
-                                                              EndContextMethodName)
+                                                              DefineSectionMethodName)
             {
                 ResolveUrlMethodName = ResolveUrlMethodName
             };
             DefaultPageBaseClass = PageBaseClass;
             DefaultDebugCompilation = true;
-            EnableInstrumentation = false;
         }
 
         public WebPageRazorHost(string virtualPath)
@@ -103,7 +97,6 @@ namespace System.Web.WebPages.Razor
             PhysicalPath = physicalPath;
             DefaultClassName = GetClassName(VirtualPath);
             CodeLanguage = GetCodeLanguage();
-            EnableInstrumentation = new InstrumentationService().IsAvailable;
         }
 
         public override RazorCodeLanguage CodeLanguage
@@ -179,12 +172,6 @@ namespace System.Web.WebPages.Razor
                 return _physicalPath;
             }
             set { _physicalPath = value; }
-        }
-
-        public override string InstrumentedSourceFilePath
-        {
-            get { return VirtualPath; }
-            set { VirtualPath = value; }
         }
 
         private string SpecialPageBaseClass
