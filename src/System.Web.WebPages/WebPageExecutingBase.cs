@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Web.WebPages.Instrumentation;
 using System.Web.WebPages.Resources;
 
 /*
@@ -28,20 +27,6 @@ namespace System.Web.WebPages
     {
         private IVirtualPathFactory _virtualPathFactory;
         private DynamicHttpApplicationState _dynamicAppState;
-        private InstrumentationService _instrumentationService = null;
-
-        internal InstrumentationService InstrumentationService
-        {
-            get
-            {
-                if (_instrumentationService == null)
-                {
-                    _instrumentationService = new InstrumentationService();
-                }
-                return _instrumentationService;
-            }
-            set { _instrumentationService = value; }
-        }
 
         public virtual HttpApplicationStateBase AppState
         {
@@ -86,64 +71,6 @@ namespace System.Web.WebPages
             return UrlUtil.GenerateClientUrl(Context, VirtualPath, path, pathParts);
         }
 
-        protected internal void BeginContext(int startPosition, int length, bool isLiteral)
-        {
-            BeginContext(GetOutputWriter(), VirtualPath, startPosition, length, isLiteral);
-        }
-
-        protected internal void BeginContext(string virtualPath, int startPosition, int length, bool isLiteral)
-        {
-            BeginContext(GetOutputWriter(), virtualPath, startPosition, length, isLiteral);
-        }
-
-        protected internal void BeginContext(TextWriter writer, int startPosition, int length, bool isLiteral)
-        {
-            BeginContext(writer, VirtualPath, startPosition, length, isLiteral);
-        }
-
-        protected internal void BeginContext(TextWriter writer, string virtualPath, int startPosition, int length, bool isLiteral)
-        {
-            // Double check that the instrumentation service is active because WriteAttribute always calls this
-            if (InstrumentationService.IsAvailable)
-            {
-                InstrumentationService.BeginContext(Context,
-                                                    virtualPath,
-                                                    writer,
-                                                    startPosition,
-                                                    length,
-                                                    isLiteral);
-            }
-        }
-
-        protected internal void EndContext(int startPosition, int length, bool isLiteral)
-        {
-            EndContext(GetOutputWriter(), VirtualPath, startPosition, length, isLiteral);
-        }
-
-        protected internal void EndContext(string virtualPath, int startPosition, int length, bool isLiteral)
-        {
-            EndContext(GetOutputWriter(), virtualPath, startPosition, length, isLiteral);
-        }
-
-        protected internal void EndContext(TextWriter writer, int startPosition, int length, bool isLiteral)
-        {
-            EndContext(writer, VirtualPath, startPosition, length, isLiteral);
-        }
-
-        protected internal void EndContext(TextWriter writer, string virtualPath, int startPosition, int length, bool isLiteral)
-        {
-            // Double check that the instrumentation service is active because WriteAttribute always calls this
-            if (InstrumentationService.IsAvailable)
-            {
-                InstrumentationService.EndContext(Context,
-                                                  virtualPath,
-                                                  writer,
-                                                  startPosition,
-                                                  length,
-                                                  isLiteral);
-            }
-        }
-
         internal virtual string GetDirectory(string virtualPath)
         {
             return VirtualPathUtility.GetDirectory(virtualPath);
@@ -175,37 +102,32 @@ namespace System.Web.WebPages
 
         public abstract void WriteLiteral(object value);
 
-        public virtual void WriteAttribute(string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
+        public virtual void WriteAttribute(string name, string prefix, string suffix, params AttributeValue[] values)
         {
             WriteAttributeTo(GetOutputWriter(), name, prefix, suffix, values);
         }
 
-        public virtual void WriteAttributeTo(TextWriter writer, string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
-        {
-            WriteAttributeTo(VirtualPath, writer, name, prefix, suffix, values);
-        }
-
-        protected internal virtual void WriteAttributeTo(string pageVirtualPath, TextWriter writer, string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
+        protected internal virtual void WriteAttributeTo(TextWriter writer, string name, string prefix, string suffix, params AttributeValue[] values)
         {
             bool first = true;
             bool wroteSomething = false;
             if (values.Length == 0)
             {
                 // Explicitly empty attribute, so write the prefix and suffix
-                WritePositionTaggedLiteral(writer, pageVirtualPath, prefix);
-                WritePositionTaggedLiteral(writer, pageVirtualPath, suffix);
+                WriteLiteralTo(writer, prefix);
+                WriteLiteralTo(writer, suffix);
             }
             else
             {
                 for (int i = 0; i < values.Length; i++)
                 {
                     AttributeValue attrVal = values[i];
-                    PositionTagged<object> val = attrVal.Value;
-                    PositionTagged<string> next = i == values.Length - 1 ?
+                    object val = attrVal.Value;
+                    string next = i == values.Length - 1 ?
                         suffix : // End of the list, grab the suffix
                         values[i + 1].Prefix; // Still in the list, grab the next prefix
 
-                    if (val.Value == null)
+                    if (val == null)
                     {
                         // Nothing to write
                         continue;
@@ -220,9 +142,9 @@ namespace System.Web.WebPages
 
                     // Intentionally using is+cast here for performance reasons. This is more performant than as+bool? 
                     // because of boxing.
-                    if (val.Value is bool)
+                    if (val is bool)
                     {
-                        if ((bool)val.Value)
+                        if ((bool)val)
                         {
                             stringValue = name;
                         }
@@ -233,23 +155,18 @@ namespace System.Web.WebPages
                     }
                     else
                     {
-                        stringValue = val.Value as string;
+                        stringValue = val as string;
                     }
 
                     if (first)
                     {
-                        WritePositionTaggedLiteral(writer, pageVirtualPath, prefix);
+                        WriteLiteralTo(writer, prefix);
                         first = false;
                     }
                     else
                     {
-                        WritePositionTaggedLiteral(writer, pageVirtualPath, attrVal.Prefix);
+                        WriteLiteralTo(writer, attrVal.Prefix);
                     }
-
-                    // Calculate length of the source span by the position of the next value (or suffix)
-                    int sourceLength = next.Position - attrVal.Value.Position;
-
-                    BeginContext(writer, pageVirtualPath, attrVal.Value.Position, sourceLength, isLiteral: attrVal.Literal);
 
                     // The extra branching here is to ensure that we call the Write*To(string) overload when
                     // possible.
@@ -259,7 +176,7 @@ namespace System.Web.WebPages
                     }
                     else if (attrVal.Literal)
                     {
-                        WriteLiteralTo(writer, val.Value);
+                        WriteLiteralTo(writer, val);
                     }
                     else if (stringValue != null)
                     {
@@ -267,29 +184,16 @@ namespace System.Web.WebPages
                     }
                     else
                     {
-                        WriteTo(writer, val.Value);
+                        WriteTo(writer, val);
                     }
 
-                    EndContext(writer, pageVirtualPath, attrVal.Value.Position, sourceLength, isLiteral: attrVal.Literal);
                     wroteSomething = true;
                 }
                 if (wroteSomething)
                 {
-                    WritePositionTaggedLiteral(writer, pageVirtualPath, suffix);
+                    WriteLiteralTo(writer, suffix);
                 }
             }
-        }
-
-        private void WritePositionTaggedLiteral(TextWriter writer, string pageVirtualPath, string value, int position)
-        {
-            BeginContext(writer, pageVirtualPath, position, value.Length, isLiteral: true);
-            WriteLiteralTo(writer, value);
-            EndContext(writer, pageVirtualPath, position, value.Length, isLiteral: true);
-        }
-
-        private void WritePositionTaggedLiteral(TextWriter writer, string pageVirtualPath, PositionTagged<string> value)
-        {
-            WritePositionTaggedLiteral(writer, pageVirtualPath, value.Value, value.Position);
         }
 
         // This method is called by generated code and needs to stay in sync with the parser

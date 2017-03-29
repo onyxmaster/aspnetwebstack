@@ -393,16 +393,6 @@ namespace System.Web.Razor.Test.Generator
         }
 
         [Fact]
-        public void CSharpCodeGeneratorCorrectlyInstrumentsRazorCodeWhenInstrumentationRequested()
-        {
-            RunTest("Instrumented", hostConfig: host =>
-            {
-                host.EnableInstrumentation = true;
-                host.InstrumentedSourceFilePath = String.Format("~/{0}.cshtml", host.DefaultClassName);
-            });
-        }
-
-        [Fact]
         public void CSharpCodeGeneratorGeneratesUrlsCorrectlyWithCommentsAndQuotes()
         {
             RunTest("HtmlCommentWithQuote_Single",

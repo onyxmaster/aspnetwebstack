@@ -33,44 +33,44 @@ WriteLiteral(" />\r\n");
 
 WriteLiteral("    <p");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 74), Tuple.Create("\"", 86)
+WriteAttribute("class", " class=\"", "\""
 
 #line 5 "ConditionalAttributes.cshtml"
-, Tuple.Create(Tuple.Create("", 82), Tuple.Create<System.Object, System.Int32>(cls
+, Tuple.Create<System.String, System.Object, System.Boolean>("", cls
 
 #line default
 #line hidden
-, 82), false)
+, false)
 );
 
 WriteLiteral(" />\r\n");
 
 WriteLiteral("    <p");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 98), Tuple.Create("\"", 114)
-, Tuple.Create(Tuple.Create("", 106), Tuple.Create("foo", 106), true)
+WriteAttribute("class", " class=\"", "\""
+, Tuple.Create("", "foo", true)
 
 #line 6 "ConditionalAttributes.cshtml"
-, Tuple.Create(Tuple.Create(" ", 109), Tuple.Create<System.Object, System.Int32>(cls
+, Tuple.Create<System.String, System.Object, System.Boolean>(" ", cls
 
 #line default
 #line hidden
-, 110), false)
+, false)
 );
 
 WriteLiteral(" />\r\n");
 
 WriteLiteral("    <p");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 126), Tuple.Create("\"", 142)
+WriteAttribute("class", " class=\"", "\""
 
 #line 7 "ConditionalAttributes.cshtml"
-, Tuple.Create(Tuple.Create("", 134), Tuple.Create<System.Object, System.Int32>(cls
+, Tuple.Create<System.String, System.Object, System.Boolean>("", cls
 
 #line default
 #line hidden
-, 134), false)
-, Tuple.Create(Tuple.Create(" ", 138), Tuple.Create("foo", 139), true)
+, false)
+, Tuple.Create(" ", "foo", true)
 );
 
 WriteLiteral(" />\r\n");
@@ -79,14 +79,14 @@ WriteLiteral("    <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("checked", Tuple.Create(" checked=\"", 174), Tuple.Create("\"", 187)
+WriteAttribute("checked", " checked=\"", "\""
 
 #line 8 "ConditionalAttributes.cshtml"
-, Tuple.Create(Tuple.Create("", 184), Tuple.Create<System.Object, System.Int32>(ch
+, Tuple.Create<System.String, System.Object, System.Boolean>("", ch
 
 #line default
 #line hidden
-, 184), false)
+, false)
 );
 
 WriteLiteral(" />\r\n");
@@ -95,23 +95,23 @@ WriteLiteral("    <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("checked", Tuple.Create(" checked=\"", 219), Tuple.Create("\"", 236)
-, Tuple.Create(Tuple.Create("", 229), Tuple.Create("foo", 229), true)
+WriteAttribute("checked", " checked=\"", "\""
+, Tuple.Create("", "foo", true)
 
 #line 9 "ConditionalAttributes.cshtml"
-, Tuple.Create(Tuple.Create(" ", 232), Tuple.Create<System.Object, System.Int32>(ch
+, Tuple.Create<System.String, System.Object, System.Boolean>(" ", ch
 
 #line default
 #line hidden
-, 233), false)
+, false)
 );
 
 WriteLiteral(" />\r\n");
 
 WriteLiteral("    <p");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 248), Tuple.Create("\"", 281)
-, Tuple.Create(Tuple.Create("", 256), Tuple.Create<System.Object, System.Int32>(new Template(__razor_attribute_value_writer => {
+WriteAttribute("class", " class=\"", "\""
+, Tuple.Create<System.String, System.Object, System.Boolean>("", new Template(__razor_attribute_value_writer => {
 
 
 #line 10 "ConditionalAttributes.cshtml"
@@ -132,30 +132,30 @@ WriteTo(__razor_attribute_value_writer, cls);
 
 #line default
 #line hidden
-}), 256), false)
+}), false)
 );
 
 WriteLiteral(" />\r\n");
 
 WriteLiteral("    <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 293), Tuple.Create("\"", 305)
-, Tuple.Create(Tuple.Create("", 300), Tuple.Create<System.Object, System.Int32>(Href("~/Foo")
-, 300), false)
+WriteAttribute("href", " href=\"", "\""
+, Tuple.Create("", Href("~/Foo")
+, false)
 );
 
 WriteLiteral(" />\r\n");
 
 WriteLiteral("    <script");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 322), Tuple.Create("\"", 373)
+WriteAttribute("src", " src=\"", "\""
 
 #line 12 "ConditionalAttributes.cshtml"
-, Tuple.Create(Tuple.Create("", 328), Tuple.Create<System.Object, System.Int32>(Url.Content("~/Scripts/jquery-1.6.2.min.js")
+, Tuple.Create<System.String, System.Object, System.Boolean>("", Url.Content("~/Scripts/jquery-1.6.2.min.js")
 
 #line default
 #line hidden
-, 328), false)
+, false)
 );
 
 WriteLiteral(" type=\"text/javascript\"");
@@ -164,14 +164,14 @@ WriteLiteral("></script>\r\n");
 
 WriteLiteral("    <script");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 420), Tuple.Create("\"", 487)
+WriteAttribute("src", " src=\"", "\""
 
 #line 13 "ConditionalAttributes.cshtml"
-, Tuple.Create(Tuple.Create("", 426), Tuple.Create<System.Object, System.Int32>(Url.Content("~/Scripts/modernizr-2.0.6-development-only.js")
+, Tuple.Create<System.String, System.Object, System.Boolean>("", Url.Content("~/Scripts/modernizr-2.0.6-development-only.js")
 
 #line default
 #line hidden
-, 426), false)
+, false)
 );
 
 WriteLiteral(" type=\"text/javascript\"");

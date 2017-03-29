@@ -45,10 +45,9 @@ namespace System.Web.Razor.Generator
                 generatedCode = context.BuildCodeString(cw =>
                 {
                     cw.WriteParameterSeparator();
-                    cw.WriteStartMethodInvoke("Tuple.Create");
-                    cw.WriteLocationTaggedString(Prefix);
+                    cw.WriteStartMethodInvoke("Tuple.Create", "System.String", "System.Object", "System.Boolean");
+                    cw.WriteStringLiteral(Prefix.Value);
                     cw.WriteParameterSeparator();
-                    cw.WriteStartMethodInvoke("Tuple.Create", "System.Object", "System.Int32");
                 });
 
                 _oldRenderingMode = context.ExpressionRenderingMode;
@@ -59,10 +58,9 @@ namespace System.Web.Razor.Generator
                 generatedCode = context.BuildCodeString(cw =>
                 {
                     cw.WriteParameterSeparator();
-                    cw.WriteStartMethodInvoke("Tuple.Create");
-                    cw.WriteLocationTaggedString(Prefix);
+                    cw.WriteStartMethodInvoke("Tuple.Create", "System.String", "System.Object", "System.Boolean");
+                    cw.WriteStringLiteral(Prefix.Value);
                     cw.WriteParameterSeparator();
-                    cw.WriteStartMethodInvoke("Tuple.Create", "System.Object", "System.Int32");
                     cw.WriteStartConstructor(context.Host.GeneratedClassContext.TemplateTypeName);
                     cw.WriteStartLambdaDelegate(ValueWriterName);
                 });
@@ -88,9 +86,6 @@ namespace System.Web.Razor.Generator
                 generatedCode = context.BuildCodeString(cw =>
                 {
                     cw.WriteParameterSeparator();
-                    cw.WriteSnippet(ValueStart.AbsoluteIndex.ToString(CultureInfo.CurrentCulture));
-                    cw.WriteEndMethodInvoke();
-                    cw.WriteParameterSeparator();
                     // literal: false - This attribute value is not a literal value, it is dynamically generated
                     cw.WriteBooleanLiteral(false);
                     cw.WriteEndMethodInvoke();
@@ -104,9 +99,6 @@ namespace System.Web.Razor.Generator
                 {
                     cw.WriteEndLambdaDelegate();
                     cw.WriteEndConstructor();
-                    cw.WriteParameterSeparator();
-                    cw.WriteSnippet(ValueStart.AbsoluteIndex.ToString(CultureInfo.CurrentCulture));
-                    cw.WriteEndMethodInvoke();
                     cw.WriteParameterSeparator();
                     // literal: false - This attribute value is not a literal value, it is dynamically generated
                     cw.WriteBooleanLiteral(false);

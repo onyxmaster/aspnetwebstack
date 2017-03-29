@@ -105,7 +105,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Html\ValidationHelperTest.cs" />
-    <Compile Include="Instrumentation\InstrumentationServiceTest.cs" />
     <Compile Include="Mvc\HttpAntiForgeryExceptionTest.cs" />
     <Compile Include="Mvc\TagBuilderTest.cs" />
     <Compile Include="PreApplicationStartCodeTest.cs" />

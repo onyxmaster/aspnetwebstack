@@ -2,7 +2,6 @@
 
 using System.IO;
 using System.Text;
-using System.Web.WebPages.Instrumentation;
 using Microsoft.TestCommon;
 using Moq;
 
@@ -46,56 +45,12 @@ namespace System.Web.WebPages.Test
         }
 
         [Fact]
-        public void BeginContextSilentlyFailsIfInstrumentationIsNotAvailable()
-        {
-            // Arrange
-            bool called = false;
-
-            var pageMock = new Mock<WebPageExecutingBase>() { CallBase = true };
-            pageMock.Setup(p => p.Context).Returns(new Mock<HttpContextBase>().Object);
-            pageMock.Object.InstrumentationService.IsAvailable = false;
-            pageMock.Object.InstrumentationService.ExtractInstrumentationService = c =>
-            {
-                called = true;
-                return null;
-            };
-
-            // Act
-            pageMock.Object.BeginContext("~/dir/default.cshtml", 0, 1, true);
-
-            // Assert
-            Assert.False(called);
-        }
-
-        [Fact]
-        public void EndContextSilentlyFailsIfInstrumentationIsNotAvailable()
-        {
-            // Arrange
-            bool called = false;
-
-            var pageMock = new Mock<WebPageExecutingBase>() { CallBase = true };
-            pageMock.Setup(p => p.Context).Returns(new Mock<HttpContextBase>().Object);
-            pageMock.Object.InstrumentationService.IsAvailable = false;
-            pageMock.Object.InstrumentationService.ExtractInstrumentationService = c =>
-            {
-                called = true;
-                return null;
-            };
-
-            // Act
-            pageMock.Object.EndContext("~/dir/default.cshtml", 0, 1, true);
-
-            // Assert
-            Assert.False(called);
-        }
-
-        [Fact]
         public void WriteAttributeToWritesAttributeNormallyIfNoValuesSpecified()
         {
             WriteAttributeTest(
                 name: "alt",
-                prefix: new PositionTagged<string>(" alt=\"", 42),
-                suffix: new PositionTagged<string>("\"", 24),
+                prefix: " alt=\"",
+                suffix: "\"",
                 expected: " alt=\"\"");
         }
 
@@ -104,10 +59,10 @@ namespace System.Web.WebPages.Test
         {
             WriteAttributeTest(
                 name: "alt",
-                prefix: new PositionTagged<string>(" alt=\"", 42),
-                suffix: new PositionTagged<string>("\"", 24),
+                prefix: " alt=\"",
+                suffix: "\"",
                 values: new[] {
-                    new AttributeValue(new PositionTagged<string>(String.Empty, 142), new PositionTagged<object>(null, 124), literal: true)
+                    new AttributeValue(String.Empty, null, literal: true)
                 },
                 expected: "");
         }
@@ -117,10 +72,10 @@ namespace System.Web.WebPages.Test
         {
             WriteAttributeTest(
                 name: "alt",
-                prefix: new PositionTagged<string>(" alt=\"", 42),
-                suffix: new PositionTagged<string>("\"", 24),
+                prefix: " alt=\"",
+                suffix: "\"",
                 values: new[] {
-                    new AttributeValue(new PositionTagged<string>(String.Empty, 142), new PositionTagged<object>(false, 124), literal: true)
+                    new AttributeValue(String.Empty, (object)false, literal: true)
                 },
                 expected: "");
         }
@@ -130,10 +85,10 @@ namespace System.Web.WebPages.Test
         {
             WriteAttributeTest(
                 name: "alt",
-                prefix: new PositionTagged<string>(" alt=\"", 42),
-                suffix: new PositionTagged<string>("\"", 24),
+                prefix: " alt=\"",
+                suffix: "\"",
                 values: new[] {
-                    new AttributeValue(new PositionTagged<string>("    ", 142), new PositionTagged<object>("foo", 124), literal: true)
+                    new AttributeValue("    ", (object)"foo", literal: true)
                 },
                 expected: " alt=\"foo\"");
         }
@@ -143,11 +98,11 @@ namespace System.Web.WebPages.Test
         {
             WriteAttributeTest(
                 name: "alt",
-                prefix: new PositionTagged<string>(" alt=\"", 42),
-                suffix: new PositionTagged<string>("\"", 24),
+                prefix: " alt=\"",
+                suffix: "\"",
                 values: new[] {
-                    new AttributeValue(new PositionTagged<string>("    ", 142), new PositionTagged<object>("foo", 124), literal: true),
-                    new AttributeValue(new PositionTagged<string>("glorb", 142), new PositionTagged<object>("bar", 124), literal: true)
+                    new AttributeValue("    ", (object)"foo", literal: true),
+                    new AttributeValue("glorb", (object)"bar", literal: true)
                 },
                 expected: " alt=\"fooglorbbar\"");
         }
@@ -157,11 +112,11 @@ namespace System.Web.WebPages.Test
         {
             WriteAttributeTest(
                 name: "alt",
-                prefix: new PositionTagged<string>(" alt=\"", 42),
-                suffix: new PositionTagged<string>("\"", 24),
+                prefix: " alt=\"",
+                suffix: "\"",
                 values: new[] {
-                    new AttributeValue(new PositionTagged<string>("    ", 142), new PositionTagged<object>(null, 124), literal: true),
-                    new AttributeValue(new PositionTagged<string>("glorb", 142), new PositionTagged<object>("bar", 124), literal: true)
+                    new AttributeValue("    ", null, literal: true),
+                    new AttributeValue("glorb", (object)"bar", literal: true)
                 },
                 expected: " alt=\"bar\"");
         }
@@ -178,25 +133,24 @@ namespace System.Web.WebPages.Test
             string alreadyEncoded = "Show Size 6½-8";
             WriteAttributeTest(
                 name: "alt",
-                prefix: new PositionTagged<string>(" cool=\"", 33),
-                suffix: new PositionTagged<string>("\"", 70),
+                prefix: " cool=\"",
+                suffix: "\"",
                 values: new[] {
-                    AttributeValue.FromTuple(Tuple.Create(Tuple.Create("", 40), Tuple.Create<Object, Int32>(new HtmlString(alreadyEncoded), 40), false)), 
+                    AttributeValue.FromTuple(Tuple.Create("", (object)new HtmlString(alreadyEncoded), false)), 
                 },
                 expected: " cool=\"" + alreadyEncoded + "\"");
         }
 
-        private void WriteAttributeTest(string name, PositionTagged<string> prefix, PositionTagged<string> suffix, string expected)
+        private void WriteAttributeTest(string name, string prefix, string suffix, string expected)
         {
             WriteAttributeTest(name, prefix, suffix, new AttributeValue[0], expected);
         }
 
-        private void WriteAttributeTest(string name, PositionTagged<string> prefix, PositionTagged<string> suffix, AttributeValue[] values, string expected)
+        private void WriteAttributeTest(string name, string prefix, string suffix, AttributeValue[] values, string expected)
         {
             // Arrange
             var pageMock = new Mock<WebPageExecutingBase>() { CallBase = true };
             pageMock.Setup(p => p.Context).Returns(new Mock<HttpContextBase>().Object);
-            pageMock.Object.InstrumentationService.IsAvailable = false;
 
             StringBuilder written = new StringBuilder();
             StringWriter writer = new StringWriter(written);
