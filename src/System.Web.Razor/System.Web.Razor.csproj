@@ -39,7 +39,6 @@
     <Compile Include="Editor\BackgroundParser.cs" />
     <Compile Include="Editor\RazorEditorTrace.cs" />
     <Compile Include="Generator\AttributeBlockCodeGenerator.cs" />
-    <Compile Include="Generator\CodeWriterExtensions.cs" />
     <Compile Include="Generator\DynamicAttributeBlockCodeGenerator.cs" />
     <Compile Include="Generator\ExpressionRenderingMode.cs" />
     <Compile Include="Generator\LiteralAttributeCodeGenerator.cs" />

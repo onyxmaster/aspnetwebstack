@@ -10,19 +10,6 @@ namespace System.Web.Razor.Generator
     {
         public override void GenerateStartBlockCode(Block target, CodeGeneratorContext context)
         {
-            if (context.Host.EnableInstrumentation && context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
-            {
-                Span contentSpan = target.Children
-                    .OfType<Span>()
-                    .Where(s => s.Kind == SpanKind.Code || s.Kind == SpanKind.Markup)
-                    .FirstOrDefault();
-
-                if (contentSpan != null)
-                {
-                    context.AddContextCall(contentSpan, context.Host.GeneratedClassContext.BeginContextMethodName, false);
-                }
-            }
-
             string writeInvocation = context.BuildCodeString(cw =>
             {
                 if (context.Host.DesignTimeMode)
@@ -70,19 +57,6 @@ namespace System.Web.Razor.Generator
             context.MarkEndOfGeneratedCode();
             context.BufferStatementFragment(endBlock);
             context.FlushBufferedStatement();
-
-            if (context.Host.EnableInstrumentation && context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
-            {
-                Span contentSpan = target.Children
-                    .OfType<Span>()
-                    .Where(s => s.Kind == SpanKind.Code || s.Kind == SpanKind.Markup)
-                    .FirstOrDefault();
-
-                if (contentSpan != null)
-                {
-                    context.AddContextCall(contentSpan, context.Host.GeneratedClassContext.EndContextMethodName, false);
-                }
-            }
         }
 
         public override void GenerateCode(Span target, CodeGeneratorContext context)

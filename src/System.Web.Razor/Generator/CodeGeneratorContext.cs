@@ -263,29 +263,6 @@ namespace System.Web.Razor.Generator
             });
         }
 
-        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification = "We explicitly want the lower-case string here")]
-        public void AddContextCall(Span contentSpan, string methodName, bool isLiteral)
-        {
-            AddStatement(BuildCodeString(cw =>
-            {
-                cw.WriteStartMethodInvoke(methodName);
-                if (!String.IsNullOrEmpty(TargetWriterName))
-                {
-                    cw.WriteSnippet(TargetWriterName);
-                    cw.WriteParameterSeparator();
-                }
-                cw.WriteStringLiteral(Host.InstrumentedSourceFilePath);
-                cw.WriteParameterSeparator();
-                cw.WriteSnippet(contentSpan.Start.AbsoluteIndex.ToString(CultureInfo.InvariantCulture));
-                cw.WriteParameterSeparator();
-                cw.WriteSnippet(contentSpan.Content.Length.ToString(CultureInfo.InvariantCulture));
-                cw.WriteParameterSeparator();
-                cw.WriteSnippet(isLiteral.ToString().ToLowerInvariant());
-                cw.WriteEndMethodInvoke();
-                cw.WriteEndStatement();
-            }));
-        }
-
         internal CodeWriter CreateCodeWriter()
         {
             Debug.Assert(CodeWriterFactory != null);

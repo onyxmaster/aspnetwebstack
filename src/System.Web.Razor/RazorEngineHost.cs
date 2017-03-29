@@ -29,7 +29,6 @@ namespace System.Web.Razor
         internal const string InternalDefaultClassName = "__CompiledTemplate";
         internal const string InternalDefaultNamespace = "Razor";
 
-        private bool _instrumentationActive = false;
         private Func<ParserBase> _markupParserFactory;
 
         private int _tabSize = 4;
@@ -42,7 +41,6 @@ namespace System.Web.Razor
             DesignTimeMode = false;
             DefaultNamespace = InternalDefaultNamespace;
             DefaultClassName = InternalDefaultClassName;
-            EnableInstrumentation = false;
         }
 
         /// <summary>
@@ -112,16 +110,6 @@ namespace System.Web.Razor
         public virtual RazorCodeLanguage CodeLanguage { get; protected set; }
 
         /// <summary>
-        /// Boolean indicating if instrumentation code should be injected into the output page
-        /// </summary>
-        public virtual bool EnableInstrumentation
-        {
-            // Always disable instrumentation in DesignTimeMode.
-            get { return !DesignTimeMode && _instrumentationActive; }
-            set { _instrumentationActive = value; }
-        }
-
-        /// <summary>
         /// Gets or sets whether the design time editor is using tabs or spaces for indentation.
         /// </summary>
         public virtual bool IsIndentingWithTabs { get; set; }
@@ -141,11 +129,6 @@ namespace System.Web.Razor
                 _tabSize = Math.Max(value, 1);
             }
         }
-
-        /// <summary>
-        /// Gets or sets the path to use for this document when generating Instrumentation calls
-        /// </summary>
-        public virtual string InstrumentedSourceFilePath { get; set; }
 
         /// <summary>
         /// Constructs the markup parser.  Must return a new instance on EVERY call to ensure thread-safety
