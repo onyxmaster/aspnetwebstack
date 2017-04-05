@@ -220,7 +220,7 @@ namespace System.Web.WebPages.Html
                 foreach (PropertyHelper property in HtmlAttributePropertyHelper.GetProperties(htmlAttributes))
                 {
                     var value = property.GetValue(htmlAttributes);
-                    if (value != null)
+                    if (value != null && !value.Equals(null))
                     {
                         result.Add(property.Name, value);
                     }
