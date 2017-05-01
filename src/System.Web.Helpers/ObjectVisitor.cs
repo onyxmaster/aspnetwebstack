@@ -368,7 +368,7 @@ namespace System.Web.Helpers
 
             return type.Attributes == (TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit)
                 && type.Namespace == null
-                && type.Name.StartsWith("<>f__AnonymousType", StringComparison.Ordinal);
+                && (type.Name.StartsWith("<>f__AnonymousType", StringComparison.Ordinal) || type.Name.Contains(".<>f__AnonymousType"));
         }
 
         private static bool ImplementsInterface(Type type, Type targetInterfaceType)
