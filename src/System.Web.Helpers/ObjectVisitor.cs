@@ -366,11 +366,9 @@ namespace System.Web.Helpers
         {
             Debug.Assert(type != null, "Type should not be null");
 
-            // TODO: The only way to detect anonymous types right now.
-            return Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute), false)
-                   && type.IsGenericType && type.Name.Contains("AnonymousType")
-                   && (type.Name.StartsWith("<>", StringComparison.OrdinalIgnoreCase) || type.Name.StartsWith("VB$", StringComparison.OrdinalIgnoreCase) || type.Name.Contains(".<>"))
-                   && (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic;
+            return type.Attributes == (TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit)
+                && type.Namespace == null
+                && type.Name.StartsWith("<>f__AnonymousType", StringComparison.Ordinal);
         }
 
         private static bool ImplementsInterface(Type type, Type targetInterfaceType)
