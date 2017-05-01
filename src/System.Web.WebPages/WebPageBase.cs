@@ -218,29 +218,6 @@ namespace System.Web.WebPages
             // the last file to execute in the chain. There can still be layout pages
             // and partial pages, but they are never part of the hierarchy.
 
-            // (add server header for falcon debugging)
-            // call to MapPath() is expensive. If we are not emiting source files to header, 
-            // don't bother to populate the SourceFiles collection. This saves perf significantly.
-            if (WebPageHttpHandler.ShouldGenerateSourceHeader(Context))
-            {
-                try
-                {
-                    string vp = VirtualPath;
-                    if (vp != null)
-                    {
-                        string path = Context.Request.MapPath(vp);
-                        if (!path.IsEmpty())
-                        {
-                            PageContext.SourceFiles.Add(path);
-                        }
-                    }
-                }
-                catch
-                {
-                    // we really don't care if this ever fails, so we swallow all exceptions
-                }
-            }
-
             TemplateStack.Push(Context, this);
             try
             {
