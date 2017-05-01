@@ -35,40 +35,6 @@ namespace System.Web.WebPages.Test
             LayoutBasicTestInternal(layoutPath, pagePath, layoutPage);
         }
 
-        [Fact]
-        public void SourceFileWithLayoutPageTest()
-        {
-            // Arrange
-            var pagePath = "~/MyApp/index.cshtml";
-            var layoutPath = "~/MyFiles/Layout.cshtml";
-            var layoutPage = "~/MyFiles/Layout.cshtml";
-            var content = "hello world";
-            var title = "MyPage";
-            var page = CreatePageWithLayout(
-                p =>
-                {
-                    p.PageData["Title"] = title;
-                    p.WriteLiteral(content);
-                },
-                p =>
-                {
-                    p.WriteLiteral(p.PageData["Title"]);
-                    p.Write(p.RenderBody());
-                }, pagePath, layoutPath, layoutPage);
-            var request = new Mock<HttpRequestBase>();
-            request.SetupGet(c => c.Path).Returns("/myapp/index.cshtml");
-            request.SetupGet(c => c.RawUrl).Returns("http://localhost:8080/index.cshtml");
-            request.SetupGet(c => c.IsLocal).Returns(true);
-            request.Setup(c => c.MapPath(It.IsAny<string>())).Returns<string>(c => c);
-            request.Setup(c => c.Browser.IsMobileDevice).Returns(false);
-            request.Setup(c => c.Cookies).Returns(new HttpCookieCollection());
-
-            var result = Utils.RenderWebPage(page, request: request.Object);
-            Assert.Equal(2, page.PageContext.SourceFiles.Count);
-            Assert.Contains("~/MyApp/index.cshtml", page.PageContext.SourceFiles);
-            Assert.Contains("~/MyFiles/Layout.cshtml", page.PageContext.SourceFiles);
-        }
-
         private static void LayoutBasicTestInternal(string layoutPath, string pagePath = "~/index.cshtml", string layoutPage = "Layout.cshtml")
         {
             // The page ~/index.cshtml does the following:

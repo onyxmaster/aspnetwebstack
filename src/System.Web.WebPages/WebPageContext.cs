@@ -11,7 +11,6 @@ namespace System.Web.WebPages
     // Class for containing various pieces of data required by a WebPage
     public class WebPageContext
     {
-        private static readonly object _sourceFileKey = new object();
         private Stack<TextWriter> _outputStack;
         private Stack<Dictionary<string, SectionWriter>> _sectionWritersStack;
         private IDictionary<object, dynamic> _pageData;
@@ -121,21 +120,6 @@ namespace System.Web.WebPages
                 return _sectionWritersStack;
             }
             set { _sectionWritersStack = value; }
-        }
-
-        // NOTE: We use a hashset because order doesn't matter and we want to eliminate duplicates
-        internal HashSet<string> SourceFiles
-        {
-            get
-            {
-                HashSet<string> sourceFiles = HttpContext.Items[_sourceFileKey] as HashSet<string>;
-                if (sourceFiles == null)
-                {
-                    sourceFiles = new HashSet<string>();
-                    HttpContext.Items[_sourceFileKey] = sourceFiles;
-                }
-                return sourceFiles;
-            }
         }
 
         internal static WebPageContext CreateNestedPageContext<TModel>(WebPageContext parentContext, IDictionary<object, dynamic> pageData, TModel model, bool isLayoutPage)
