@@ -73,7 +73,7 @@ namespace System.Web.WebPages
 
             return type.Attributes == (TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit)
                 && type.Namespace == null
-                && type.Name.StartsWith("<>f__AnonymousType", StringComparison.Ordinal);
+                && (type.Name.StartsWith("<>f__AnonymousType", StringComparison.Ordinal) || type.Name.Contains(".<>f__AnonymousType"));
         }
     }
 }
