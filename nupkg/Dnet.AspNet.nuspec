@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Dnet.AspNet</id>
-    <version>3.2.6</version>
+    <version>3.12.6</version>
     <title>DRIVE.NET build of Microsoft ASP.NET</title>
     <authors>Microsoft, DRIVE.NET</authors>
     <owners>DRIVE.NET, Inc.</owners>
