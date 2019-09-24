@@ -39,8 +39,10 @@
     <!-- Disable C# 6.0 features in Visual Studio. -->
     <LangVersion Condition=" '$(MSBuildProjectExtension)' == '.csproj' ">5</LangVersion>
 
+    <!-- Everything is delay signed by default -->
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(WebStackRootPath)\tools\Dnet.AspNet.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
+    <AssemblyOriginatorKeyFile>$(WebStackRootPath)\tools\35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <!-- Per-configuration properties -->
