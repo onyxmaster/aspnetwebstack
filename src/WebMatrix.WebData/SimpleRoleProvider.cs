@@ -221,7 +221,7 @@ namespace WebMatrix.WebData
                             }
 
                             // REVIEW: is there a way to batch up these inserts?
-                            int rows = db.Execute("INSERT INTO " + UsersInRoleTableName + " VALUES (" + userIds[uId] + "," + roleIds[rId] + "); ");
+                            int rows = db.Execute("INSERT INTO " + UsersInRoleTableName + " VALUES (" + userIds[uId].ToString(System.Globalization.NumberFormatInfo.InvariantInfo) + "," + roleIds[rId].ToString(System.Globalization.NumberFormatInfo.InvariantInfo) + "); ");
                             if (rows != 1)
                             {
                                 throw new ProviderException(WebDataResources.Security_DbFailure);
@@ -411,7 +411,7 @@ namespace WebMatrix.WebData
                         foreach (int roleId in roleIds)
                         {
                             // Review: Is there a way to do these all in one query?
-                            int rows = db.Execute("DELETE FROM " + UsersInRoleTableName + " WHERE UserId = " + userId + " and RoleId = " + roleId);
+                            int rows = db.Execute("DELETE FROM " + UsersInRoleTableName + " WHERE UserId = " + userId.ToString(System.Globalization.NumberFormatInfo.InvariantInfo) + " and RoleId = " + roleId.ToString(System.Globalization.NumberFormatInfo.InvariantInfo));
                             if (rows != 1)
                             {
                                 throw new ProviderException(WebDataResources.Security_DbFailure);
