@@ -8,6 +8,7 @@
     <DefineConstants>$(DefineConstants);NEWTONSOFTJSON10</DefineConstants>
     <Configurations>$(Configurations);CodeAnalysis</Configurations>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.7.142.0" />
