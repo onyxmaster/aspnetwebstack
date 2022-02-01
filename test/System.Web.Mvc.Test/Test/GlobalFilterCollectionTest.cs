@@ -21,7 +21,6 @@ namespace System.Web.Mvc.Test
                 {
                     new object[] { "string", },
                     new object[] { 42, },
-                    new object[] { new System.Web.Http.AuthorizeAttribute(), },
                 };
             }
         }
