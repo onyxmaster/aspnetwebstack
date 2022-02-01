@@ -23,7 +23,14 @@ namespace System.Web.Mvc
                 Type[] typesInAsm;
                 try
                 {
-                    typesInAsm = assembly.GetTypes();
+                    try
+                    {
+                        typesInAsm = assembly.GetExportedTypes();
+                    }
+                    catch (NotImplementedException)
+                    {
+                        typesInAsm = assembly.GetTypes();
+                    }
                 }
                 catch (ReflectionTypeLoadException ex)
                 {

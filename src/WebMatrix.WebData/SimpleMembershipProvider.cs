@@ -894,7 +894,7 @@ namespace WebMatrix.WebData
         {
             var pwdQuery = db.Query(@"SELECT m.[Password] " +
                                     @"FROM " + MembershipTableName + " m, " + SafeUserTableName + " u " +
-                                    @"WHERE m.UserId = " + userId + " AND m.UserId = u." + SafeUserIdColumn).ToList();
+                                    @"WHERE m.UserId = " + userId.ToString(System.Globalization.NumberFormatInfo.InvariantInfo) + " AND m.UserId = u." + SafeUserIdColumn).ToList();
             // REVIEW: Should get exactly one match, should we throw if we get > 1?
             if (pwdQuery.Count != 1)
             {

@@ -63,6 +63,10 @@ namespace System.Web.WebPages
                     try
                     {
                         culture = new CultureInfo(userLanguageEntry);
+                        if (culture != null && culture.CultureTypes.HasFlag(CultureTypes.UserCustomCulture))
+                        {
+                            culture = null;
+                        }
                     }
                     catch (CultureNotFoundException)
                     {

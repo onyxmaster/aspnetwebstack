@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Web.Mvc.Properties;
 using System.Web.UI;
+using System.Web.WebPages;
 
 namespace System.Web.Mvc
 {
@@ -277,7 +278,7 @@ namespace System.Web.Mvc
                 }
 
                 // Swap in a new TextWriter so we can capture the output
-                StringWriter cachingWriter = new StringWriter(CultureInfo.InvariantCulture);
+                var cachingWriter = new StringBlockWriter(CultureInfo.InvariantCulture);
                 TextWriter originalWriter = filterContext.HttpContext.Response.Output;
                 filterContext.HttpContext.Response.Output = cachingWriter;
 

@@ -33,25 +33,6 @@ namespace System.Web.Mvc.Razor.Test
             Assert.False(host.NamespaceImports.Contains("WebMatrix.WebData"));
         }
 
-#if VB_ENABLED
-        [Fact]
-        public void DecorateGodeGenerator_ReplacesVBCodeGeneratorWithMvcSpecificOne() {
-            // Arrange
-            MvcWebPageRazorHost host = new MvcWebPageRazorHost("foo.vbhtml", "bar");
-            var generator = new VBRazorCodeGenerator("someClass", "root.name", "foo.vbhtml", host);
-
-            // Act
-            var result = host.DecorateCodeGenerator(generator);
-
-            // Assert
-            Assert.IsType<MvcVBRazorCodeGenerator>(result);
-            Assert.Equal("someClass", result.ClassName);
-            Assert.Equal("root.name", result.RootNamespaceName);
-            Assert.Equal("foo.vbhtml", result.SourceFileName);
-            Assert.Same(host, result.Host);
-        }
-#endif
-
         [Fact]
         public void DecorateGodeGenerator_ReplacesCSharpCodeGeneratorWithMvcSpecificOne()
         {
@@ -90,20 +71,5 @@ namespace System.Web.Mvc.Razor.Test
             // Assert
             Assert.IsType<MvcCSharpRazorCodeParser>(result);
         }
-
-#if VB_ENABLED
-        [Fact]
-        public void DecorateCodeParser_ReplacesVBCodeParserWithMvcSpecificOne() {
-            // Arrange
-            MvcWebPageRazorHost host = new MvcWebPageRazorHost("foo.vbhtml", "bar");
-            var parser = new VBCodeParser();
-
-            // Act
-            var result = host.DecorateCodeParser(parser);
-
-            // Assert
-            Assert.IsType<MvcVBRazorCodeParser>(result);
-        }
-#endif
     }
 }

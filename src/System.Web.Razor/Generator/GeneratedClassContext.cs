@@ -84,21 +84,6 @@ namespace System.Web.Razor.Generator
             DefineSectionMethodName = defineSectionMethodName;
         }
 
-        public GeneratedClassContext(string executeMethodName,
-                                     string writeMethodName,
-                                     string writeLiteralMethodName,
-                                     string writeToMethodName,
-                                     string writeLiteralToMethodName,
-                                     string templateTypeName,
-                                     string defineSectionMethodName,
-                                     string beginContextMethodName,
-                                     string endContextMethodName)
-            : this(executeMethodName, writeMethodName, writeLiteralMethodName, writeToMethodName, writeLiteralToMethodName, templateTypeName, defineSectionMethodName)
-        {
-            BeginContextMethodName = beginContextMethodName;
-            EndContextMethodName = endContextMethodName;
-        }
-
         public string WriteMethodName { get; private set; }
         public string WriteLiteralMethodName { get; private set; }
         public string WriteToMethodName { get; private set; }
@@ -106,8 +91,6 @@ namespace System.Web.Razor.Generator
         public string ExecuteMethodName { get; private set; }
 
         // Optional Items
-        public string BeginContextMethodName { get; set; }
-        public string EndContextMethodName { get; set; }
         public string LayoutPropertyName { get; set; }
         public string DefineSectionMethodName { get; set; }
         public string TemplateTypeName { get; set; }
@@ -127,11 +110,6 @@ namespace System.Web.Razor.Generator
             get { return !String.IsNullOrEmpty(TemplateTypeName); }
         }
 
-        public bool SupportsInstrumentation
-        {
-            get { return !String.IsNullOrEmpty(BeginContextMethodName) && !String.IsNullOrEmpty(EndContextMethodName); }
-        }
-
         public override bool Equals(object obj)
         {
             if (!(obj is GeneratedClassContext))
@@ -145,9 +123,7 @@ namespace System.Web.Razor.Generator
                    String.Equals(WriteToMethodName, other.WriteToMethodName, StringComparison.Ordinal) &&
                    String.Equals(WriteLiteralToMethodName, other.WriteLiteralToMethodName, StringComparison.Ordinal) &&
                    String.Equals(ExecuteMethodName, other.ExecuteMethodName, StringComparison.Ordinal) &&
-                   String.Equals(TemplateTypeName, other.TemplateTypeName, StringComparison.Ordinal) &&
-                   String.Equals(BeginContextMethodName, other.BeginContextMethodName, StringComparison.Ordinal) &&
-                   String.Equals(EndContextMethodName, other.EndContextMethodName, StringComparison.Ordinal);
+                   String.Equals(TemplateTypeName, other.TemplateTypeName, StringComparison.Ordinal);
         }
 
         public override int GetHashCode()
@@ -159,9 +135,7 @@ namespace System.Web.Razor.Generator
                    WriteToMethodName.GetHashCode() ^
                    WriteLiteralToMethodName.GetHashCode() ^
                    ExecuteMethodName.GetHashCode() ^
-                   TemplateTypeName.GetHashCode() ^
-                   BeginContextMethodName.GetHashCode() ^
-                   EndContextMethodName.GetHashCode();
+                   TemplateTypeName.GetHashCode();
         }
 
         public static bool operator ==(GeneratedClassContext left, GeneratedClassContext right)

@@ -16,9 +16,7 @@ namespace System.Web.Mvc.Test
             string[] expected = new[]
             {
                 "~/Areas/{2}/Views/{1}/{0}.cshtml",
-                "~/Areas/{2}/Views/{1}/{0}.vbhtml",
                 "~/Areas/{2}/Views/Shared/{0}.cshtml",
-                "~/Areas/{2}/Views/Shared/{0}.vbhtml"
             };
 
             // Act
@@ -35,9 +33,7 @@ namespace System.Web.Mvc.Test
             string[] expected = new[]
             {
                 "~/Areas/{2}/Views/{1}/{0}.cshtml",
-                "~/Areas/{2}/Views/{1}/{0}.vbhtml",
                 "~/Areas/{2}/Views/Shared/{0}.cshtml",
-                "~/Areas/{2}/Views/Shared/{0}.vbhtml"
             };
 
             // Act
@@ -54,9 +50,7 @@ namespace System.Web.Mvc.Test
             string[] expected = new[]
             {
                 "~/Areas/{2}/Views/{1}/{0}.cshtml",
-                "~/Areas/{2}/Views/{1}/{0}.vbhtml",
                 "~/Areas/{2}/Views/Shared/{0}.cshtml",
-                "~/Areas/{2}/Views/Shared/{0}.vbhtml"
             };
 
             // Act
@@ -126,7 +120,7 @@ namespace System.Web.Mvc.Test
             // Arrange
             TestableRazorViewEngine viewEngine = new TestableRazorViewEngine()
             {
-                FileExtensions = new[] { "cshtml", "vbhtml", "razor" }
+                FileExtensions = new[] { "cshtml", "razor" }
             };
 
             // Act
@@ -135,7 +129,7 @@ namespace System.Web.Mvc.Test
             // Assert
             Assert.Equal("partial path", result.ViewPath);
             Assert.Equal("master path", result.LayoutPath);
-            Assert.Equal(new[] { "cshtml", "vbhtml", "razor" }, result.ViewStartFileExtensions.ToArray());
+            Assert.Equal(new[] { "cshtml", "razor" }, result.ViewStartFileExtensions.ToArray());
             Assert.True(result.RunViewStartPages);
         }
 
@@ -146,7 +140,6 @@ namespace System.Web.Mvc.Test
             string[] expected = new[]
             {
                 "cshtml",
-                "vbhtml",
             };
 
             // Act
@@ -163,9 +156,7 @@ namespace System.Web.Mvc.Test
             string[] expected = new[]
             {
                 "~/Views/{1}/{0}.cshtml",
-                "~/Views/{1}/{0}.vbhtml",
                 "~/Views/Shared/{0}.cshtml",
-                "~/Views/Shared/{0}.vbhtml"
             };
 
             // Act
@@ -182,9 +173,7 @@ namespace System.Web.Mvc.Test
             string[] expected = new[]
             {
                 "~/Views/{1}/{0}.cshtml",
-                "~/Views/{1}/{0}.vbhtml",
                 "~/Views/Shared/{0}.cshtml",
-                "~/Views/Shared/{0}.vbhtml"
             };
 
             // Act
@@ -201,9 +190,7 @@ namespace System.Web.Mvc.Test
             string[] expected = new[]
             {
                 "~/Views/{1}/{0}.cshtml",
-                "~/Views/{1}/{0}.vbhtml",
                 "~/Views/Shared/{0}.cshtml",
-                "~/Views/Shared/{0}.vbhtml"
             };
 
             // Act

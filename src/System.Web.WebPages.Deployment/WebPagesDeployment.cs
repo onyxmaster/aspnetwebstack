@@ -31,7 +31,7 @@ namespace System.Web.WebPages.Deployment
 
         private const string WebPagesRegistryKey = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ASP.NET Web Pages\v{0}.{1}";
         internal static readonly string CacheKeyPrefix = "__System.Web.WebPages.Deployment__";
-        private static readonly string[] _webPagesExtensions = new[] { ".cshtml", ".vbhtml" };
+        private static readonly string[] _webPagesExtensions = new[] { ".cshtml" };
         private static readonly object _installPathNotFound = new object();
         private static readonly IFileSystem _fileSystem = new PhysicalFileSystem();
 

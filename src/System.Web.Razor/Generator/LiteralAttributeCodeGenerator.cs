@@ -37,16 +37,15 @@ namespace System.Web.Razor.Generator
             {
                 cw.WriteParameterSeparator();
                 cw.WriteStartMethodInvoke("Tuple.Create");
-                cw.WriteLocationTaggedString(Prefix);
+                cw.WriteStringLiteral(Prefix.Value);
                 cw.WriteParameterSeparator();
                 if (ValueGenerator != null)
                 {
-                    cw.WriteStartMethodInvoke("Tuple.Create", "System.Object", "System.Int32");
                     context.ExpressionRenderingMode = ExpressionRenderingMode.InjectCode;
                 }
                 else
                 {
-                    cw.WriteLocationTaggedString(Value);
+                    cw.WriteStringLiteral(Value.Value);
                     cw.WriteParameterSeparator();
                     // literal: true - This attribute value is a literal value
                     cw.WriteBooleanLiteral(true);
@@ -63,9 +62,6 @@ namespace System.Web.Razor.Generator
                 context.ExpressionRenderingMode = oldMode;
                 context.AddStatement(context.BuildCodeString(cw =>
                 {
-                    cw.WriteParameterSeparator();
-                    cw.WriteSnippet(ValueGenerator.Location.AbsoluteIndex.ToString(CultureInfo.CurrentCulture));
-                    cw.WriteEndMethodInvoke();
                     cw.WriteParameterSeparator();
                     // literal: false - This attribute value is not a literal value, it is dynamically generated
                     cw.WriteBooleanLiteral(false);

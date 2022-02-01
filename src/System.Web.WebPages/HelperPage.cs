@@ -7,7 +7,6 @@ using System.IO;
 using System.Security.Principal;
 using System.Web.Caching;
 using System.Web.WebPages.Html;
-using System.Web.WebPages.Instrumentation;
 
 namespace System.Web.WebPages
 {
@@ -15,19 +14,6 @@ namespace System.Web.WebPages
     public class HelperPage
     {
         private static WebPageContext _pageContext;
-        private static InstrumentationService _instrumentationService = null;
-
-        private static InstrumentationService InstrumentationService
-        {
-            get
-            {
-                if (_instrumentationService == null)
-                {
-                    _instrumentationService = new InstrumentationService();
-                }
-                return _instrumentationService;
-            }
-        }
 
         public static HttpContextBase Context
         {
@@ -223,47 +209,9 @@ namespace System.Web.WebPages
             WebPageBase.WriteLiteralTo(writer, value);
         }
 
-        public static void WriteAttributeTo(TextWriter writer, string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
+        public static void WriteAttributeTo(TextWriter writer, string name, string prefix, string suffix, params AttributeValue[] values)
         {
-            CurrentPage.WriteAttributeTo(VirtualPath, writer, name, prefix, suffix, values);
-        }
-
-        public static void BeginContext(string virtualPath, int startPosition, int length, bool isLiteral)
-        {
-            BeginContext(PageContext.Page.GetOutputWriter(), virtualPath, startPosition, length, isLiteral);
-        }
-
-        public static void BeginContext(TextWriter writer, string virtualPath, int startPosition, int length, bool isLiteral)
-        {
-            // Double check that the instrumentation service is active because WriteAttribute always calls this
-            if (InstrumentationService.IsAvailable)
-            {
-                InstrumentationService.BeginContext(Context,
-                                                    virtualPath,
-                                                    writer,
-                                                    startPosition,
-                                                    length,
-                                                    isLiteral);
-            }
-        }
-
-        public static void EndContext(string virtualPath, int startPosition, int length, bool isLiteral)
-        {
-            EndContext(PageContext.Page.GetOutputWriter(), virtualPath, startPosition, length, isLiteral);
-        }
-
-        public static void EndContext(TextWriter writer, string virtualPath, int startPosition, int length, bool isLiteral)
-        {
-            // Double check that the instrumentation service is active because WriteAttribute always calls this
-            if (InstrumentationService.IsAvailable)
-            {
-                InstrumentationService.EndContext(Context,
-                                                  virtualPath,
-                                                  writer,
-                                                  startPosition,
-                                                  length,
-                                                  isLiteral);
-            }
+            CurrentPage.WriteAttributeTo(writer, name, prefix, suffix, values);
         }
     }
 }

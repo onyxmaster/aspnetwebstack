@@ -291,7 +291,7 @@ namespace System.Net.Http
         {
             Contract.Assert(message != null, "message cannot be null");
             message.Append(FormattingUtilities.HttpVersionToken + "/" + (httpResponse.Version != null ? httpResponse.Version.ToString(2) : "1.1") + SP);
-            message.Append((int)httpResponse.StatusCode + SP);
+            message.Append(((int)httpResponse.StatusCode).ToString(Globalization.NumberFormatInfo.InvariantInfo) + SP);
             message.Append(httpResponse.ReasonPhrase + CRLF);
         }
 

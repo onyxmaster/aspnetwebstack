@@ -282,6 +282,7 @@ namespace Microsoft.Web.Mvc.Html
         // PartialExtensions
 
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "The purpose of these helpers is to use default parameters to simplify common usage.")]
+        [Obsolete("Use RenderPartial.")]
         public static MvcHtmlString Partial(this HtmlHelper htmlHelper, string partialViewName, object model = null, ViewDataDictionary viewData = null)
         {
             return PartialExtensions.Partial(

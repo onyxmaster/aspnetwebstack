@@ -21,7 +21,7 @@ namespace System.Web.WebPages
         // Action for rendering the body within a layout page
         private Action<TextWriter> _body;
 
-        private StringWriter _tempWriter;
+        private StringBlockWriter _tempWriter;
         private TextWriter _currentWriter;
 
         private DynamicPageDataDictionary<dynamic> _dynamicPageData;
@@ -219,29 +219,6 @@ namespace System.Web.WebPages
             // the last file to execute in the chain. There can still be layout pages
             // and partial pages, but they are never part of the hierarchy.
 
-            // (add server header for falcon debugging)
-            // call to MapPath() is expensive. If we are not emiting source files to header, 
-            // don't bother to populate the SourceFiles collection. This saves perf significantly.
-            if (WebPageHttpHandler.ShouldGenerateSourceHeader(Context))
-            {
-                try
-                {
-                    string vp = VirtualPath;
-                    if (vp != null)
-                    {
-                        string path = Context.Request.MapPath(vp);
-                        if (!path.IsEmpty())
-                        {
-                            PageContext.SourceFiles.Add(path);
-                        }
-                    }
-                }
-                catch
-                {
-                    // we really don't care if this ever fails, so we swallow all exceptions
-                }
-            }
-
             TemplateStack.Push(Context, this);
             try
             {
@@ -300,7 +277,7 @@ namespace System.Web.WebPages
             InitializePage();
 
             // Create a temporary writer
-            _tempWriter = new StringWriter(CultureInfo.InvariantCulture);
+            _tempWriter = new StringBlockWriter(CultureInfo.InvariantCulture);
 
             // Render the page into it
             OutputStack.Push(_tempWriter);

@@ -99,25 +99,6 @@
     <Compile Include="FileExistenceCache.cs" />
     <Compile Include="Helpers\AntiForgery.cs" />
     <Compile Include="HttpContextExtensions.cs" />
-    <Compile Include="Instrumentation\HttpContextAdapter.Availability.cs" />
-    <Compile Include="Instrumentation\HttpContextAdapter.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HttpContextAdapter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Instrumentation\InstrumentationService.cs" />
-    <Compile Include="Instrumentation\PageExecutionContextAdapter.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PageExecutionContextAdapter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Instrumentation\PageExecutionListenerAdapter.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PageExecutionListenerAdapter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Instrumentation\PageInstrumentationServiceAdapter.cs" />
-    <Compile Include="Instrumentation\PositionTagged.cs" />
     <Compile Include="IVirtualPathUtility.cs" />
     <Compile Include="MimeMapping.cs" />
     <Compile Include="Mvc\ModelClientValidationEqualToRule.cs" />
@@ -136,6 +117,7 @@
     <Compile Include="Utils\HtmlAttributePropertyHelper.cs" />
     <Compile Include="..\Common\PropertyHelper.cs" />
     <Compile Include="Utils\SessionStateUtil.cs" />
+    <Compile Include="Utils\StringBlockWriter.cs" />
     <Compile Include="Utils\TypeHelper.cs" />
     <Compile Include="Utils\UrlRewriterHelper.cs" />
     <Compile Include="Utils\UrlUtil.cs" />
@@ -241,18 +223,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Instrumentation\HttpContextAdapter.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>HttpContextAdapter.generated.cs</LastGenOutput>
-    </None>
-    <None Include="Instrumentation\PageExecutionContextAdapter.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PageExecutionContextAdapter.generated.cs</LastGenOutput>
-    </None>
-    <None Include="Instrumentation\PageExecutionListenerAdapter.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PageExecutionListenerAdapter.generated.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

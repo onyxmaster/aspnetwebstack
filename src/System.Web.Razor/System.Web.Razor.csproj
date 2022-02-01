@@ -39,7 +39,6 @@
     <Compile Include="Editor\BackgroundParser.cs" />
     <Compile Include="Editor\RazorEditorTrace.cs" />
     <Compile Include="Generator\AttributeBlockCodeGenerator.cs" />
-    <Compile Include="Generator\CodeWriterExtensions.cs" />
     <Compile Include="Generator\DynamicAttributeBlockCodeGenerator.cs" />
     <Compile Include="Generator\ExpressionRenderingMode.cs" />
     <Compile Include="Generator\LiteralAttributeCodeGenerator.cs" />
@@ -68,12 +67,10 @@
     <Compile Include="Generator\SetBaseTypeCodeGenerator.cs" />
     <Compile Include="Generator\HelperCodeGenerator.cs" />
     <Compile Include="Generator\SectionCodeGenerator.cs" />
-    <Compile Include="Generator\SetVBOptionCodeGenerator.cs" />
     <Compile Include="Generator\SpanCodeGenerator.cs" />
     <Compile Include="Generator\StatementCodeGenerator.cs" />
     <Compile Include="Generator\TemplateBlockCodeGenerator.cs" />
     <Compile Include="Generator\TypeMemberCodeGenerator.cs" />
-    <Compile Include="Generator\VBCodeWriter.cs" />
     <Compile Include="Parser\BalancingModes.cs" />
     <Compile Include="Parser\CallbackVisitor.cs" />
     <Compile Include="Parser\ConditionalAttributeCollapser.cs" />
@@ -101,9 +98,6 @@
     <Compile Include="Parser\TextReaderExtensions.cs" />
     <Compile Include="Parser\TokenizerBackedParser.cs" />
     <Compile Include="Parser\TokenizerBackedParser.Helpers.cs" />
-    <Compile Include="Parser\VBCodeParser.cs" />
-    <Compile Include="Parser\VBCodeParser.Directives.cs" />
-    <Compile Include="Parser\VBLanguageCharacteristics.cs" />
     <Compile Include="Parser\WhitespaceRewriter.cs" />
     <Compile Include="PartialParseResult.cs" />
     <Compile Include="RazorDebugHelpers.cs" />
@@ -131,15 +125,10 @@
     <Compile Include="Tokenizer\Symbols\SymbolExtensions.cs" />
     <Compile Include="Tokenizer\Symbols\SymbolTypeSuppressions.cs" />
     <Compile Include="Tokenizer\TokenizerView.cs" />
-    <Compile Include="Tokenizer\VBKeywordDetector.cs" />
-    <Compile Include="Tokenizer\VBHelpers.cs" />
     <Compile Include="Tokenizer\CSharpHelpers.cs" />
     <Compile Include="Tokenizer\CSharpKeywordDetector.cs" />
     <Compile Include="Tokenizer\CSharpTokenizer.cs" />
     <Compile Include="Tokenizer\HtmlTokenizer.cs" />
-    <Compile Include="Tokenizer\Symbols\VBKeyword.cs" />
-    <Compile Include="Tokenizer\Symbols\VBSymbol.cs" />
-    <Compile Include="Tokenizer\Symbols\VBSymbolType.cs" />
     <Compile Include="Tokenizer\Symbols\CSharpKeyword.cs" />
     <Compile Include="Tokenizer\Symbols\CSharpSymbol.cs" />
     <Compile Include="Tokenizer\Symbols\CSharpSymbolType.cs" />
@@ -147,10 +136,8 @@
     <Compile Include="Tokenizer\Symbols\HtmlSymbolType.cs" />
     <Compile Include="Tokenizer\Symbols\SymbolBase.cs" />
     <Compile Include="Tokenizer\Tokenizer.cs" />
-    <Compile Include="Tokenizer\VBTokenizer.cs" />
     <Compile Include="Tokenizer\XmlHelpers.cs" />
     <Compile Include="Utils\CharUtils.cs" />
-    <Compile Include="VBRazorCodeLanguage.cs" />
     <Compile Include="Generator\CSharpRazorCodeGenerator.cs" />
     <Compile Include="Parser\SyntaxTree\BlockType.cs" />
     <Compile Include="Parser\SyntaxTree\Block.cs" />
@@ -179,7 +166,6 @@
     <Compile Include="Text\TextChange.cs" />
     <Compile Include="Text\TextChangeType.cs" />
     <Compile Include="Parser\SyntaxTree\Span.cs" />
-    <Compile Include="Generator\VBRazorCodeGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\CommonResources.resx">
@@ -192,9 +178,6 @@
       <LastGenOutput>RazorResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Parser\VBCodeParser.Statements.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CodeAnalysisDictionary.xml" />

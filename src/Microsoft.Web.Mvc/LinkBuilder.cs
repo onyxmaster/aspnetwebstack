@@ -25,8 +25,8 @@ namespace Microsoft.Web.Mvc
         [SuppressMessage("Microsoft.Design", "CA1055:UriReturnValuesShouldNotBeStrings", Justification = "The return value is not a regular URL since it may contain ~/ ASP.NET-specific characters"), SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is an Extension Method which allows the user to provide a strongly-typed argument via Expression"), SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Need to be sure the passed-in argument is of type Controller::Action")]
         public static string BuildUrlFromExpression<TController>(RequestContext context, RouteCollection routeCollection, Expression<Action<TController>> action) where TController : Controller
         {
-            RouteValueDictionary routeValues = ExpressionHelper.GetRouteValuesFromExpression(action);
-            VirtualPathData vpd = routeCollection.GetVirtualPathForArea(context, routeValues);
+            var routeInfo = ExpressionHelper.GetRouteInfoFromExpression(routeCollection, action);
+            VirtualPathData vpd = routeCollection.GetVirtualPathForArea(context, routeInfo.Key, routeInfo.Value);
             return (vpd == null) ? null : vpd.VirtualPath;
         }
 

@@ -46,9 +46,9 @@ namespace Microsoft.Web.Mvc
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is an appropriate nesting of generic types")]
         public static MvcHtmlString ActionLink<TController>(this HtmlHelper helper, Expression<Action<TController>> action, string linkText, object htmlAttributes) where TController : Controller
         {
-            RouteValueDictionary routingValues = ExpressionHelper.GetRouteValuesFromExpression(action);
+            var routeInfo = ExpressionHelper.GetRouteInfoFromExpression(helper.RouteCollection, action);
 
-            return helper.RouteLink(linkText, routingValues, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+            return helper.RouteLink(linkText, routeInfo.Key, routeInfo.Value, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
     }
 }

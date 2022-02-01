@@ -47,7 +47,7 @@ namespace System.Web.Razor.Generator
 
         public override string ToString()
         {
-            return "Import:" + Namespace + ";KwdLen:" + NamespaceKeywordLength;
+            return "Import:" + Namespace + ";KwdLen:" + NamespaceKeywordLength.ToString(Globalization.NumberFormatInfo.InvariantInfo);
         }
 
         public override bool Equals(object obj)

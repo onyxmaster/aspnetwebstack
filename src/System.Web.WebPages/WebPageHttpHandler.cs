@@ -124,19 +124,6 @@ namespace System.Web.WebPages
             throw new HttpUnhandledException(null, e);
         }
 
-        internal static void GenerateSourceFilesHeader(WebPageContext context)
-        {
-            if (context.SourceFiles.Any())
-            {
-                var files = String.Join("|", context.SourceFiles);
-                // Since the characters in the value are files that may include characters outside of the ASCII set, header encoding as specified in RFC2047. 
-                // =?<charset>?<encoding>?...?= 
-                // In the following case, UTF8 is used with base64 encoding 
-                var encodedText = "=?UTF-8?B?" + Convert.ToBase64String(Encoding.UTF8.GetBytes(files)) + "?=";
-                context.HttpContext.Response.AddHeader("X-SourceFiles", encodedText);
-            }
-        }
-
         public virtual void ProcessRequest(HttpContext context)
         {
             ProcessRequestInternal(context);
@@ -165,11 +152,6 @@ namespace System.Web.WebPages
                 // the requested page can take care of the necessary push/pop context and trigger the call to
                 // the initPage.
                 _webPage.ExecutePageHierarchy(new WebPageContext { HttpContext = httpContext }, httpContext.Response.Output, StartPage);
-
-                if (ShouldGenerateSourceHeader(httpContext))
-                {
-                    GenerateSourceFilesHeader(_webPage.PageContext);
-                }
             }
             catch (Exception e)
             {
@@ -185,11 +167,6 @@ namespace System.Web.WebPages
             // Note: we don't lock or check for duplicates because we only expect this method to be called during PreAppStart
             // Long lived data with few writes and many reads, so reallocate the array each time.
             _supportedExtensions = _supportedExtensions.AppendAndReallocate(extension);
-        }
-
-        internal static bool ShouldGenerateSourceHeader(HttpContextBase context)
-        {
-            return context.Request.IsLocal;
         }
     }
 }

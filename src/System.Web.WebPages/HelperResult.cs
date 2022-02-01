@@ -26,7 +26,7 @@ namespace System.Web.WebPages
 
         public override string ToString()
         {
-            using (var writer = new StringWriter(CultureInfo.InvariantCulture))
+            using (var writer = new StringBlockWriter(CultureInfo.InvariantCulture))
             {
                 _action(writer);
                 return writer.ToString();

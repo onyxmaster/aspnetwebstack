@@ -14,11 +14,6 @@ namespace System.Web.Razor.Generator
                 return;
             }
 
-            if (context.Host.EnableInstrumentation)
-            {
-                context.AddContextCall(target, context.Host.GeneratedClassContext.BeginContextMethodName, isLiteral: true);
-            }
-
             if (!String.IsNullOrEmpty(target.Content) && !context.Host.DesignTimeMode)
             {
                 string code = context.BuildCodeString(cw =>
@@ -38,11 +33,6 @@ namespace System.Web.Razor.Generator
                     cw.WriteEndStatement();
                 });
                 context.AddStatement(code);
-            }
-
-            if (context.Host.EnableInstrumentation)
-            {
-                context.AddContextCall(target, context.Host.GeneratedClassContext.EndContextMethodName, isLiteral: true);
             }
         }
 

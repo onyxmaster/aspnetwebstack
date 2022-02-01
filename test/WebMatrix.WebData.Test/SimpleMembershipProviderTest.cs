@@ -176,8 +176,8 @@ namespace WebMatrix.WebData.Test
             var result = SimpleMembershipProvider.GenerateToken(generator.Object);
 
             // Assert
-            Assert.Equal("fGH/eKcjvW//P+5BOEW1", Convert.ToBase64String(generatedBytes));
-            Assert.Equal("fGH_eKcjvW__P-5BOEW1AA2", result);
+            Assert.Equal("fGF5eKcjP295pmlBOEW1", Convert.ToBase64String(generatedBytes));
+            Assert.Equal("fGF5eKcjP295pmlBOEW1AA2", result);
         }
 
         [Fact]

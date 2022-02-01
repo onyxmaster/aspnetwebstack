@@ -43,7 +43,7 @@ namespace System.Web.Mvc.Html
 
         public static MvcHtmlString Action(this HtmlHelper htmlHelper, string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            using (StringWriter writer = new StringWriter(CultureInfo.CurrentCulture))
+            using (var writer = new StringBlockWriter(CultureInfo.CurrentCulture))
             {
                 ActionHelper(htmlHelper, actionName, controllerName, routeValues, writer);
                 return MvcHtmlString.Create(writer.ToString());

@@ -189,7 +189,7 @@ namespace System.Web.WebPages.Deployment.Test
             var binDirectory = DeploymentUtil.GetBinDirectory();
 
             var buildManager = new TestBuildManager();
-            fileSystem.AddFile("Default.vbhtml");
+            fileSystem.AddFile("Default.cshtml");
             fileSystem.AddFile(Path.Combine(binDirectory, "System.Web.WebPages.Deployment.dll"));
             var nameValueCollection = GetAppSettings(enabled: null, webPagesVersion: null);
             Action<Version> loadWebPages = (version) => { loadedVersion = version; };

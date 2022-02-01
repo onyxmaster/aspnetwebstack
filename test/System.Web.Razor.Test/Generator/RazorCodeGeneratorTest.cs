@@ -116,9 +116,7 @@ namespace System.Web.Razor.Test.Generator
                                                                    "WriteTo",
                                                                    "WriteLiteralTo",
                                                                    "Template",
-                                                                   "DefineSection",
-                                                                   "BeginContext",
-                                                                   "EndContext")
+                                                                   "DefineSection")
                                                                    {
                                                                        LayoutPropertyName = "Layout",
                                                                        ResolveUrlMethodName = "Href"
