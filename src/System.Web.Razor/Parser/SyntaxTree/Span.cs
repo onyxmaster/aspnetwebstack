@@ -88,7 +88,7 @@ namespace System.Web.Razor.Parser.SyntaxTree
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(Kind);
-            builder.AppendFormat(" Span at {0}::{1} - [{2}]", Start, Length, Content);
+            builder.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, " Span at {0}::{1} - [{2}]", Start, Length, Content);
             builder.Append(" Edit: <");
             builder.Append(EditHandler.ToString());
             builder.Append(">");

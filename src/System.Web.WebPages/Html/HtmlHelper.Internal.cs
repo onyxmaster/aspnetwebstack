@@ -111,7 +111,7 @@ namespace System.Web.WebPages.Html
             }
             catch (Exception ex)
             {
-                string message = String.Format(CultureInfo.CurrentUICulture, WebPageResources.HtmlHelper_ConversionThrew,
+                string message = String.Format(CultureInfo.CurrentCulture, WebPageResources.HtmlHelper_ConversionThrew,
                                                value.GetType().FullName, destinationType.FullName);
                 throw new InvalidOperationException(message, ex);
             }

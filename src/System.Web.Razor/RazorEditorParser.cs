@@ -138,7 +138,7 @@ namespace System.Web.Razor
             RazorEditorTrace.TraceLine(RazorResources.Trace_EditorReceivedChange, Path.GetFileName(FileName), change);
             if (change.NewBuffer == null)
             {
-                throw new ArgumentException(String.Format(CultureInfo.CurrentUICulture,
+                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture,
                                                           RazorResources.Structure_Member_CannotBeNull,
                                                           "Buffer",
                                                           "TextChange"), "change");

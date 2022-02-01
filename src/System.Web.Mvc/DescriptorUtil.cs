@@ -20,7 +20,7 @@ namespace System.Web.Mvc
             else
             {
                 string partString = Convert.ToString(part, CultureInfo.InvariantCulture);
-                builder.AppendFormat("[{0}]{1}", partString.Length, partString);
+                builder.AppendFormat(CultureInfo.InvariantCulture, "[{0}]{1}", partString.Length, partString);
             }
         }
 
