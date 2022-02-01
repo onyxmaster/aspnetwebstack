@@ -164,7 +164,6 @@
                     int testsPassed = 0;
                     int testsFailed = 0;
                     int testsSkipped = 0;
-                    decimal timeSpent = 0;
                     List<string> testFailures = new List<string>();
 
                     foreach (string testResultFile in testResultFiles)
@@ -196,7 +195,6 @@
 
                             testsPassed += Int32.Parse(assembly.Attribute(XName.Get("passed")).Value);
                             testsSkipped += Int32.Parse(assembly.Attribute(XName.Get("skipped")).Value);
-                            timeSpent += Decimal.Parse(assembly.Attribute(XName.Get("time")).Value);
 
                             if (failures > 0)
                             {
@@ -228,7 +226,6 @@
 
                     Console.WriteLine();
                     Console.WriteLine("  Tests passed: {0}, Tests failed: {1}, Tests skipped: {2}", testsPassed, testsFailed, testsSkipped);
-                    Console.WriteLine("  Time spent running tests: {0} seconds", timeSpent);
                     return true;
                 }
                 catch (Exception ex)
