@@ -10,7 +10,8 @@
     <StyleCopEnabled Condition=" '$(StyleCopEnabled)' == '' ">true</StyleCopEnabled>
     <BuildInParallel Condition=" '$(BuildInParallel)' == '' And $(MSBuildNodeCount) &gt; 1 ">true</BuildInParallel>
     <BuildInParallel Condition=" '$(BuildInParallel)' == '' ">false</BuildInParallel>
-    <TestInParallel Condition=" '$(TestInParallel)' == '' ">$(BuildInParallel)</TestInParallel>
+    <RestoreInParallel Condition=" '$(RestoreInParallel)' == '' ">false</RestoreInParallel>
+    <TestInParallel Condition=" '$(TestInParallel)' == '' ">false</TestInParallel>
     <TestResultsDirectory>$(MSBuildThisFileDirectory)bin\$(Configuration)\test\TestResults\</TestResultsDirectory>
     <SkipStrongNamesExe>$(MSBuildThisFileDirectory)packages\Microsoft.Web.SkipStrongNames.1.0.0\tools\SkipStrongNames.exe</SkipStrongNamesExe>
     <SkipStrongNamesXml>$(MSBuildThisFileDirectory)tools\SkipStrongNames.xml</SkipStrongNamesXml>
@@ -54,48 +55,67 @@
   </Target>
 
   <Target Name="RestoreSkipStrongNames" DependsOnTargets="DownloadNuGet">
-    <Exec Command='"$(NuGetExe)" restore .nuget\packages.config -PackagesDirectory packages -NonInteractive -Verbosity quiet -ConfigFile .nuget\NuGet.Config' />
+    <Exec Command='"$(NuGetExe)" restore .nuget\packages.config -PackagesDirectory packages -NonInteractive -Verbosity quiet' />
   </Target>
 
   <Target Name="RestorePackages" DependsOnTargets="DownloadNuGet">
-    <Message Text="Restoring NuGet packages..." Importance="High" />
-
-    <Exec Command='"$(NuGetExe)" restore "%(SolutionsToBuild.Identity)" -PackagesDirectory packages -NonInteractive -Verbosity quiet -ConfigFile "$(MsBuildThisFileDirectory)\.nuget\NuGet.Config"' />
+    <ItemGroup>
+      <_ToRestore Include="@(SolutionsToBuild)" />
+      <_ToRestore Include="test\Microsoft.TestCommon\Microsoft.TestCommon.csproj"
+          AdditionalProperties="NetFX_Core=true"
+          Condition=" '$(BuildPortable)' == 'true' " />
+    </ItemGroup>
+    <Message Text="%0ARestoring NuGet packages..." Importance="High" />
+    <MSBuild Projects="@(_ToRestore)" Targets="Restore"
+      BuildInParallel="$(RestoreInParallel)"
+      Properties="Configuration=$(Configuration);CodeAnalysis=$(CodeAnalysis);StyleCopEnabled=$(StyleCopEnabled);
+                  RestorePackagesConfig=true;VisualStudioVersion=$(VisualStudioVersion)" />
+    <Message Importance="High" Text="" />
   </Target>
 
   <!-- Pick the right Microsoft.Web.FxCop package to use and copy it to a standard location. -->
   <Target Name="BuildTools">
     <PropertyGroup>
-        <FxCopProjectLocation>$(MsBuildThisFileDirectory)tools\src\Microsoft.Web.FxCop\</FxCopProjectLocation>
-        <CustomFxCopRulesPath>$(MsBuildThisFileDirectory)packages\CustomFxCopRules</CustomFxCopRulesPath>
+        <FxCopProjectLocation>$(MSBuildThisFileDirectory)tools\src\Microsoft.Web.FxCop\</FxCopProjectLocation>
+        <CustomFxCopRulesPath>$(MSBuildThisFileDirectory)packages\CustomFxCopRules</CustomFxCopRulesPath>
     </PropertyGroup>
-    <MsBuild
-          Condition=" '$(CodeAnalysis)' == 'true' "
-          Projects="$(FxCopProjectLocation)\Microsoft.Web.FxCop.csproj"
-          Properties="Configuration=Release;OutputPath=$(CustomFxCopRulesPath)" />
+    <MSBuild
+        Condition=" '$(CodeAnalysis)' == 'true' "
+        Projects="$(FxCopProjectLocation)\Microsoft.Web.FxCop.csproj"
+        Properties="Configuration=Release;OutputPath=$(CustomFxCopRulesPath)" />
   </Target>
 
-  <Target Name="Build" DependsOnTargets="RestorePackages;BuildTools">
+  <Target Name="Build" DependsOnTargets="RestoreSkipStrongNames;RestorePackages;BuildTools">
     <!-- we need to batch the solution files since they both build Microsoft.TestCommon -->
     <Error Condition=" '$(CodeAnalysis)' == 'true' and '$(Configuration)' == 'Release' " Text="Unable to run code analysis in Release configuration. Release assemblies do not include SuppressMessage attributes (so code analysis would always fail with the errors that are normally suppressed)." />
     <MakeDir Directories="bin\$(Configuration)" />
     <MSBuild
-          Projects="@(SolutionsToBuild)"
-          BuildInParallel="%(SolutionsToBuild.BuildInParallel)"
-          Targets="Build"
-          Properties="Configuration=$(Configuration);CodeAnalysis=$(CodeAnalysis);StyleCopEnabled=$(StyleCopEnabled);VisualStudioVersion=$(VisualStudioVersion)" />
+        Projects="@(SolutionsToBuild)"
+        BuildInParallel="%(SolutionsToBuild.BuildInParallel)"
+        Targets="Build"
+        Condition=" '%(SolutionsToBuild.Portable)' != 'true' or '$(BuildPortable)' == 'true' "
+        Properties="Configuration=$(Configuration);CodeAnalysis=$(CodeAnalysis);StyleCopEnabled=$(StyleCopEnabled);VisualStudioVersion=$(VisualStudioVersion)" />
   </Target>
 
-  <Target Name="UnitTest" DependsOnTargets="CheckSkipStrongNames;Build">
-    <CallTarget Targets="RunTests;PrintTestRunSummary" RunEachTargetSeparately="True" />
-  </Target>
+  <Target Name="UnitTest" DependsOnTargets="Build;PrintTestRunSummary" />
 
   <Target Name="RunTests" DependsOnTargets="CheckSkipStrongNames">
     <ItemGroup>
       <_TestDLLsXunit Include="bin\$(Configuration)\test\*.Test.dll" />
-      <_TestDLLsXunit Include="bin\$(Configuration)\test\*.Test.*.dll" />
-      <_XunitProject Include="tools\WebStack.xunit.targets">
-        <Properties>TestAssembly=%(_TestDLLsXunit.FullPath);XmlPath=$(TestResultsDirectory)%(_TestDLLsXunit.FileName)-XunitResults.xml</Properties>
+      <_TestDLLsXunit Include="bin\$(Configuration)\test\*\net4*\*.Test.dll"
+          Condition=" '$(BuildPortable)' == 'true' " />
+      <_XunitProject Include="tools\WebStack.testing.targets">
+        <Properties>TestAssembly=%(_TestDLLsXunit.FullPath);
+          XmlPath=$(TestResultsDirectory)%(_TestDLLsXunit.FileName)-XunitResults.xml</Properties>
+      </_XunitProject>
+
+      <_VSTestDLLs Include="bin\$(Configuration)\test\*\netcoreapp*\*.Test.dll"
+          Condition=" '$(BuildPortable)' == 'true' "/>
+      <_XunitProject Include="tools\WebStack.testing.targets"
+          Condition=" '$(BuildPortable)' == 'true' ">
+        <Properties>TestAssembly=%(_VSTestDLLs.FullPath);
+          XmlPath=$(TestResultsDirectory)%(_VSTestDLLs.FileName)-NetCoreApp-XunitResults.xml;
+          UseVSTest=true</Properties>
       </_XunitProject>
     </ItemGroup>
 
@@ -103,7 +123,9 @@
     <RemoveDir Directories="$(TestResultsDirectory)" />
     <MakeDir Directories="$(TestResultsDirectory)" />
 
-    <MSBuild Projects="@(_XunitProject)" BuildInParallel="$(TestInParallel)" Targets="Xunit" />
+    <MSBuild Projects="@(_XunitProject)" BuildInParallel="$(TestInParallel)" Targets="TestAssembly">
+      <Output TaskParameter="TargetOutputs" ItemName="_ExitCodes" />
+    </MSBuild>
   </Target>
 
   <Target Name="CheckSkipStrongNames" DependsOnTargets="RestoreSkipStrongNames">
@@ -113,7 +135,11 @@
     <Error Text="Unit tests will not run correctly unless SkipStrongNames is Enabled. Current status: $(Status). Run build.cmd EnableSkipStrongNames to fix this problem." Condition="'$(Status)' != 'Enabled'" />
   </Target>
 
-  <Target Name="PrintTestRunSummary">
+  <Target Name="PrintTestRunSummary" DependsOnTargets="RunTests">
     <PrintTestRunSummary TestResultsDirectory="$(TestResultsDirectory)" />
+
+    <!-- PrintTestRunSummary stops MSBuild if tests failed. But the Xunit target may fail for other reasons... -->
+    <Error Text="Testing failed with exit code '%(Code)':%0A@(_ExitCodes -> '  %(Identity)', '%0A')"
+        Condition=" '%(Code)' != '0' " />
   </Target>
 </Project>

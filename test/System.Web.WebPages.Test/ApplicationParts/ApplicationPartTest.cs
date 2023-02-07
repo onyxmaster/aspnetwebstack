@@ -70,7 +70,7 @@ namespace System.Web.WebPages.Test
             var moduleName = "my-module";
             var path = "foo.baz";
 
-            // Act 
+            // Act
             var name = ApplicationPart.GetResourceNameFromVirtualPath(moduleName, path);
 
             // Assert
@@ -84,7 +84,7 @@ namespace System.Web.WebPages.Test
             var moduleName = "my-module";
             var path = "/bar/foo";
 
-            // Act 
+            // Act
             var name = ApplicationPart.GetResourceNameFromVirtualPath(moduleName, path);
 
             // Assert
@@ -98,7 +98,7 @@ namespace System.Web.WebPages.Test
             var moduleName = "my-module";
             var path = "/program files/data files/my file .foo";
 
-            // Act 
+            // Act
             var name = ApplicationPart.GetResourceNameFromVirtualPath(moduleName, path);
 
             // Assert
@@ -117,7 +117,7 @@ namespace System.Web.WebPages.Test
             var virtualPath = ApplicationPart.GetResourceVirtualPath(moduleName, moduleRoot, path);
 
             // Assert
-            Assert.Equal(virtualPath, "~/r.ashx/" + moduleName + "/" + "foo.txt");
+            Assert.Equal("~/r.ashx/" + moduleName + "/" + "foo.txt", virtualPath);
         }
 
         [Fact]
@@ -132,7 +132,7 @@ namespace System.Web.WebPages.Test
             var virtualPath = ApplicationPart.GetResourceVirtualPath(moduleName, moduleRoot, path);
 
             // Assert
-            Assert.Equal(virtualPath, "~/r.ashx/" + moduleName + "/" + "foo.txt");
+            Assert.Equal("~/r.ashx/" + moduleName + "/" + "foo.txt", virtualPath);
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace System.Web.WebPages.Test
             var virtualPath = ApplicationPart.GetResourceVirtualPath(moduleName, moduleRoot, path);
 
             // Assert
-            Assert.Equal(virtualPath, "~/r.ashx/" + moduleName + "/" + "foo.txt");
+            Assert.Equal("~/r.ashx/" + moduleName + "/" + "foo.txt", virtualPath);
         }
 
         [Fact]
@@ -162,7 +162,7 @@ namespace System.Web.WebPages.Test
             var virtualPath = ApplicationPart.GetResourceVirtualPath(moduleName, moduleRoot, path);
 
             // Assert
-            Assert.Equal(virtualPath, "~/r.ashx/" + "Debugger%20Package%20v?&%" + "/" + "foo.txt");
+            Assert.Equal("~/r.ashx/" + "Debugger%20Package%20v?&%" + "/" + "foo.txt", virtualPath);
         }
 
         [Fact]
@@ -178,7 +178,7 @@ namespace System.Web.WebPages.Test
             var virtualPath = ApplicationPart.GetResourceVirtualPath(moduleName, moduleRoot, path);
 
             // Assert
-            Assert.Equal(virtualPath, "~/r.ashx/" + moduleName + "/" + itemPath);
+            Assert.Equal("~/r.ashx/" + moduleName + "/" + itemPath, virtualPath);
         }
 
         [Fact]
@@ -194,7 +194,7 @@ namespace System.Web.WebPages.Test
             var virtualPath = ApplicationPart.GetResourceVirtualPath(moduleName, moduleRoot, path);
 
             // Assert
-            Assert.Equal(virtualPath, "~/r.ashx/" + moduleName + "/" + itemPath);
+            Assert.Equal("~/r.ashx/" + moduleName + "/" + itemPath, virtualPath);
         }
     }
 }

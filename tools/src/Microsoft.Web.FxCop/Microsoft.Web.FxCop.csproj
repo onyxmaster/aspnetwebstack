@@ -10,6 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Web.FxCop</RootNamespace>
     <AssemblyName>Microsoft.Web.FxCop</AssemblyName>
+    <!-- May need to be updated as FxCopSdk.dll is migrated to newer TFMs. -->
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <OutputPath Condition=" '$(OutputPath)' == '' ">bin\$(Configuration)</OutputPath>
   </PropertyGroup>
